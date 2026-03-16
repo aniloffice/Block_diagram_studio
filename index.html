@@ -8,76 +8,104 @@
 :root{
   --bg:#0d1117;--sf:#161b22;--sf2:#21262d;--bd:#30363d;
   --acc:#f0a500;--blu:#38bdf8;--grn:#3fb950;--red:#f87171;--pur:#a78bfa;
-  --txt:#e6edf3;--mut:#7d8590;
-  --f:-apple-system,'Segoe UI',sans-serif;--m:'Consolas','Courier New',monospace
+  --txt:#e6edf3;--mut:#7d8590;--f:-apple-system,'Segoe UI',sans-serif;--m:'Consolas','Courier New',monospace
 }
 body{background:var(--bg);color:var(--txt);font-family:var(--f);height:100vh;overflow:hidden;display:flex;flex-direction:column}
 #hdr{display:flex;align-items:center;gap:10px;padding:6px 14px;background:var(--sf);border-bottom:1px solid var(--bd);flex-shrink:0;height:44px}
 .logo{width:28px;height:28px;background:linear-gradient(135deg,var(--acc),#c97000);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0}
 .ht{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.07em}
 .hs{font-size:10px;color:var(--mut);font-family:var(--m)}
-.hr{margin-left:auto;display:flex;align-items:center;gap:6px}
-.bai{display:flex;align-items:center;gap:4px;padding:4px 10px;background:rgba(56,189,248,.1);border:1px solid rgba(56,189,248,.3);color:var(--blu);border-radius:5px;font-size:10px;font-weight:700;cursor:pointer;transition:.2s;text-transform:uppercase;letter-spacing:.05em}
-.bai:hover{background:rgba(56,189,248,.22)}.bai.loading{opacity:.5;pointer-events:none}
 #main{display:flex;flex:1;overflow:hidden;min-height:0}
-#pal{width:148px;background:var(--sf);border-right:1px solid var(--bd);overflow-y:auto;flex-shrink:0;padding:7px 6px}
+#pal{width:150px;background:var(--sf);border-right:1px solid var(--bd);overflow-y:auto;flex-shrink:0;padding:7px 6px}
 #pal::-webkit-scrollbar{width:3px}#pal::-webkit-scrollbar-thumb{background:var(--bd)}
 .ps{font-size:9px;font-weight:700;color:var(--mut);text-transform:uppercase;letter-spacing:.1em;padding:3px 3px 5px;border-bottom:1px solid var(--bd);margin-bottom:4px;margin-top:8px}
 .ps:first-child{margin-top:0}
 .pi{display:flex;align-items:center;gap:5px;padding:4px 6px;border-radius:4px;cursor:pointer;font-size:11px;font-weight:600;border:1px solid var(--bd);margin-bottom:3px;background:var(--sf2);transition:.15s;user-select:none;white-space:nowrap;overflow:hidden}
 .pi:hover{border-color:var(--acc);color:var(--acc)}.pi.active{border-color:var(--acc);background:rgba(240,165,0,.12);color:var(--acc)}
 .sw{width:12px;height:12px;border-radius:2px;flex-shrink:0;border:1px solid rgba(255,255,255,.15)}
+.bai{width:100%;margin-bottom:8px;padding:7px 6px;background:rgba(56,189,248,.1);border:1px solid rgba(56,189,248,.3);color:var(--blu);border-radius:6px;font-size:11px;font-weight:700;cursor:pointer;transition:.2s;text-transform:uppercase;letter-spacing:.05em;display:flex;align-items:center;justify-content:center;gap:4px}
+.bai:hover{background:rgba(56,189,248,.22)}.bai.loading{opacity:.5;pointer-events:none}
 #ca{flex:1;display:flex;align-items:center;justify-content:center;background:#12151c;overflow:hidden;position:relative}
 #cw{position:relative}#cv{display:block;cursor:default}
-#pp{width:192px;background:var(--sf);border-left:1px solid var(--bd);overflow-y:auto;flex-shrink:0;padding:8px 9px}
+/* PROPERTIES */
+#pp{width:210px;background:var(--sf);border-left:1px solid var(--bd);overflow-y:auto;flex-shrink:0;padding:10px}
 #pp::-webkit-scrollbar{width:3px}#pp::-webkit-scrollbar-thumb{background:var(--bd)}
-.ph{font-size:9px;font-weight:700;color:var(--mut);text-transform:uppercase;letter-spacing:.1em;padding-bottom:6px;border-bottom:1px solid var(--bd);margin-bottom:8px}
-.pr{margin-bottom:8px}
+.ph{font-size:9px;font-weight:700;color:var(--mut);text-transform:uppercase;letter-spacing:.1em;padding-bottom:6px;border-bottom:1px solid var(--bd);margin-bottom:10px;display:flex;align-items:center;justify-content:space-between}
+.ph-badge{background:rgba(56,189,248,.15);color:var(--blu);font-size:8px;padding:1px 5px;border-radius:3px;font-family:var(--m)}
+.pr{margin-bottom:9px}
 .pl{font-size:9px;color:var(--mut);margin-bottom:3px;font-weight:700;text-transform:uppercase;letter-spacing:.05em}
-.pi2,.pss,.pta{width:100%;padding:4px 7px;background:var(--sf2);border:1px solid var(--bd);border-radius:4px;color:var(--txt);font-size:11px;font-family:var(--f);outline:none}
-.pta{resize:vertical;min-height:50px;font-size:10px;line-height:1.4}
-.pi2:focus,.pss:focus,.pta:focus{border-color:var(--acc)}
+.pi2,.pss,.pta{width:100%;padding:5px 8px;background:var(--sf2);border:1px solid var(--bd);border-radius:4px;color:var(--txt);font-size:12px;font-family:var(--f);outline:none;transition:.15s}
+.pta{resize:vertical;min-height:52px;font-size:10px;line-height:1.5}
+.pi2:focus,.pss:focus,.pta:focus{border-color:var(--acc);background:#1a1f27}
 .pss option{background:var(--sf2)}
-.nosel{display:flex;flex-direction:column;align-items:center;justify-content:center;height:75%;color:var(--mut);font-size:11px;text-align:center;gap:8px;padding:12px}
-.cbr{display:flex;align-items:center;gap:6px;font-size:11px}
+.nosel{display:flex;flex-direction:column;align-items:center;justify-content:center;height:70%;color:var(--mut);font-size:11px;text-align:center;gap:10px;padding:16px}
+.cbr{display:flex;align-items:center;gap:6px;font-size:11px;padding:2px 0}
 .r2{display:grid;grid-template-columns:1fr 1fr;gap:6px}
-#tb{display:flex;align-items:center;flex-wrap:wrap;gap:5px;padding:6px 12px;background:var(--sf);border-top:1px solid var(--bd);flex-shrink:0}
-.btn{padding:4px 11px;border-radius:5px;font-size:11px;font-weight:700;cursor:pointer;border:1px solid var(--bd);background:var(--sf2);color:var(--txt);display:flex;align-items:center;gap:4px;transition:.2s;text-transform:uppercase;letter-spacing:.04em;white-space:nowrap}
+.psh{font-size:9px;color:var(--acc);font-weight:700;text-transform:uppercase;letter-spacing:.1em;margin:10px 0 5px;padding-top:8px;border-top:1px solid var(--bd)}
+.psh:first-of-type{margin-top:0;padding-top:0;border-top:none}
+.pdel{width:100%;margin-top:10px;padding:6px;background:rgba(248,113,113,.1);border:1px solid var(--red);color:var(--red);border-radius:4px;font-size:10px;font-weight:700;cursor:pointer;text-transform:uppercase;transition:.2s}
+.pdel:hover{background:rgba(248,113,113,.22)}
+.ccrow{display:flex;align-items:center;gap:6px}
+.ccsw{width:26px;height:26px;border-radius:4px;border:1px solid var(--bd);cursor:pointer;flex-shrink:0;padding:0}
+.zrow{display:flex;align-items:center;justify-content:space-between;padding:4px 8px;background:var(--sf2);border-radius:4px;font-size:10px;color:var(--mut);margin-bottom:8px}
+.zbtn{background:none;border:1px solid var(--bd);color:var(--txt);padding:2px 7px;border-radius:3px;font-size:10px;cursor:pointer}
+.zbtn:hover{background:var(--bd)}
+/* TOOLBAR */
+#tb{display:flex;align-items:center;flex-wrap:wrap;gap:4px;padding:6px 10px;background:var(--sf);border-top:1px solid var(--bd);flex-shrink:0}
+.btn{padding:4px 10px;border-radius:5px;font-size:10px;font-weight:700;cursor:pointer;border:1px solid var(--bd);background:var(--sf2);color:var(--txt);display:flex;align-items:center;gap:4px;transition:.2s;text-transform:uppercase;letter-spacing:.04em;white-space:nowrap}
 .btn:hover{background:var(--bd)}.btn.prim{background:var(--acc);color:#000;border-color:var(--acc)}.btn.prim:hover{background:#d97706}
 .btn.ok{background:rgba(63,185,80,.15);color:var(--grn);border-color:var(--grn)}.btn.ok:hover{background:rgba(63,185,80,.25)}
 .btn.dng{background:rgba(248,113,113,.12);color:var(--red);border-color:var(--red)}.btn.dng:hover{background:rgba(248,113,113,.22)}
 .btn.und{background:rgba(167,139,250,.1);color:var(--pur);border-color:var(--pur)}.btn.und:hover{background:rgba(167,139,250,.2)}
-.sep{width:1px;height:20px;background:var(--bd)}
+.sep{width:1px;height:20px;background:var(--bd);flex-shrink:0}
+/* OVERLAYS */
 #lov{position:fixed;inset:0;background:rgba(0,0,0,.82);display:none;align-items:center;justify-content:center;z-index:999;flex-direction:column;gap:14px}
 #lov.show{display:flex}
 .spin{width:34px;height:34px;border:3px solid var(--bd);border-top-color:var(--acc);border-radius:50%;animation:rot .7s linear infinite}
 @keyframes rot{to{transform:rotate(360deg)}}
-.lmsg{color:var(--txt);font-family:var(--m);font-size:12px;text-align:center;max-width:280px;line-height:1.6}
-#toast{position:fixed;bottom:50px;left:50%;transform:translateX(-50%);background:var(--sf2);border:1px solid var(--bd);color:var(--txt);padding:6px 16px;border-radius:7px;font-size:11px;font-family:var(--m);opacity:0;transition:opacity .3s;pointer-events:none;z-index:300;white-space:nowrap}
+.lmsg{color:var(--txt);font-family:var(--m);font-size:12px;text-align:center;max-width:300px;line-height:1.7}
+#toast{position:fixed;bottom:50px;left:50%;transform:translateX(-50%);background:var(--sf2);border:1px solid var(--bd);color:var(--txt);padding:6px 18px;border-radius:7px;font-size:11px;font-family:var(--m);opacity:0;transition:opacity .3s;pointer-events:none;z-index:300;white-space:nowrap}
 #toast.show{opacity:1}
 #modal{position:fixed;inset:0;background:rgba(0,0,0,.75);display:none;align-items:center;justify-content:center;z-index:998}
 #modal.show{display:flex}
 .mbox{background:var(--sf2);border:1px solid var(--bd);border-radius:10px;padding:20px 22px;width:300px;text-align:center}
 .mbox h3{font-size:14px;margin-bottom:8px}.mbox p{font-size:12px;color:var(--mut);margin-bottom:16px}
 .mbtns{display:flex;gap:8px;justify-content:center}
-.ccrow{display:flex;align-items:center;gap:6px}
-.ccsw{width:24px;height:24px;border-radius:4px;border:1px solid var(--bd);cursor:pointer;flex-shrink:0;padding:0}
-.psh{font-size:9px;color:var(--acc);font-weight:700;text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px;margin-top:8px}
-.pdel{width:100%;margin-top:8px;padding:5px;background:rgba(248,113,113,.1);border:1px solid var(--red);color:var(--red);border-radius:4px;font-size:10px;font-weight:700;cursor:pointer;text-transform:uppercase;transition:.2s}
-.pdel:hover{background:rgba(248,113,113,.22)}
+input[type=checkbox]{accent-color:var(--acc);width:13px;height:13px;cursor:pointer}
+/* API KEY MODAL */
+#keymodal{position:fixed;inset:0;background:rgba(0,0,0,.88);display:flex;align-items:center;justify-content:center;z-index:1000}
+#keymodal.hide{display:none}
+.keybox{background:var(--sf2);border:1px solid var(--bd);border-radius:12px;padding:28px 26px;width:400px;max-width:94vw}
+.keybox h2{font-size:16px;font-weight:700;margin-bottom:6px;color:var(--txt)}
+.keybox p{font-size:12px;color:var(--mut);line-height:1.6;margin-bottom:16px}
+.keybox a{color:var(--blu)}
+.keyinp{width:100%;padding:9px 12px;background:var(--bg);border:1px solid var(--bd);border-radius:6px;color:var(--txt);font-size:13px;font-family:var(--m);outline:none;margin-bottom:12px;letter-spacing:.04em}
+.keyinp:focus{border-color:var(--acc)}
+.keybts{display:flex;gap:8px;justify-content:flex-end}
+.keybts button{padding:6px 18px;border-radius:6px;font-size:12px;font-weight:700;cursor:pointer;border:1px solid var(--bd);background:var(--sf2);color:var(--txt);transition:.2s}
+.keybts .save{background:var(--acc);color:#000;border-color:var(--acc)}
+.keybts .save:hover{background:#d97706}
+.keystat{display:flex;align-items:center;gap:6px;font-size:10px;font-family:var(--m);cursor:pointer;padding:3px 8px;border-radius:5px;border:1px solid var(--bd);background:var(--sf2);white-space:nowrap;margin-left:auto}
+.keystat.ok{border-color:rgba(63,185,80,.4);color:var(--grn)}.keystat.bad{border-color:rgba(248,113,113,.4);color:var(--red)}
+.key-dot{width:7px;height:7px;border-radius:50%;background:currentColor;flex-shrink:0}
+
 </style>
 </head>
 <body>
-
 <div id="hdr">
   <div class="logo">⬛</div>
   <div><div class="ht">BlockDiagram Studio</div><div class="hs">VPX · VME · Embedded Systems</div></div>
+  <button class="keystat bad" id="keystat" onclick="openKeyModal()" title="Click to set your Anthropic API key">
+    <span class="key-dot"></span><span id="keystat-txt">No API Key</span>
+  </button>
 </div>
-
 <div id="main">
+
+<!-- ═══ PALETTE ═══ -->
 <div id="pal">
   <input type="file" id="fileInput" accept="image/*" style="display:none">
-  <button class="bai" id="aibtn" onclick="document.getElementById('fileInput').click()" style="width:100%;margin-bottom:8px;padding:7px 6px;font-size:11px;justify-content:center;border-radius:6px">🔍 Upload &amp; Analyze Diagram</button>
+  <button class="bai" id="aibtn" onclick="document.getElementById('fileInput').click()">🔍 Upload &amp; Analyze</button>
+
   <div class="ps">Tools</div>
   <div class="pi" id="tl-sel"  onclick="setTool('sel')">↖ Select</div>
   <div class="pi" id="tl-ln"   onclick="setTool('ln')">╱ Free Line</div>
@@ -88,7 +116,7 @@ body{background:var(--bg);color:var(--txt);font-family:var(--f);height:100vh;ove
 
   <div class="ps">Shapes</div>
   <div class="pi" onclick="addShape('rect')">▭ Rectangle</div>
-  <div class="pi" onclick="addShape('oval')">⬭ Oval / Circle</div>
+  <div class="pi" onclick="addShape('oval')">⬭ Oval</div>
   <div class="pi" onclick="addShape('diamond')">◇ Diamond</div>
   <div class="pi" onclick="addShape('arrowR')">→ Arrow Right</div>
   <div class="pi" onclick="addShape('arrowL')">← Arrow Left</div>
@@ -111,84 +139,113 @@ body{background:var(--bg);color:var(--txt);font-family:var(--f);height:100vh;ove
   <div class="pi" onclick="addMod('Custom','orange')"><div class="sw" style="background:#FF6600"></div>Custom</div>
 
   <div class="ps">Backplane</div>
-  <div class="pi" onclick="addBus('3U VPX BACKPLANE','1F7C00',3,false)"><div class="sw" style="background:#1F7C00"></div>3U VPX</div>
-  <div class="pi" onclick="addBus('6U VME BACKPLANE','1F7C00',3,false)"><div class="sw" style="background:#1F7C00"></div>6U VME</div>
+  <div class="pi" onclick="addBus('3U VPX BACKPLANE','1F7C00',3,true,true)"><div class="sw" style="background:#1F7C00"></div>3U VPX</div>
+  <div class="pi" onclick="addBus('6U VME BACKPLANE','1F7C00',3,true,true)"><div class="sw" style="background:#1F7C00"></div>6U VME</div>
 
   <div class="ps">Connections</div>
-  <div class="pi" onclick="addBus('PCIe Gen 4','7030A0',2,true)"><div class="sw" style="background:#7030A0"></div>PCIe Gen 4</div>
-  <div class="pi" onclick="addBus('PCIe Gen 3','7030A0',2,true)"><div class="sw" style="background:#7030A0"></div>PCIe Gen 3</div>
-  <div class="pi" onclick="addBus('SATA 300 Over Backplane','FFC000',2,true)"><div class="sw" style="background:#FFC000"></div>SATA 300</div>
-  <div class="pi" onclick="addBus('1G Ethernet Over Backplane','FF8C00',2,true)"><div class="sw" style="background:#FF8C00"></div>1G Ethernet</div>
-  <div class="pi" onclick="addBus('Power','FF0000',2,true)"><div class="sw" style="background:#FF0000"></div>Power</div>
-  <div class="pi" onclick="addBus('Custom Bus','595959',2,true)"><div class="sw" style="background:#595959"></div>Custom Bus</div>
+  <div class="pi" onclick="addBus('PCIe Gen 4','7030A0',2,false,true)"><div class="sw" style="background:#7030A0"></div>PCIe Gen 4</div>
+  <div class="pi" onclick="addBus('PCIe Gen 3','7030A0',2,false,true)"><div class="sw" style="background:#7030A0"></div>PCIe Gen 3</div>
+  <div class="pi" onclick="addBus('SATA 300 Over Backplane','FFC000',2,false,true)"><div class="sw" style="background:#FFC000"></div>SATA 300</div>
+  <div class="pi" onclick="addBus('1G Ethernet Over Backplane','FF8C00',2,false,true)"><div class="sw" style="background:#FF8C00"></div>1G Ethernet</div>
+  <div class="pi" onclick="addBus('Power','FF0000',2,false,true)"><div class="sw" style="background:#FF0000"></div>Power</div>
+  <div class="pi" onclick="addBus('Custom Bus','595959',2,false,true)"><div class="sw" style="background:#595959"></div>Custom Bus</div>
 
   <div class="ps">Text Presets</div>
-  <div class="pi" onclick="addTxtPreset('title')">📝 Slide Title</div>
-  <div class="pi" onclick="addTxtPreset('io')">→ I/O Label</div>
-  <div class="pi" onclick="addTxtPreset('note')">💬 Annotation</div>
-  <div class="pi" onclick="addTxtPreset('volt')">⚡ Voltage Label</div>
+  <div class="pi" onclick="addTxt('title')">📋 Diagram Title</div>
+  <div class="pi" onclick="addTxt('io')">← I/O Label</div>
+  <div class="pi" onclick="addTxt('note')">💬 Note / Annotation</div>
+  <div class="pi" onclick="addTxt('voltage')">⚡ 48V DC Label</div>
+  <div class="pi" onclick="addTxt('onoff')">⏻ ON/OFF Control</div>
+  <div class="pi" onclick="addTxt('rev')">📅 Rev / Date Box</div>
+  <div class="pi" onclick="addTxt('sys')">🖥 System Label</div>
+  <div class="pi" onclick="addTxt('warn')">⚠ Warning Label</div>
 </div>
 
+<!-- ═══ CANVAS ═══ -->
 <div id="ca"><div id="cw">
-  <svg id="cv" xmlns="http://www.w3.org/2000/svg">
+  <svg id="cv" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
     <defs id="cvd"></defs>
     <rect id="cv-bg" width="1280" height="720" fill="white"/>
-    <g id="dl"></g>
-    <g id="el"></g>
-    <g id="sl"></g>
-    <g id="gl"></g>
+    <g id="dl"></g><!-- drop lines layer -->
+    <g id="el"></g><!-- elements layer -->
+    <g id="sl"></g><!-- selection layer -->
+    <g id="gl"></g><!-- draw-preview layer -->
   </svg>
 </div></div>
 
+<!-- ═══ PROPERTIES ═══ -->
 <div id="pp">
-  <div class="ph">Properties</div>
-  <div id="pc"><div class="nosel"><div style="font-size:22px">↖</div><div>Select an element<br>to edit properties</div></div></div>
+  <div class="ph">Properties <span class="ph-badge" id="ph-badge"></span></div>
+  <div id="pc"><div class="nosel"><div style="font-size:28px">↖</div><div>Click any element<br>to edit its properties</div></div></div>
 </div>
 </div>
 
+<!-- TOOLBAR -->
 <div id="tb">
   <button class="btn und" onclick="undo()">↩ Undo</button>
   <button class="btn und" onclick="redo()">↪ Redo</button>
   <div class="sep"></div>
-  <button class="btn" onclick="bringFront()" title="Bring to very front">⬆ Front</button>
-  <button class="btn" onclick="bringFwd()"  title="Move forward one step">↑ Fwd</button>
-  <button class="btn" onclick="sendBck()"   title="Move back one step">↓ Back</button>
-  <button class="btn" onclick="sendBack()"  title="Send to very back">⬇ Back-All</button>
-  <button class="btn" onclick="dupSel()">⧉ Dup</button>
+  <button class="btn" onclick="bringFront()" title="Bring to very front">⬆⬆ Top</button>
+  <button class="btn" onclick="bringFwd()"  title="Move forward one layer">↑ Fwd</button>
+  <button class="btn" onclick="sendBck()"   title="Move back one layer">↓ Bck</button>
+  <button class="btn" onclick="sendBack()"  title="Send to very back">⬇⬇ Bot</button>
+  <button class="btn" onclick="dupSel()">⧉ Duplicate</button>
   <div class="sep"></div>
   <button class="btn dng" onclick="delSel()">✕ Delete</button>
   <button class="btn dng" onclick="triggerClear()">🗑 Clear All</button>
   <div class="sep"></div>
-  <button class="btn prim" onclick="dlPPT()">⬇ PPT</button>
-  <button class="btn ok"   onclick="dlPNG()">🖼 PNG</button>
+  <button class="btn prim" onclick="dlPPT()">⬇ Download PPT</button>
+  <button class="btn ok"   onclick="dlPNG()">🖼 Download PNG</button>
+</div>
+
+<!-- API KEY SETUP MODAL -->
+<div id="keymodal">
+  <div class="keybox">
+    <h2>🔑 Set Your Anthropic API Key</h2>
+    <p>
+      This app calls the Claude AI API to analyze your block diagram images.<br><br>
+      <strong style="color:var(--grn)">✓ You only need to enter this once</strong> — it's saved permanently in your browser and never shared anywhere except directly with Anthropic's servers.<br><br>
+      <strong>How to get your free API key:</strong><br>
+      1. Go to <a href="https://console.anthropic.com/account/keys" target="_blank" style="color:var(--acc)">console.anthropic.com/account/keys</a><br>
+      2. Sign up / log in (free account)<br>
+      3. Click <strong>"Create Key"</strong>, copy it<br>
+      4. Add $5 credits in Billing (pay-as-you-go, very low cost)<br>
+      5. Paste the key below and click Save
+    </p>
+    <input class="keyinp" type="password" id="keyinput" placeholder="sk-ant-api03-…" autocomplete="off" spellcheck="false">
+    <div style="font-size:10px;color:var(--mut);margin-bottom:16px;font-family:var(--m);line-height:1.7">
+      Key starts with <code style="color:var(--acc)">sk-ant-</code> &nbsp;·&nbsp; Saved in browser localStorage &nbsp;·&nbsp; Never sent anywhere except api.anthropic.com
+    </div>
+    <div class="keybts">
+      <button onclick="skipKey()" style="color:var(--mut)">Skip (manual drawing only)</button>
+      <button class="save" onclick="saveKey()">💾 Save Key &amp; Continue</button>
+    </div>
+  </div>
 </div>
 
 <div id="lov"><div class="spin"></div><div class="lmsg" id="lmsg">Processing…</div></div>
 <div id="toast"></div>
 <div id="modal">
-  <div class="mbox">
-    <h3>Clear All Elements?</h3>
-    <p>All modules, connections and shapes will be removed. Cannot be undone after confirm.</p>
-    <div class="mbtns">
-      <button class="btn" onclick="closeModal()">Cancel</button>
-      <button class="btn dng" onclick="confirmClear()">Clear All</button>
-    </div>
-  </div>
+  <div class="mbox"><h3>Clear Everything?</h3>
+  <p>All modules, connections and shapes will be removed. This cannot be undone.</p>
+  <div class="mbtns"><button class="btn" onclick="closeModal()">Cancel</button>
+  <button class="btn dng" onclick="confirmClear()">Clear All</button></div></div>
 </div>
 
+<!-- PPTXGenJS — try 3 CDNs -->
 <script>
 (function(){
-  var u=['https://cdn.jsdelivr.net/npm/pptxgenjs@3.12.0/dist/pptxgen.bundle.js',
-         'https://cdnjs.cloudflare.com/ajax/libs/pptxgenjs/3.12.0/pptxgen.bundle.js',
-         'https://unpkg.com/pptxgenjs@3.12.0/dist/pptxgen.bundle.js'];
-  var i=0;
-  function go(){if(i>=u.length)return;var s=document.createElement('script');s.src=u[i++];s.onerror=go;document.head.appendChild(s);}
-  go();
+  var urls=['https://cdn.jsdelivr.net/npm/pptxgenjs@3.12.0/dist/pptxgen.bundle.js',
+            'https://cdnjs.cloudflare.com/ajax/libs/pptxgenjs/3.12.0/pptxgen.bundle.js',
+            'https://unpkg.com/pptxgenjs@3.12.0/dist/pptxgen.bundle.js'];
+  var i=0;function go(){if(i>=urls.length)return;var s=document.createElement('script');s.src=urls[i++];s.onerror=go;document.head.appendChild(s);}go();
 })();
 </script>
 
 <script>
-// ── CONSTANTS ──────────────────────────────────────────────────────────────
+// ═══════════════════════════════════════════════════════
+// CONSTANTS
+// ═══════════════════════════════════════════════════════
 const SVW=1280,SVH=720,PPW=13.33,PPH=7.5,NS='http://www.w3.org/2000/svg';
 const hx=c=>(c||'000000').replace('#','');
 const CM={
@@ -202,47 +259,130 @@ const CM={
   orange:{fill:'FF6600',bdr:'CC4400',sub:'E05500',txt:'FFFFFF'},
 };
 
-// ── STATE ──────────────────────────────────────────────────────────────────
+// ═══════════════════════════════════════════════════════
+// API KEY MANAGEMENT
+// Anthropic API requires x-api-key + anthropic-dangerous-direct-browser-access
+// when called directly from a browser (outside Claude.ai where it's auto-injected)
+// ═══════════════════════════════════════════════════════
+const LS_KEY='bd_studio_apikey';
+
+function getApiKey(){return localStorage.getItem(LS_KEY)||'';}
+
+function saveKey(){
+  const v=document.getElementById('keyinput').value.trim();
+  if(!v){toast('Please paste your API key from console.anthropic.com/account/keys',1);return;}
+  if(!v.startsWith('sk-ant-')){toast('Key should start with sk-ant- — get it from console.anthropic.com/account/keys',1);return;}
+  localStorage.setItem(LS_KEY,v);
+  document.getElementById('keymodal').classList.add('hide');
+  updateKeyStatus();
+  toast('✓ API key saved — ready to analyze diagrams!');
+}
+
+function skipKey(){
+  document.getElementById('keymodal').classList.add('hide');
+  toast('Skipped — AI analysis unavailable without key');
+}
+
+function openKeyModal(){
+  const existing=getApiKey();
+  if(existing) document.getElementById('keyinput').value=existing;
+  document.getElementById('keymodal').classList.remove('hide');
+  setTimeout(()=>document.getElementById('keyinput').focus(),100);
+}
+
+function updateKeyStatus(){
+  const key=getApiKey();
+  const el=document.getElementById('keystat');
+  const txt=document.getElementById('keystat-txt');
+  if(key){
+    el.className='keystat ok';
+    txt.textContent='API Key ✓';
+    el.title='API key set — click to change';
+  }else{
+    el.className='keystat bad';
+    txt.textContent='No API Key';
+    el.title='Click to set your Anthropic API key';
+  }
+}
+
+// Allow Enter key to save
+document.addEventListener('keydown',e=>{
+  if(e.key==='Enter'&&!document.getElementById('keymodal').classList.contains('hide'))saveKey();
+});
+
+// On load: if key exists, hide modal; otherwise show it
+window.addEventListener('DOMContentLoaded',()=>{
+  updateKeyStatus();
+  if(getApiKey()){
+    document.getElementById('keymodal').classList.add('hide');
+  }
+  // else modal stays visible (default)
+});
 let elems=[],selId=null,tool='sel',drawSt=null,dragSt=null,resSt=null,idc=1;
 let hist=[],histIdx=-1;
 const uid=()=>'e'+(idc++);
 const cln=o=>JSON.parse(JSON.stringify(o));
 function saveH(){hist=hist.slice(0,histIdx+1);hist.push(cln(elems));if(hist.length>100)hist.shift();histIdx=hist.length-1;}
-function undo(){if(histIdx<=0)return;histIdx--;elems=cln(hist[histIdx]);selId=null;ra();up();toast('↩ Undo');}
-function redo(){if(histIdx>=hist.length-1)return;histIdx++;elems=cln(hist[histIdx]);selId=null;ra();up();toast('↪ Redo');}
+function undo(){if(histIdx<=0)return;histIdx--;elems=cln(hist[histIdx]);selId=null;ra();up();}
+function redo(){if(histIdx>=hist.length-1)return;histIdx++;elems=cln(hist[histIdx]);selId=null;ra();up();}
 
-// ── SVG REFS ───────────────────────────────────────────────────────────────
+// ═══════════════════════════════════════════════════════
+// SVG REFS & RESIZE
+// ═══════════════════════════════════════════════════════
 const svgEl=document.getElementById('cv');
 const elL=document.getElementById('el');
 const drL=document.getElementById('dl');
 const slL=document.getElementById('sl');
 const gwL=document.getElementById('gl');
 
-function sz(){const a=document.getElementById('ca');const sc=Math.min((a.clientWidth-24)/SVW,(a.clientHeight-24)/SVH,1);svgEl.style.width=Math.floor(SVW*sc)+'px';svgEl.style.height=Math.floor(SVH*sc)+'px';svgEl.setAttribute('viewBox',`0 0 ${SVW} ${SVH}`);}
+function sz(){
+  const a=document.getElementById('ca');
+  const sc=Math.min((a.clientWidth-24)/SVW,(a.clientHeight-24)/SVH,1);
+  svgEl.style.width=Math.floor(SVW*sc)+'px';svgEl.style.height=Math.floor(SVH*sc)+'px';
+  svgEl.setAttribute('viewBox',`0 0 ${SVW} ${SVH}`);
+}
 window.addEventListener('resize',sz);sz();
 
 function pt(e){const r=svgEl.getBoundingClientRect();return{x:(e.clientX-r.left)*SVW/r.width,y:(e.clientY-r.top)*SVH/r.height};}
-
 function mk(tag,at){const e=document.createElementNS(NS,tag);for(const[k,v]of Object.entries(at))e.setAttribute(k,v);return e;}
 function mkt(t,at){const e=mk('text',at);e.textContent=t;return e;}
 
-// ── RENDER MODULE ──────────────────────────────────────────────────────────
+// ═══════════════════════════════════════════════════════
+// MARKER FACTORY — unified, orient-based
+// ═══════════════════════════════════════════════════════
+function mkr(id,col,orient){
+  const defs=document.getElementById('cvd');
+  let m=document.getElementById('mk_'+id);
+  if(!m){
+    m=mk('marker',{id:'mk_'+id,markerWidth:'10',markerHeight:'8',refX:'8',refY:'4',orient:orient||'auto'});
+    const p=document.createElementNS(NS,'polygon');p.setAttribute('points','0 0,10 4,0 8');m.appendChild(p);defs.appendChild(m);
+  }
+  m.querySelector('polygon').setAttribute('fill',col||'#000000');
+  m.setAttribute('orient',orient||'auto');
+  return `url(#mk_${id})`;
+}
+const mkE=(id,c)=>mkr(id,c,'auto');                  // tip follows line direction
+const mkS=(id,c)=>mkr(id,c,'auto-start-reverse');     // tip points opposite (← on rightward line)
+
+// ═══════════════════════════════════════════════════════
+// RENDER: MODULE
+// ═══════════════════════════════════════════════════════
 function rMod(el){
-  const{id,x,y,w,h,label,colorType,subComponents,slot}=el;
+  const{id,x,y,w,h,label,colorType,subComponents,slot,ioLabels}=el;
   const c=CM[colorType]||CM.gray;
   const g=mk('g',{id:'e_'+id,'data-id':id,class:'elem',cursor:'move',transform:`translate(${x},${y})`});
-  // black outer border
+  // Black outer border
   g.appendChild(mk('rect',{x:-2,y:-2,width:w+4,height:h+4,rx:5,fill:'#000000',stroke:'none'}));
-  // colored fill
+  // Colored fill
   g.appendChild(mk('rect',{width:w,height:h,rx:4,fill:'#'+c.fill,stroke:'#'+c.bdr,'stroke-width':1.5}));
-  // header clip
-  const cid='c_'+id;
+  // Header clip
+  const cid='cl_'+id;
   const cp=mk('clipPath',{id:cid});cp.appendChild(mk('rect',{width:w,height:35}));g.appendChild(cp);
   g.appendChild(mk('rect',{width:w,height:h,rx:4,fill:'#'+c.sub,'clip-path':`url(#${cid})`}));
-  // label
+  // Title label
   const fs=Math.max(8,Math.min(13,Math.floor(10.5*w/115)));
-  g.appendChild(mkt(label,{x:w/2,y:22,'text-anchor':'middle',fill:'#'+c.txt,'font-size':fs,'font-weight':'bold','font-family':'Arial Black'}));
-  // subs
+  g.appendChild(mkt(label||'Module',{x:w/2,y:22,'text-anchor':'middle',fill:'#'+c.txt,'font-size':fs,'font-weight':'bold','font-family':'Arial Black'}));
+  // Sub-components
   const subs=subComponents||[];
   const maxS=Math.floor((h-44-30)/54);
   subs.slice(0,maxS).forEach((s,i)=>{
@@ -258,158 +398,117 @@ function rMod(el){
       g.appendChild(mkt(ws.slice(m2).join(' '),{x:w/2,y:sy+sh/2+11,'text-anchor':'middle',fill:'#'+c.txt,'font-size':sfs,'font-weight':'bold','font-family':'Calibri'}));
     }
   });
-  // slot badge
-  if(slot!=null&&String(slot).trim()){
+  // Slot badge at bottom
+  if(slot!=null&&String(slot).trim()!==''){
     const sy2=h-27;
     g.appendChild(mk('rect',{x:7,y:sy2,width:w-14,height:22,rx:3,fill:'#'+c.sub,stroke:'#'+c.bdr,'stroke-width':1}));
     g.appendChild(mkt('Slot '+slot,{x:w/2,y:sy2+15,'text-anchor':'middle',fill:'#'+c.txt,'font-size':9,'font-weight':'bold','font-family':'Calibri'}));
   }
-  // ── I/O labels: [MODULE] ──▸ short line ← arrowhead ← label text ──
-  // Layout: line exits module left edge → short horizontal stub → arrowhead at far-left tip → label text
-  const ios=el.ioLabels||[];
-  const STUB=55;  // line length in px from module edge
-  const GAP=22;   // vertical gap between each label
-  // Left-pointing arrowhead: line drawn from x=0 → x=-STUB (leftward)
-  // marker-end at x=-STUB with orient='auto' on a leftward line → tip points LEFT ←
-  const ioMk=mkEnd('io_'+id,'#000000');
-
+  // I/O labels: stub exits left wall → arrowhead → label text
+  const ios=ioLabels||[];
+  const STUB=55,IGAP=22;
+  const ioMk=mkE('io_'+id,'#000000');
   ios.slice(0,9).forEach((io,ii)=>{
-    const ly=48+ii*GAP;
-    if(ly>h-32) return;
-    // Short stub line exits module's left wall (x=0) going LEFT to x=-STUB
-    g.appendChild(mk('line',{
-      x1:0, y1:ly, x2:-STUB, y2:ly,
-      stroke:'#000000','stroke-width':1,'marker-end':ioMk
-    }));
-    // Label text starts just past the arrowhead tip (x=-STUB-6), extends further left
-    // text-anchor='end' so text right-edge is at x=-STUB-6 → text goes further left
-    g.appendChild(mkt(io,{
-      x:-STUB-8, y:ly+4,
-      'text-anchor':'end',
-      fill:'#000000','font-size':9,'font-family':'Calibri','font-weight':'bold'
-    }));
+    const ly=48+ii*IGAP;
+    if(ly>h-32)return;
+    g.appendChild(mk('line',{x1:0,y1:ly,x2:-STUB,y2:ly,stroke:'#000000','stroke-width':1,'marker-end':ioMk}));
+    g.appendChild(mkt(io,{x:-STUB-6,y:ly+4,'text-anchor':'end',fill:'#000000','font-size':9,'font-family':'Calibri','font-weight':'bold'}));
   });
-
   return g;
 }
+
+// ═══════════════════════════════════════════════════════
+// RENDER: TEXT BOX
+// ═══════════════════════════════════════════════════════
 function rTxt(el){
   const{id,x,y,w,h,text,fontSize,bold,italic,color,bgColor,align}=el;
   const g=mk('g',{id:'e_'+id,'data-id':id,class:'elem',cursor:'move',transform:`translate(${x},${y})`});
-  if(bgColor&&bgColor!=='none')g.appendChild(mk('rect',{width:w,height:h,fill:bgColor,rx:3}));
+  if(bgColor&&bgColor!=='none') g.appendChild(mk('rect',{width:w,height:h,fill:bgColor,rx:3}));
   g.appendChild(mk('rect',{width:w,height:h,fill:'rgba(0,0,0,0)',stroke:'#aaa','stroke-width':.5,'stroke-dasharray':'4,3'}));
   const fa=align||'left',tx=fa==='center'?w/2:fa==='right'?w-4:4,ta=fa==='center'?'middle':fa==='right'?'end':'start';
-  const fw=bold?'bold':'normal',fs2=italic?'italic':'normal';
-  const te=mkt(text||'Text',{x:tx,y:h/2+(fontSize||13)/2-2,'text-anchor':ta,'font-size':fontSize||13,'font-weight':fw,'font-style':fs2,'font-family':'Arial Black',fill:color||'#000000'});
-  g.appendChild(te);return g;
+  g.appendChild(mkt(text||'Text',{x:tx,y:h/2+(fontSize||13)/2-2,'text-anchor':ta,'font-size':fontSize||13,'font-weight':bold?'bold':'normal','font-style':italic?'italic':'normal','font-family':'Arial Black',fill:color||'#000000'}));
+  return g;
 }
 
-// ── RENDER SHAPE ───────────────────────────────────────────────────────────
+// ═══════════════════════════════════════════════════════
+// RENDER: SHAPE
+// ═══════════════════════════════════════════════════════
 function rShp(el){
   const{id,x,y,w,h,shapeType,fillColor,borderColor,borderW,opacity,label}=el;
   const g=mk('g',{id:'e_'+id,'data-id':id,class:'elem',cursor:'move',transform:`translate(${x},${y})`});
   const fc=fillColor||'#CCE4F7',bc=borderColor||'#000000',bw=borderW||1.5,op=opacity!=null?opacity:1;
-  let shEl;
+  let sh;
   switch(shapeType){
-    case'oval':shEl=mk('ellipse',{cx:w/2,cy:h/2,rx:w/2-bw/2,ry:h/2-bw/2,fill:fc,stroke:bc,'stroke-width':bw,opacity:op});break;
-    case'diamond':shEl=mk('polygon',{points:`${w/2},0 ${w},${h/2} ${w/2},${h} 0,${h/2}`,fill:fc,stroke:bc,'stroke-width':bw,opacity:op});break;
-    case'arrowR':{const th=h*.38,ty=(h-th)/2,hw=w*.32;shEl=mk('polygon',{points:`0,${ty} ${w-hw},${ty} ${w-hw},0 ${w},${h/2} ${w-hw},${h} ${w-hw},${ty+th} 0,${ty+th}`,fill:fc,stroke:bc,'stroke-width':bw,opacity:op});break;}
-    case'arrowL':{const th=h*.38,ty=(h-th)/2,hw=w*.32;shEl=mk('polygon',{points:`${w},${ty} ${hw},${ty} ${hw},0 0,${h/2} ${hw},${h} ${hw},${ty+th} ${w},${ty+th}`,fill:fc,stroke:bc,'stroke-width':bw,opacity:op});break;}
-    case'arrowD':{const tw=w*.38,tx2=(w-tw)/2,hh2=h*.32;shEl=mk('polygon',{points:`${tx2},0 ${tx2+tw},0 ${tx2+tw},${h-hh2} ${w},${h-hh2} ${w/2},${h} 0,${h-hh2} ${tx2},${h-hh2}`,fill:fc,stroke:bc,'stroke-width':bw,opacity:op});break;}
-    case'hex':{const a=w/2;shEl=mk('polygon',{points:`${a*.5},0 ${a*1.5},0 ${w},${h/2} ${a*1.5},${h} ${a*.5},${h} 0,${h/2}`,fill:fc,stroke:bc,'stroke-width':bw,opacity:op});break;}
-    case'para':{const sk=w*.15;shEl=mk('polygon',{points:`${sk},0 ${w},0 ${w-sk},${h} 0,${h}`,fill:fc,stroke:bc,'stroke-width':bw,opacity:op});break;}
-    default:shEl=mk('rect',{width:w,height:h,rx:4,fill:fc,stroke:bc,'stroke-width':bw,opacity:op});
+    case'oval':sh=mk('ellipse',{cx:w/2,cy:h/2,rx:w/2-bw/2,ry:h/2-bw/2,fill:fc,stroke:bc,'stroke-width':bw,opacity:op});break;
+    case'diamond':sh=mk('polygon',{points:`${w/2},0 ${w},${h/2} ${w/2},${h} 0,${h/2}`,fill:fc,stroke:bc,'stroke-width':bw,opacity:op});break;
+    case'arrowR':{const th=h*.38,ty=(h-th)/2,hw=w*.32;sh=mk('polygon',{points:`0,${ty} ${w-hw},${ty} ${w-hw},0 ${w},${h/2} ${w-hw},${h} ${w-hw},${ty+th} 0,${ty+th}`,fill:fc,stroke:bc,'stroke-width':bw,opacity:op});break;}
+    case'arrowL':{const th=h*.38,ty=(h-th)/2,hw=w*.32;sh=mk('polygon',{points:`${w},${ty} ${hw},${ty} ${hw},0 0,${h/2} ${hw},${h} ${hw},${ty+th} ${w},${ty+th}`,fill:fc,stroke:bc,'stroke-width':bw,opacity:op});break;}
+    case'arrowD':{const tw=w*.38,tx=(w-tw)/2,hh=h*.32;sh=mk('polygon',{points:`${tx},0 ${tx+tw},0 ${tx+tw},${h-hh} ${w},${h-hh} ${w/2},${h} 0,${h-hh} ${tx},${h-hh}`,fill:fc,stroke:bc,'stroke-width':bw,opacity:op});break;}
+    case'hex':{const a=w/2;sh=mk('polygon',{points:`${a*.5},0 ${a*1.5},0 ${w},${h/2} ${a*1.5},${h} ${a*.5},${h} 0,${h/2}`,fill:fc,stroke:bc,'stroke-width':bw,opacity:op});break;}
+    case'para':{const sk=w*.15;sh=mk('polygon',{points:`${sk},0 ${w},0 ${w-sk},${h} 0,${h}`,fill:fc,stroke:bc,'stroke-width':bw,opacity:op});break;}
+    default:sh=mk('rect',{width:w,height:h,rx:4,fill:fc,stroke:bc,'stroke-width':bw,opacity:op});
   }
-  g.appendChild(shEl);
-  if(label)g.appendChild(mkt(label,{x:w/2,y:h/2+5,'text-anchor':'middle',fill:'#000000','font-size':11,'font-weight':'bold','font-family':'Calibri'}));
+  g.appendChild(sh);
+  if(label) g.appendChild(mkt(label,{x:w/2,y:h/2+5,'text-anchor':'middle',fill:'#000000','font-size':11,'font-weight':'bold','font-family':'Calibri'}));
   return g;
 }
 
-// ── RENDER LINE ────────────────────────────────────────────────────────────
+// ═══════════════════════════════════════════════════════
+// RENDER: LINE / ARROW
+// ═══════════════════════════════════════════════════════
 function rLn(el){
   const{id,x1,y1,x2,y2,label,color,lw,dashed,arrowEnd,arrowStart}=el;
   const g=mk('g',{id:'e_'+id,'data-id':id,class:'elem'});
-  g.appendChild(mk('line',{x1,y1,x2,y2,stroke:'transparent','stroke-width':16,cursor:'pointer'}));
   const col=color||'#595959';
-  const ae=arrowEnd  ? mkEnd  ('lnE_'+id, col) : 'none';
-  const as2=arrowStart? mkStart('lnS_'+id, col) : 'none';
-  g.appendChild(mk('line',{x1,y1,x2,y2,stroke:col,'stroke-width':lw||1.5,
-    'stroke-dasharray':dashed?'8,4':'none','marker-end':ae,'marker-start':as2}));
-  if(label){const mx=(+x1+ +x2)/2,my=(+y1+ +y2)/2;
-    g.appendChild(mkt(label,{x:mx,y:my-7,'text-anchor':'middle',fill:col,'font-size':10,'font-weight':'bold','font-family':'Calibri'}));}
+  g.appendChild(mk('line',{x1,y1,x2,y2,stroke:'transparent','stroke-width':16,cursor:'pointer'}));
+  g.appendChild(mk('line',{x1,y1,x2,y2,stroke:col,'stroke-width':lw||1.5,'stroke-dasharray':dashed?'8,4':'none',
+    'marker-end':arrowEnd?mkE('lnE_'+id,col):'none','marker-start':arrowStart?mkS('lnS_'+id,col):'none'}));
+  if(label){const mx=(+x1+ +x2)/2,my=(+y1+ +y2)/2;g.appendChild(mkt(label,{x:mx,y:my-7,'text-anchor':'middle',fill:col,'font-size':10,'font-weight':'bold','font-family':'Calibri'}));}
   return g;
 }
 
-// ── MARKER FACTORY ─────────────────────────────────────────────────────────
-// Creates an SVG <marker> in #cvd. orient='auto' means tip follows line direction.
-// orient='auto-start-reverse' at marker-start makes it point OPPOSITE the line = LEFT on a →line
-function ensureMkr(id, col, orient){
-  const defs=document.getElementById('cvd');
-  let m=document.getElementById('mk_'+id);
-  if(!m){
-    m=mk('marker',{id:'mk_'+id, markerWidth:'10', markerHeight:'8',
-      refX:'8', refY:'4', orient: orient||'auto'});
-    const p=document.createElementNS(NS,'polygon');
-    p.setAttribute('points','0 0,10 4,0 8'); // right-pointing, tip at x=10
-    m.appendChild(p); defs.appendChild(m);
-  }
-  m.querySelector('polygon').setAttribute('fill',col||'#000000');
-  m.setAttribute('orient', orient||'auto');
-  return `url(#mk_${id})`;
-}
-// Shortcut wrappers
-const mkEnd  =(id,col)=>ensureMkr(id,col,'auto');             // follows line direction
-const mkStart=(id,col)=>ensureMkr(id,col,'auto-start-reverse'); // reverses = points LEFT on →line
-
-// ── RENDER BUS ─────────────────────────────────────────────────────────────
+// ═══════════════════════════════════════════════════════
+// RENDER: BUS LINE
+// ═══════════════════════════════════════════════════════
 function rBus(el){
-  const{id,x,y,w,label,color,lw,arrowStart,isBackplane}=el;
+  const{id,x,y,w,label,color,lw,isBackplane}=el;
   const col=color||'#1F7C00';
   const g=mk('g',{id:'e_'+id,'data-id':id,class:'elem',cursor:'move',transform:`translate(${x},${y})`});
   g.appendChild(mk('line',{x1:0,y1:0,x2:w,y2:0,stroke:'transparent','stroke-width':18}));
-
-  // Backplane: left-pointing arrow at LEFT end (auto-start-reverse on →line = ←)
-  // Other buses: no horizontal arrowhead (drops carry the arrows)
-  const ms = (isBackplane||arrowStart) ? mkStart('bs_'+id, col) : 'none';
+  // Backplane: left-pointing arrow via auto-start-reverse. Connections: no horizontal arrow.
+  const ms=isBackplane?mkS('bp_'+id,col):'none';
   g.appendChild(mk('line',{x1:0,y1:0,x2:w,y2:0,stroke:col,'stroke-width':lw||2.5,'marker-start':ms}));
   if(label) g.appendChild(mkt(label,{x:0,y:-9,fill:col,'font-size':10,'font-weight':'bold','font-family':'Arial Black'}));
   return g;
 }
 
-// ── DROP LINES: bus → modules (UPWARD arrows from bus to each module's bottom) ──
+// ═══════════════════════════════════════════════════════
+// RENDER: DROP LINES (upward arrows from bus to each module)
+// ═══════════════════════════════════════════════════════
 function rDrops(){
   drL.innerHTML='';
   const buses=elems.filter(e=>e.type==='bus'&&e.showDrops);
   const mods=elems.filter(e=>e.type==='mod');
-  if(!buses.length||!mods.length) return;
-
+  if(!buses.length||!mods.length)return;
   buses.forEach(bus=>{
-    const by=bus.y, col=bus.color||'#595959';
-    const isPower=(bus.label||'').toLowerCase().includes('power')
-                ||(col.replace('#','').toUpperCase()==='FF0000');
-    const lw2=bus.lw||1.5;
-
+    const by=bus.y,col=bus.color||'#595959';
+    const isPower=(bus.label||'').toLowerCase().includes('power')||(col.replace('#','').toUpperCase()==='FF0000');
+    const lw2=Math.max(1,bus.lw||1.5);
     mods.forEach(mod=>{
       const cx=mod.x+mod.w/2;
       const modBot=mod.y+mod.h;
-      if(modBot>=by) return; // module must be above the bus line
-
-      // Power connects ALL modules; other buses only within their x-span
-      if(!isPower && (cx<bus.x-5||cx>bus.x+bus.w+5)) return;
-
-      // Arrow goes UPWARD: from bus (y=by) UP to module bottom (y=modBot)
-      // marker-end at modBot pointing UP (auto on upward line → tip points up)
-      const me=mkEnd('dp_'+bus.id+'_'+mod.id, col);
-      drL.appendChild(mk('line',{
-        x1:cx, y1:by,     // starts AT the bus line
-        x2:cx, y2:modBot+4, // ends just below module bottom
-        stroke:col, 'stroke-width':lw2, 'marker-end':me
-      }));
+      if(modBot>=by)return; // module must be above bus
+      if(!isPower&&(cx<bus.x-5||cx>bus.x+bus.w+5))return;
+      // Line goes from bus Y upward to just below module bottom; arrowhead points UP into module
+      const me=mkE('dp_'+bus.id+'_'+mod.id,col);
+      drL.appendChild(mk('line',{x1:cx,y1:by,x2:cx,y2:modBot+3,stroke:col,'stroke-width':lw2,'marker-end':me}));
     });
   });
 }
-const lw_def=v=>v||1.5;
 
-// ── FULL RENDER ────────────────────────────────────────────────────────────
+// ═══════════════════════════════════════════════════════
+// FULL RENDER
+// ═══════════════════════════════════════════════════════
 function ra(){
   elL.innerHTML='';
   elems.forEach(el=>{
@@ -425,7 +524,9 @@ function ra(){
   rSel();
 }
 
-// ── SELECTION HANDLES ──────────────────────────────────────────────────────
+// ═══════════════════════════════════════════════════════
+// SELECTION HANDLES
+// ═══════════════════════════════════════════════════════
 function rSel(){
   slL.innerHTML='';
   if(!selId)return;
@@ -433,7 +534,8 @@ function rSel(){
   if(el.type==='mod'||el.type==='txt'||el.type==='shp'){
     const{x,y,w,h}=el;
     slL.appendChild(mk('rect',{x:x-3,y:y-3,width:w+6,height:h+6,fill:'none',stroke:'#38bdf8','stroke-width':1.5,'stroke-dasharray':'5,3',rx:4,'pointer-events':'none'}));
-    [['nw',x-3,y-3],['n',x+w/2,y-3],['ne',x+w+3,y-3],['e',x+w+3,y+h/2],['se',x+w+3,y+h+3],['s',x+w/2,y+h+3],['sw',x-3,y+h+3],['w',x-3,y+h/2]].forEach(([d,hx2,hy])=>{
+    [['nw',x-3,y-3],['n',x+w/2,y-3],['ne',x+w+3,y-3],['e',x+w+3,y+h/2],
+     ['se',x+w+3,y+h+3],['s',x+w/2,y+h+3],['sw',x-3,y+h+3],['w',x-3,y+h/2]].forEach(([d,hx2,hy])=>{
       const r=mk('rect',{x:hx2-5,y:hy-5,width:10,height:10,fill:'#38bdf8',stroke:'white','stroke-width':1.5,rx:2,cursor:d+'-resize','data-h':d,'data-eid':selId});
       r.addEventListener('mousedown',onHMD);slL.appendChild(r);
     });
@@ -446,15 +548,17 @@ function rSel(){
     });
   }
   if(el.type==='ln'||el.type==='arr'){
+    slL.appendChild(mk('line',{x1:el.x1,y1:el.y1,x2:el.x2,y2:el.y2,stroke:'#38bdf8','stroke-width':1,'stroke-dasharray':'4,3','pointer-events':'none'}));
     [[el.x1,el.y1,'p1'],[el.x2,el.y2,'p2']].forEach(([cx,cy,p2])=>{
       const cc=mk('circle',{cx,cy,r:7,fill:'#38bdf8',stroke:'white','stroke-width':2,cursor:'crosshair','data-h':p2,'data-eid':selId});
       cc.addEventListener('mousedown',onHMD);slL.appendChild(cc);
     });
-    slL.appendChild(mk('line',{x1:el.x1,y1:el.y1,x2:el.x2,y2:el.y2,stroke:'#38bdf8','stroke-width':1,'stroke-dasharray':'4,3','pointer-events':'none'}));
   }
 }
 
-// ── TOOLS ──────────────────────────────────────────────────────────────────
+// ═══════════════════════════════════════════════════════
+// TOOLS
+// ═══════════════════════════════════════════════════════
 function setTool(t){
   tool=t;
   document.querySelectorAll('.pi[id^="tl-"]').forEach(e=>e.classList.remove('active'));
@@ -464,19 +568,26 @@ function setTool(t){
 }
 setTool('sel');
 
-// ── INTERACTION ────────────────────────────────────────────────────────────
+// ═══════════════════════════════════════════════════════
+// INTERACTION
+// ═══════════════════════════════════════════════════════
 function sel(id){selId=id;rSel();up();}
 
 function onElMD(e){
   if(tool!=='sel')return;
   e.stopPropagation();
-  const id=e.currentTarget.getAttribute('data-id');sel(id);
+  const id=e.currentTarget.getAttribute('data-id');
+  sel(id);
   const p=pt(e),el=elems.find(x=>x.id===id);if(!el)return;
-  if(el.type==='ln'||el.type==='arr')dragSt={type:'ln',id,sx:p.x,sy:p.y,ox1:el.x1,oy1:el.y1,ox2:el.x2,oy2:el.y2};
-  else if(el.type==='bus')dragSt={type:'bus',id,sx:p.x,sy:p.y,ox:el.x,oy:el.y};
-  else dragSt={type:'el',id,sx:p.x,sy:p.y,ox:el.x,oy:el.y};
+  if(el.type==='ln'||el.type==='arr')
+    dragSt={type:'ln',id,sx:p.x,sy:p.y,ox1:el.x1,oy1:el.y1,ox2:el.x2,oy2:el.y2};
+  else if(el.type==='bus')
+    dragSt={type:'bus',id,sx:p.x,sy:p.y,ox:el.x,oy:el.y};
+  else
+    dragSt={type:'el',id,sx:p.x,sy:p.y,ox:el.x,oy:el.y};
   e.preventDefault();
 }
+
 function onHMD(e){
   e.stopPropagation();
   const h=e.currentTarget.getAttribute('data-h'),id=e.currentTarget.getAttribute('data-eid');
@@ -487,22 +598,23 @@ function onHMD(e){
 }
 
 svgEl.addEventListener('mousedown',e=>{
-  const isBg=e.target.id==='cv-bg'||e.target===svgEl||e.target.closest('#dl');
+  const isBg=e.target.id==='cv-bg'||e.target===svgEl;
   if(!isBg||e.target.closest('#el'))return;
   if(tool==='sel'){selId=null;rSel();up();return;}
   const p=pt(e);
   if(tool==='txt'){
-    saveH();elems.push({id:uid(),type:'txt',x:p.x-100,y:p.y-14,w:200,h:34,text:'Text',fontSize:14,bold:false,italic:false,color:'#000000',bgColor:'none',align:'left'});
-    setTool('sel');sel(elems[elems.length-1].id);ra();return;
+    saveH();
+    elems.push({id:uid(),type:'txt',x:p.x-100,y:p.y-14,w:220,h:34,text:'Text',fontSize:14,bold:false,italic:false,color:'#000000',bgColor:'none',align:'left'});
+    setTool('sel');const nid=elems[elems.length-1].id;ra();sel(nid);return;
   }
   if(tool==='shp'){
-    saveH();elems.push({id:uid(),type:'shp',x:p.x-55,y:p.y-35,w:110,h:70,shapeType:'rect',fillColor:'#CCE4F7',borderColor:'#000000',borderW:1.5,opacity:1,label:''});
-    setTool('sel');sel(elems[elems.length-1].id);ra();return;
+    saveH();
+    elems.push({id:uid(),type:'shp',x:p.x-55,y:p.y-35,w:110,h:70,shapeType:'rect',fillColor:'#CCE4F7',borderColor:'#000000',borderW:1.5,opacity:1,label:''});
+    setTool('sel');const nid=elems[elems.length-1].id;ra();sel(nid);return;
   }
   if(tool==='ln'||tool==='arr'||tool==='bus'){
     drawSt={tool,x1:p.x,y1:p.y};
-    const col=tool==='bus'?'#1F7C00':'#595959';
-    gwL.appendChild(mk('line',{id:'prv',x1:p.x,y1:p.y,x2:p.x,y2:p.y,stroke:col,'stroke-width':2,'stroke-dasharray':'6,3','pointer-events':'none'}));
+    gwL.appendChild(mk('line',{id:'prv',x1:p.x,y1:p.y,x2:p.x,y2:p.y,stroke:'#595959','stroke-width':2,'stroke-dasharray':'6,3','pointer-events':'none'}));
   }
 });
 
@@ -518,7 +630,7 @@ window.addEventListener('mousemove',e=>{
   if(resSt){
     const el=elems.find(x=>x.id===resSt.id);if(!el){resSt=null;return;}
     const dx=p.x-resSt.sx,dy=p.y-resSt.sy,o=resSt.orig,MIN=20;
-    const{h:rh}=resSt;
+    const rh=resSt.h;
     if(rh==='p1'){el.x1=p.x;el.y1=p.y;}
     else if(rh==='p2'){el.x2=p.x;el.y2=p.y;}
     else if(rh==='bw'){const nw=Math.max(MIN,o.w-dx);el.x=o.x+(o.w-nw);el.w=nw;}
@@ -545,16 +657,20 @@ window.addEventListener('mouseup',e=>{
     const p=pt(e),dx=Math.abs(p.x-drawSt.x1),dy=Math.abs(p.y-drawSt.y1);
     if(dx>6||dy>6){
       saveH();
-      if(drawSt.tool==='bus'){elems.push({id:uid(),type:'bus',x:Math.min(drawSt.x1,p.x),y:drawSt.y1,w:dx||80,label:'',color:'#1F7C00',lw:2.5,arrowStart:true,showDrops:false});}
-      else{const ia=drawSt.tool==='arr';elems.push({id:uid(),type:drawSt.tool,x1:drawSt.x1,y1:drawSt.y1,x2:p.x,y2:drawSt.tool==='bus'?drawSt.y1:p.y,label:'',color:'#595959',lw:ia?2:1.5,dashed:false,arrowEnd:ia,arrowStart:false});}
-      setTool('sel');sel(elems[elems.length-1].id);ra();
+      if(drawSt.tool==='bus'){
+        elems.push({id:uid(),type:'bus',x:Math.min(drawSt.x1,p.x),y:drawSt.y1,w:dx||80,label:'',color:'#1F7C00',lw:2.5,isBackplane:false,showDrops:false});
+      }else{
+        const ia=drawSt.tool==='arr';
+        elems.push({id:uid(),type:drawSt.tool,x1:drawSt.x1,y1:drawSt.y1,x2:p.x,y2:drawSt.tool==='bus'?drawSt.y1:p.y,label:'',color:'#595959',lw:ia?2:1.5,dashed:false,arrowEnd:ia,arrowStart:false});
+      }
+      setTool('sel');const nid=elems[elems.length-1].id;ra();sel(nid);
     }
     drawSt=null;
   }
 });
 
 window.addEventListener('keydown',e=>{
-  if(['INPUT','TEXTAREA'].includes(document.activeElement.tagName))return;
+  if(['INPUT','TEXTAREA','SELECT'].includes(document.activeElement.tagName))return;
   if(e.key==='Delete'||e.key==='Backspace')delSel();
   if(e.key==='Escape')setTool('sel');
   if((e.ctrlKey||e.metaKey)&&!e.shiftKey&&e.key==='z'){e.preventDefault();undo();}
@@ -562,100 +678,174 @@ window.addEventListener('keydown',e=>{
   if((e.ctrlKey||e.metaKey)&&e.key==='d'){e.preventDefault();dupSel();}
 });
 
-// ── PALETTE ACTIONS ────────────────────────────────────────────────────────
+// ═══════════════════════════════════════════════════════
+// PALETTE ACTIONS
+// ═══════════════════════════════════════════════════════
 function addMod(label,colorType){
   const cnt=elems.filter(e=>e.type==='mod').length;
   saveH();
-  // All module presets same fixed size — w=115 h=330
-  const x=48+(cnt%8)*130, y=52;
-  elems.push({id:uid(),type:'mod',x,y,w:115,h:330,label,colorType,subComponents:[],slot:cnt+1,ioLabels:[]});
-  setTool('sel');sel(elems[elems.length-1].id);ra();
+  elems.push({id:uid(),type:'mod',x:50+cnt%8*130,y:50,w:115,h:330,label,colorType,subComponents:[],slot:cnt+1,ioLabels:[]});
+  setTool('sel');const nid=elems[elems.length-1].id;ra();sel(nid);
 }
-function addBus(label,color,lw,showDrops){
-  const cnt=elems.filter(e=>e.type==='bus').length;
+
+// addBus(label, colorHex, lineWidth, isBackplane, showDrops)
+function addBus(label,color,lw,isBackplane,showDrops){
   saveH();
-  const isBackplane=label.toUpperCase().includes('BACKPLANE');
-  elems.push({id:uid(),type:'bus',x:40,y:420+cnt*50,w:1200,label,
-    color:'#'+color,lw,
-    arrowStart:isBackplane,  // left-pointing ← on backplane
-    isBackplane,
-    showDrops:!!showDrops});
-  setTool('sel');sel(elems[elems.length-1].id);ra();
+  // Auto-position: find lowest module bottom + 40px gap
+  const mods=elems.filter(e=>e.type==='mod');
+  const maxBot=mods.length?Math.max(...mods.map(m=>m.y+m.h)):350;
+  const busCnt=elems.filter(e=>e.type==='bus').length;
+  const busY=maxBot+40+busCnt*48;
+  elems.push({id:uid(),type:'bus',x:40,y:busY,w:1200,label,color:'#'+color,lw,isBackplane:!!isBackplane,showDrops:!!showDrops});
+  setTool('sel');const nid=elems[elems.length-1].id;ra();sel(nid);
 }
+
 function addShape(shapeType){
   const cnt=elems.filter(e=>e.type==='shp').length;
-  saveH();elems.push({id:uid(),type:'shp',x:100+cnt*18,y:100+cnt*18,w:120,h:80,shapeType,fillColor:'#CCE4F7',borderColor:'#000000',borderW:1.5,opacity:1,label:''});
-  setTool('sel');sel(elems[elems.length-1].id);ra();
-}
-function addTxtPreset(type){
   saveH();
-  const P={
-    title:{text:'Slide Title',x:40,y:16,w:700,h:36,fontSize:22,bold:true,italic:false,color:'#000000',bgColor:'none',align:'left'},
-    io:{text:'← 1x Display Port',x:200,y:80,w:200,h:24,fontSize:11,bold:true,italic:false,color:'#000000',bgColor:'none',align:'left'},
-    note:{text:'Note: description',x:300,y:200,w:200,h:24,fontSize:11,bold:false,italic:true,color:'#444444',bgColor:'none',align:'left'},
-    volt:{text:'48V DC Input',x:500,y:60,w:160,h:24,fontSize:12,bold:true,italic:false,color:'#CC0000',bgColor:'none',align:'center'},
-  };
-  elems.push({id:uid(),type:'txt',...(P[type]||P.io)});
-  setTool('sel');sel(elems[elems.length-1].id);ra();
+  elems.push({id:uid(),type:'shp',x:100+cnt*18,y:100+cnt*18,w:120,h:80,shapeType,fillColor:'#CCE4F7',borderColor:'#000000',borderW:1.5,opacity:1,label:''});
+  setTool('sel');const nid=elems[elems.length-1].id;ra();sel(nid);
 }
 
-// ── PROPERTIES PANEL ──────────────────────────────────────────────────────
-function ue(k,v){const el=elems.find(e=>e.id===selId);if(el){el[k]=v;ra();}}
+// Default text box presets
+const TXT_PRESETS={
+  title: {text:'System Block Diagram',x:40,y:14,w:750,h:38,fontSize:22,bold:true,italic:false,color:'#000000',bgColor:'none',align:'left'},
+  io:    {text:'← 1x Display Port',x:200,y:70,w:220,h:26,fontSize:11,bold:true,italic:false,color:'#000000',bgColor:'none',align:'left'},
+  note:  {text:'Note: insert annotation here',x:300,y:200,w:260,h:26,fontSize:11,bold:false,italic:true,color:'#444444',bgColor:'#FFFACD',align:'left'},
+  voltage:{text:'48V DC Input',x:500,y:55,w:160,h:26,fontSize:13,bold:true,italic:false,color:'#CC0000',bgColor:'none',align:'center'},
+  onoff: {text:'ON/OFF Control (Host)',x:900,y:55,w:220,h:26,fontSize:12,bold:true,italic:false,color:'#000000',bgColor:'none',align:'left'},
+  rev:   {text:'Rev: 1.0   Date: 2025',x:1000,y:690,w:265,h:22,fontSize:10,bold:false,italic:false,color:'#555555',bgColor:'#F5F5F5',align:'right'},
+  sys:   {text:'3U VPX System',x:40,y:55,w:220,h:26,fontSize:13,bold:true,italic:false,color:'#1F3864',bgColor:'none',align:'left'},
+  warn:  {text:'⚠ HIGH VOLTAGE — DO NOT OPEN',x:400,y:690,w:320,h:22,fontSize:11,bold:true,italic:false,color:'#C00000',bgColor:'#FFF0F0',align:'center'},
+};
+function addTxt(type){
+  saveH();
+  const p=TXT_PRESETS[type]||TXT_PRESETS.io;
+  elems.push({id:uid(),type:'txt',...p});
+  setTool('sel');const nid=elems[elems.length-1].id;ra();sel(nid);
+}
+
+// ═══════════════════════════════════════════════════════
+// PROPERTIES PANEL  — live update without panel rebuild
+// ═══════════════════════════════════════════════════════
+
+// ue: update element field + redraw SVG but do NOT rebuild props panel (preserves input focus)
+function ue(k,v){
+  const el=elems.find(e=>e.id===selId);
+  if(!el)return;
+  el[k]=v;
+  ra();
+  // Only update the badge (layer index) without full panel rebuild
+  const idx=elems.findIndex(e=>e.id===selId);
+  const badge=document.getElementById('ph-badge');
+  if(badge) badge.textContent='Layer '+(idx+1)+'/'+elems.length;
+}
+
+// uen: same but coerces to number
 function uen(k,v){ue(k,isNaN(+v)?v:+v);}
-const esc=s=>String(s||'').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;');
-function cinput(lbl,key,val){
-  const v=val||'#000000',vh=v.replace('#','');
-  return `<div class="pr"><div class="pl">${lbl}</div><div class="ccrow">
-  <input type="color" class="ccsw" value="${v}" oninput="ue('${key}',this.value)">
-  <input class="pi2" value="${vh}" style="width:84px" oninput="ue('${key}','#'+this.value.replace('#',''))" maxlength="7" placeholder="hex">
-  </div></div>`;
-}
 
+// up: FULL rebuild of properties panel (called on selection change)
 function up(){
   const c=document.getElementById('pc');
-  if(!selId){c.innerHTML='<div class="nosel"><div style="font-size:22px">↖</div><div>Select an element<br>to edit properties</div></div>';return;}
-  const el=elems.find(e=>e.id===selId);if(!el){c.innerHTML='';return;}
+  const badge=document.getElementById('ph-badge');
+  if(!selId){
+    c.innerHTML='<div class="nosel"><div style="font-size:28px">↖</div><div>Click any element<br>to edit its properties</div></div>';
+    if(badge) badge.textContent='';
+    return;
+  }
+  const el=elems.find(e=>e.id===selId);
+  if(!el){c.innerHTML='';return;}
+  const idx=elems.findIndex(e=>e.id===selId);
+  if(badge) badge.textContent='Layer '+(idx+1)+'/'+elems.length;
+
+  const esc=s=>String(s||'').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;');
+  const ci=(lbl,key,val)=>{
+    const v=val||'#000000',vh=v.replace('#','');
+    return `<div class="pr"><div class="pl">${lbl}</div><div class="ccrow">
+    <input type="color" class="ccsw" value="${v}" oninput="ue('${key}',this.value)">
+    <input class="pi2" value="${vh}" style="width:90px" oninput="ue('${key}','#'+this.value.replace('#',''))" maxlength="7">
+    </div></div>`;
+  };
 
   if(el.type==='mod'){
-    c.innerHTML=`<div class="psh">Module Identity</div>
-<div class="pr"><div class="pl">Label</div><input class="pi2" value="${esc(el.label)}" oninput="ue('label',this.value)"></div>
-<div class="pr"><div class="pl">Slot #</div><input class="pi2" value="${esc(el.slot??'')}" oninput="ue('slot',this.value)"></div>
-<div class="pr"><div class="pl">Color Preset</div>
-<select class="pss" onchange="ue('colorType',this.value)">${Object.keys(CM).map(k=>`<option value="${k}"${el.colorType===k?' selected':''}>${k}</option>`).join('')}</select></div>
-<div class="psh">Dimensions</div>
-<div class="r2">
-<div class="pr"><div class="pl">Width</div><input class="pi2" type="number" min="50" max="400" value="${el.w}" oninput="uen('w',this.value)"></div>
-<div class="pr"><div class="pl">Height</div><input class="pi2" type="number" min="80" max="680" value="${el.h}" oninput="uen('h',this.value)"></div>
+    c.innerHTML=`
+<div class="zrow">Layer ${idx+1}/${elems.length}
+  <span><button class="zbtn" onclick="bringFwd()">↑ Fwd</button>
+  <button class="zbtn" onclick="sendBck()">↓ Bck</button></span>
 </div>
-<div class="psh">Sub-Components</div>
-<div class="pr"><div class="pl">One per line</div><textarea class="pta" oninput="ue('subComponents',this.value.split('\\n').filter(s=>s.trim()))">${(el.subComponents||[]).join('\n')}</textarea></div>
-<div class="psh">I/O Labels</div>
-<div class="pr"><div class="pl">One per line</div><textarea class="pta" rows="4" oninput="ue('ioLabels',this.value.split('\\n').filter(s=>s.trim()))">${(el.ioLabels||[]).join('\n')}</textarea></div>
-<button class="pdel" onclick="delSel()">✕ Delete</button>`;
+<div class="psh">Module Title &amp; Slot</div>
+<div class="pr"><div class="pl">Module Title (shown in header)</div>
+<input class="pi2" id="f-label" value="${esc(el.label)}" placeholder="e.g. SBC, GPU, PSU…"
+  oninput="ue('label',this.value)">
+</div>
+<div class="pr"><div class="pl">Slot Number (shown at bottom)</div>
+<input class="pi2" id="f-slot" value="${esc(el.slot??'')}" placeholder="e.g. 1, 2, 3…"
+  oninput="ue('slot',this.value)">
+</div>
+<div class="pr"><div class="pl">Color Theme</div>
+<select class="pss" onchange="ue('colorType',this.value)">
+${Object.keys(CM).map(k=>`<option value="${k}"${el.colorType===k?' selected':''}>${k}</option>`).join('')}
+</select></div>
+<div class="psh">Size</div>
+<div class="r2">
+<div class="pr"><div class="pl">Width</div><input class="pi2" type="number" min="60" max="400" value="${el.w}" oninput="uen('w',this.value)"></div>
+<div class="pr"><div class="pl">Height</div><input class="pi2" type="number" min="100" max="680" value="${el.h}" oninput="uen('h',this.value)"></div>
+</div>
+<div class="psh">Sub-Components <span style="font-weight:400;color:var(--mut)">(one per line)</span></div>
+<div class="pr"><textarea class="pta" oninput="ue('subComponents',this.value.split('\\n').filter(s=>s.trim()))">${(el.subComponents||[]).join('\n')}</textarea></div>
+<div class="psh">I/O Labels <span style="font-weight:400;color:var(--mut)">(one per line, shown left of module)</span></div>
+<div class="pr"><textarea class="pta" rows="4" oninput="ue('ioLabels',this.value.split('\\n').filter(s=>s.trim()))">${(el.ioLabels||[]).join('\n')}</textarea></div>
+<button class="pdel" onclick="delSel()">✕ Delete This Module</button>`;
+    // Focus label field after rebuild (useful when just selected)
+    setTimeout(()=>{const f=document.getElementById('f-label');if(f&&document.activeElement!==f){}},10);
   }
   else if(el.type==='txt'){
-    c.innerHTML=`<div class="psh">Text</div>
-<div class="pr"><div class="pl">Content</div><input class="pi2" value="${esc(el.text)}" oninput="ue('text',this.value)"></div>
-<div class="r2">
-<div class="pr"><div class="pl">Size px</div><input class="pi2" type="number" min="7" max="72" value="${el.fontSize||13}" oninput="uen('fontSize',this.value)"></div>
-<div class="pr"><div class="pl">Align</div><select class="pss" onchange="ue('align',this.value)"><option value="left"${el.align==='left'?' selected':''}>Left</option><option value="center"${el.align==='center'?' selected':''}>Center</option><option value="right"${el.align==='right'?' selected':''}>Right</option></select></div>
+    c.innerHTML=`
+<div class="zrow">Layer ${idx+1}/${elems.length}
+  <span><button class="zbtn" onclick="bringFwd()">↑ Fwd</button>
+  <button class="zbtn" onclick="sendBck()">↓ Bck</button></span>
 </div>
-<div class="pr cbr"><input type="checkbox" id="pb"${el.bold?' checked':''} onchange="ue('bold',this.checked)"><label for="pb">Bold</label>&nbsp;&nbsp;<input type="checkbox" id="pi3"${el.italic?' checked':''} onchange="ue('italic',this.checked)"><label for="pi3">Italic</label></div>
-${cinput('Text Color','color',el.color)}
-<div class="pr"><div class="pl">Background</div><select class="pss" onchange="ue('bgColor',this.value)"><option value="none"${!el.bgColor||el.bgColor==='none'?' selected':''}>None</option><option value="#FFFFFF"${el.bgColor==='#FFFFFF'?' selected':''}>White</option><option value="#FFFACD"${el.bgColor==='#FFFACD'?' selected':''}>Yellow</option><option value="#E6F0FF"${el.bgColor==='#E6F0FF'?' selected':''}>Blue</option></select></div>
+<div class="psh">Text Content</div>
+<div class="pr"><div class="pl">Text</div><input class="pi2" value="${esc(el.text)}" oninput="ue('text',this.value)"></div>
 <div class="r2">
-<div class="pr"><div class="pl">Width</div><input class="pi2" type="number" min="30" max="1000" value="${el.w}" oninput="uen('w',this.value)"></div>
+<div class="pr"><div class="pl">Font Size</div><input class="pi2" type="number" min="7" max="72" value="${el.fontSize||13}" oninput="uen('fontSize',this.value)"></div>
+<div class="pr"><div class="pl">Align</div><select class="pss" onchange="ue('align',this.value)">
+<option value="left"${el.align==='left'?' selected':''}>Left</option>
+<option value="center"${el.align==='center'?' selected':''}>Center</option>
+<option value="right"${el.align==='right'?' selected':''}>Right</option>
+</select></div>
+</div>
+<div class="pr cbr">
+<input type="checkbox" id="pb"${el.bold?' checked':''} onchange="ue('bold',this.checked)"><label for="pb">Bold</label>
+&nbsp;&nbsp;<input type="checkbox" id="pi3"${el.italic?' checked':''} onchange="ue('italic',this.checked)"><label for="pi3">Italic</label>
+</div>
+<div class="psh">Appearance</div>
+${ci('Text Color','color',el.color)}
+<div class="pr"><div class="pl">Background</div>
+<select class="pss" onchange="ue('bgColor',this.value)">
+<option value="none"${!el.bgColor||el.bgColor==='none'?' selected':''}>None (transparent)</option>
+<option value="#FFFFFF"${el.bgColor==='#FFFFFF'?' selected':''}>White</option>
+<option value="#FFFACD"${el.bgColor==='#FFFACD'?' selected':''}>Yellow</option>
+<option value="#E6F0FF"${el.bgColor==='#E6F0FF'?' selected':''}>Light Blue</option>
+<option value="#F5F5F5"${el.bgColor==='#F5F5F5'?' selected':''}>Light Gray</option>
+<option value="#FFF0F0"${el.bgColor==='#FFF0F0'?' selected':''}>Light Red</option>
+</select></div>
+<div class="r2">
+<div class="pr"><div class="pl">Width</div><input class="pi2" type="number" min="30" max="1200" value="${el.w}" oninput="uen('w',this.value)"></div>
 <div class="pr"><div class="pl">Height</div><input class="pi2" type="number" min="14" max="400" value="${el.h}" oninput="uen('h',this.value)"></div>
 </div>
 <button class="pdel" onclick="delSel()">✕ Delete</button>`;
   }
   else if(el.type==='ln'||el.type==='arr'){
-    c.innerHTML=`<div class="psh">Line</div>
-<div class="pr"><div class="pl">Label</div><input class="pi2" value="${esc(el.label||'')}" oninput="ue('label',this.value)"></div>
-${cinput('Color','color',el.color)}
-<div class="r2">
-<div class="pr"><div class="pl">Line Width</div><input class="pi2" type="number" min="0.5" max="12" step="0.5" value="${el.lw||1.5}" oninput="uen('lw',this.value)"></div>
+    c.innerHTML=`
+<div class="zrow">Layer ${idx+1}/${elems.length}
+  <span><button class="zbtn" onclick="bringFwd()">↑ Fwd</button>
+  <button class="zbtn" onclick="sendBck()">↓ Bck</button></span>
 </div>
+<div class="psh">Line</div>
+<div class="pr"><div class="pl">Label</div><input class="pi2" value="${esc(el.label||'')}" oninput="ue('label',this.value)"></div>
+${ci('Color','color',el.color)}
+<div class="pr"><div class="pl">Line Width</div><input class="pi2" type="number" min="0.5" max="12" step="0.5" value="${el.lw||1.5}" oninput="uen('lw',this.value)"></div>
 <div class="psh">Endpoints</div>
 <div class="r2">
 <div class="pr"><div class="pl">X1</div><input class="pi2" type="number" value="${Math.round(el.x1)}" oninput="uen('x1',this.value)"></div>
@@ -665,37 +855,55 @@ ${cinput('Color','color',el.color)}
 </div>
 <div class="psh">Style</div>
 <div class="pr cbr"><input type="checkbox" id="pda"${el.dashed?' checked':''} onchange="ue('dashed',this.checked)"><label for="pda">Dashed</label></div>
-<div class="pr cbr"><input type="checkbox" id="pae"${el.arrowEnd?' checked':''} onchange="ue('arrowEnd',this.checked)"><label for="pae">Arrow End</label></div>
-<div class="pr cbr"><input type="checkbox" id="pas"${el.arrowStart?' checked':''} onchange="ue('arrowStart',this.checked)"><label for="pas">Arrow Start</label></div>
+<div class="pr cbr"><input type="checkbox" id="pae"${el.arrowEnd?' checked':''} onchange="ue('arrowEnd',this.checked)"><label for="pae">Arrow at End →</label></div>
+<div class="pr cbr"><input type="checkbox" id="pas"${el.arrowStart?' checked':''} onchange="ue('arrowStart',this.checked)"><label for="pas">Arrow at Start ←</label></div>
 <button class="pdel" onclick="delSel()">✕ Delete</button>`;
   }
   else if(el.type==='bus'){
-    c.innerHTML=`<div class="psh">Bus Line</div>
+    c.innerHTML=`
+<div class="zrow">Layer ${idx+1}/${elems.length}
+  <span><button class="zbtn" onclick="bringFwd()">↑ Fwd</button>
+  <button class="zbtn" onclick="sendBck()">↓ Bck</button></span>
+</div>
+<div class="psh">Bus Line</div>
 <div class="pr"><div class="pl">Label</div><input class="pi2" value="${esc(el.label||'')}" oninput="ue('label',this.value)"></div>
-${cinput('Color','color',el.color)}
+${ci('Color','color',el.color)}
 <div class="r2">
 <div class="pr"><div class="pl">Line Width</div><input class="pi2" type="number" min="0.5" max="12" step="0.5" value="${el.lw||2.5}" oninput="uen('lw',this.value)"></div>
 <div class="pr"><div class="pl">Length px</div><input class="pi2" type="number" min="50" max="1240" value="${Math.round(el.w)}" oninput="uen('w',this.value)"></div>
 </div>
 <div class="psh">Position</div>
 <div class="r2">
-<div class="pr"><div class="pl">X</div><input class="pi2" type="number" value="${Math.round(el.x)}" oninput="uen('x',this.value)"></div>
-<div class="pr"><div class="pl">Y</div><input class="pi2" type="number" value="${Math.round(el.y)}" oninput="uen('y',this.value)"></div>
+<div class="pr"><div class="pl">X (left edge)</div><input class="pi2" type="number" value="${Math.round(el.x)}" oninput="uen('x',this.value)"></div>
+<div class="pr"><div class="pl">Y (vertical pos)</div><input class="pi2" type="number" value="${Math.round(el.y)}" oninput="uen('y',this.value)"></div>
 </div>
-<div class="psh">Connections</div>
-<div class="pr cbr"><input type="checkbox" id="psd"${el.showDrops?' checked':''} onchange="ue('showDrops',this.checked);ra()"><label for="psd">Connect to modules ↑</label></div>
-<div class="pr cbr"><input type="checkbox" id="pas2"${el.arrowStart?' checked':''} onchange="ue('arrowStart',this.checked)"><label for="pas2">Arrow at start ← (left)</label></div>
-<div class="pr cbr"><input type="checkbox" id="pae2"${el.arrowEnd?' checked':''} onchange="ue('arrowEnd',this.checked)"><label for="pae2">Arrow at end → (right/fwd)</label></div>
+<div class="psh">Connection Options</div>
+<div class="pr cbr">
+<input type="checkbox" id="psd"${el.showDrops?' checked':''} onchange="ue('showDrops',this.checked);ra()">
+<label for="psd"><strong>Connect to modules</strong> — draws upward ↑ arrows from this bus to every module above it</label>
+</div>
+<div class="pr cbr">
+<input type="checkbox" id="pbp"${el.isBackplane?' checked':''} onchange="ue('isBackplane',this.checked)">
+<label for="pbp">Backplane style (← arrow at left end)</label>
+</div>
 <button class="pdel" onclick="delSel()">✕ Delete</button>`;
   }
   else if(el.type==='shp'){
-    c.innerHTML=`<div class="psh">Shape</div>
-<div class="pr"><div class="pl">Type</div><select class="pss" onchange="ue('shapeType',this.value)">${['rect','oval','diamond','arrowR','arrowL','arrowD','hex','para'].map(s=>`<option value="${s}"${el.shapeType===s?' selected':''}>${s}</option>`).join('')}</select></div>
+    c.innerHTML=`
+<div class="zrow">Layer ${idx+1}/${elems.length}
+  <span><button class="zbtn" onclick="bringFwd()">↑ Fwd</button>
+  <button class="zbtn" onclick="sendBck()">↓ Bck</button></span>
+</div>
+<div class="psh">Shape</div>
+<div class="pr"><div class="pl">Type</div>
+<select class="pss" onchange="ue('shapeType',this.value)">
+${['rect','oval','diamond','arrowR','arrowL','arrowD','hex','para'].map(s=>`<option value="${s}"${el.shapeType===s?' selected':''}>${s}</option>`).join('')}
+</select></div>
 <div class="pr"><div class="pl">Label</div><input class="pi2" value="${esc(el.label||'')}" oninput="ue('label',this.value)"></div>
-${cinput('Fill Color','fillColor',el.fillColor)}
-${cinput('Border Color','borderColor',el.borderColor)}
+${ci('Fill Color','fillColor',el.fillColor)}
+${ci('Border Color','borderColor',el.borderColor)}
 <div class="r2">
-<div class="pr"><div class="pl">Border W</div><input class="pi2" type="number" min="0" max="10" step="0.5" value="${el.borderW||1.5}" oninput="uen('borderW',this.value)"></div>
+<div class="pr"><div class="pl">Border Width</div><input class="pi2" type="number" min="0" max="10" step="0.5" value="${el.borderW||1.5}" oninput="uen('borderW',this.value)"></div>
 <div class="pr"><div class="pl">Opacity</div><input class="pi2" type="number" min="0" max="1" step="0.05" value="${el.opacity!=null?el.opacity:1}" oninput="uen('opacity',this.value)"></div>
 </div>
 <div class="r2">
@@ -706,125 +914,157 @@ ${cinput('Border Color','borderColor',el.borderColor)}
   }
 }
 
-// ── ACTIONS ────────────────────────────────────────────────────────────────
+// ═══════════════════════════════════════════════════════
+// ELEMENT ACTIONS  — FIX: ra() first, then sel() for proper render-then-select
+// ═══════════════════════════════════════════════════════
 function delSel(){if(!selId)return;saveH();elems=elems.filter(e=>e.id!==selId);selId=null;ra();up();}
+
 function dupSel(){
   if(!selId)return;
   const src=elems.find(e=>e.id===selId);if(!src)return;
-  saveH();const cp=cln(src);cp.id=uid();
-  if(cp.x!=null)cp.x+=20;if(cp.y!=null)cp.y+=20;
-  if(cp.x1!=null){cp.x1+=20;cp.y1+=20;cp.x2+=20;cp.y2+=20;}
-  elems.push(cp);sel(cp.id);ra();
+  saveH();
+  const cp=cln(src);cp.id=uid();
+  if(cp.x!=null)cp.x+=25;if(cp.y!=null)cp.y+=25;
+  if(cp.x1!=null){cp.x1+=25;cp.y1+=25;cp.x2+=25;cp.y2+=25;}
+  elems.push(cp);
+  ra();          // render first so element exists in DOM
+  sel(cp.id);    // then select it
+  toast('⧉ Duplicated');
 }
+
 function bringFwd(){
   if(!selId)return;
   const i=elems.findIndex(e=>e.id===selId);
-  if(i<elems.length-1){saveH();[elems[i],elems[i+1]]=[elems[i+1],elems[i]];ra();toast('↑ Moved forward');}
+  if(i>=elems.length-1){toast('Already at top layer');return;}
+  saveH();
+  const tmp=elems[i+1];elems[i+1]=elems[i];elems[i]=tmp;
+  ra();sel(selId);
+  toast('↑ Layer '+(i+2)+' → '+(i+3)+' of '+elems.length);
 }
+
 function sendBck(){
   if(!selId)return;
   const i=elems.findIndex(e=>e.id===selId);
-  if(i>0){saveH();[elems[i-1],elems[i]]=[elems[i],elems[i-1]];ra();toast('↓ Moved back');}
+  if(i<=0){toast('Already at bottom layer');return;}
+  saveH();
+  const tmp=elems[i-1];elems[i-1]=elems[i];elems[i]=tmp;
+  ra();sel(selId);
+  toast('↓ Layer '+(i+1)+' → '+i+' of '+elems.length);
 }
+
 function bringFront(){
   if(!selId)return;
   const i=elems.findIndex(e=>e.id===selId);
-  if(i<elems.length-1){saveH();elems.push(elems.splice(i,1)[0]);ra();toast('⬆ Brought to front');}
+  if(i>=elems.length-1){toast('Already at top layer');return;}
+  saveH();elems.push(elems.splice(i,1)[0]);
+  ra();sel(selId);
+  toast('⬆ Brought to top (Layer '+elems.length+')');
 }
+
 function sendBack(){
   if(!selId)return;
   const i=elems.findIndex(e=>e.id===selId);
-  if(i>0){saveH();elems.unshift(elems.splice(i,1)[0]);ra();toast('⬇ Sent to back');}
+  if(i<=0){toast('Already at bottom layer');return;}
+  saveH();elems.unshift(elems.splice(i,1)[0]);
+  ra();sel(selId);
+  toast('⬇ Sent to bottom (Layer 1)');
 }
+
 function triggerClear(){document.getElementById('modal').classList.add('show');}
 function closeModal(){document.getElementById('modal').classList.remove('show');}
 function confirmClear(){closeModal();saveH();elems=[];selId=null;idc=1;ra();up();toast('✓ Canvas cleared');}
 
-// ── AI ANALYSIS ────────────────────────────────────────────────────────────
+// ═══════════════════════════════════════════════════════
+// AI ANALYSIS
+// ═══════════════════════════════════════════════════════
 document.getElementById('fileInput').addEventListener('change',async e=>{
   const file=e.target.files[0];if(!file)return;e.target.value='';
   const btn=document.getElementById('aibtn');btn.classList.add('loading');
   const reader=new FileReader();
   reader.onload=async ev=>{
     const b64=ev.target.result.split(',')[1],mime=file.type;
-    showLov('Step 1/3  →  Sending image to AI…');
+    showLov('Step 1/3 — Sending image to AI…');
     try{
+      // Get API key — works both in Claude.ai (key auto-injected server-side)
+      // and on external hosts (key from localStorage)
+      const apiKey=getApiKey();
+      const headers={'Content-Type':'application/json'};
+      if(apiKey){
+        // Required for direct browser→API calls outside Claude.ai
+        headers['x-api-key']=apiKey;
+        headers['anthropic-dangerous-direct-browser-access']='true';
+        headers['anthropic-version']='2023-06-01';
+      }
+      if(!apiKey){
+        hideLov();btn.classList.remove('loading');
+        openKeyModal();
+        toast('Set your API key first to analyze diagrams',1);
+        return;
+      }
       const resp=await fetch('https://api.anthropic.com/v1/messages',{
-        method:'POST',headers:{'Content-Type':'application/json'},
+        method:'POST',headers,
         body:JSON.stringify({
           model:'claude-sonnet-4-20250514',max_tokens:4000,
-          system:`You are an expert hardware systems engineer reading VPX/VME embedded block diagrams.
+          system:`You are an expert hardware systems engineer reading VPX/VME embedded block diagrams (including hand-drawn sketches).
 
-Carefully analyse the uploaded image and extract ALL visual elements. Return ONLY a valid JSON object — no markdown, no code fences, no extra text.
+Carefully analyse the image and extract ALL visible elements. Return ONLY valid JSON — no markdown, no code fences.
 
 {
-  "title": "exact text of diagram title (or empty)",
+  "title": "visible diagram title or empty string",
   "modules": [
     {
       "slot": 1,
-      "label": "exact visible label: SBC, GPU, FPGA, PSU, ARINC, Switch, Carrier Card, etc.",
-      "color_type": "blue|cyan|green|lime|purple|red|gray|orange",
-      "sub_components": ["XMC Slot","11th Gen Intel Core","M.2 NVMe Storage 1TB"],
-      "io_labels": ["1x Display Port","2x 1G Ethernet","4x GPIO"],
-      "x_frac": 0.04,
-      "y_frac": 0.08,
-      "w_frac": 0.09,
-      "h_frac": 0.52
+      "label": "SBC",
+      "color_type": "blue",
+      "sub_components": ["XMC Slot","Intel Core i7","M.2 NVMe 1TB"],
+      "io_labels": ["1x Display Port","2x 1G Ethernet"],
+      "x_frac": 0.04, "y_frac": 0.07
     }
   ],
   "connections": [
     {
       "label": "3U VPX BACKPLANE",
       "color": "1F7C00",
-      "x_frac": 0.03, "y_frac": 0.61, "w_frac": 0.93,
-      "lw": 3, "has_arrow": true, "show_drops": false
+      "y_frac": 0.62, "x_frac": 0.03, "w_frac": 0.94,
+      "lw": 3, "is_backplane": true, "show_drops": false
     },
     {
       "label": "PCIe Gen 4",
       "color": "7030A0",
-      "x_frac": 0.03, "y_frac": 0.72, "w_frac": 0.80,
-      "lw": 2, "has_arrow": true, "show_drops": true
-    }
-  ],
-  "free_lines": [
-    {
-      "label": "1x Display Port",
-      "x1_frac": 0.05, "y1_frac": 0.12, "x2_frac": 0.12, "y2_frac": 0.18,
-      "color": "000000", "lw": 1, "arrow_end": true
+      "y_frac": 0.73, "x_frac": 0.03, "w_frac": 0.85,
+      "lw": 2, "is_backplane": false, "show_drops": true
     }
   ]
 }
 
-CRITICAL RULES:
-1. color_type: blue=SBC/processor, cyan=special boards, green=GPU/carrier/storage, lime=ARINC/networking, purple=Switch/FPGA, red=PSU/power, gray=Spare, orange=custom
-2. connection colors — detect from the actual line color in the image:
-   - dark green line → 1F7C00 (backplane, show_drops:false)
-   - purple/violet line → 7030A0 (PCIe, show_drops:true)
-   - yellow/gold line → FFC000 (SATA, show_drops:true)
-   - orange line → FF8C00 (Ethernet, show_drops:true)
-   - red line → FF0000 (Power, show_drops:true)
-3. ALL fractions are 0.0–1.0 of total image width/height
-4. List modules strictly LEFT to RIGHT
-5. Extract ALL sub-components visible inside each block
-6. Extract ALL I/O interface labels shown outside blocks
-7. If you see vertical drop lines connecting modules to a bus, set show_drops:true for that bus`,
+COLOR RULES:
+- color_type: blue=SBC/processor, cyan=special, green=GPU/carrier/storage, lime=ARINC/networking, purple=Switch/FPGA, red=PSU/power, gray=Spare, orange=custom/IO
+- Connection colors by bus type: backplane=1F7C00, PCIe=7030A0, SATA=FFC000, Ethernet=FF8C00, Power=FF0000, other=595959
+- If you see a hand-drawn sketch: infer the intended hardware type and apply correct colors
+
+POSITION RULES:
+- x_frac, y_frac are 0.0–1.0 fractions of image width/height
+- List modules strictly LEFT to RIGHT
+- Connections (buses) appear BELOW modules — typically y_frac > 0.55
+- Extract ALL sub-component labels visible inside blocks
+- Extract ALL I/O labels shown outside blocks near modules`,
           messages:[{role:'user',content:[
             {type:'image',source:{type:'base64',media_type:mime,data:b64}},
-            {type:'text',text:'Analyze this block diagram in full detail. Extract every module (left to right), every connection line with correct colors, every sub-component text, every I/O label. Return the JSON.'}
+            {type:'text',text:'Analyze this block diagram completely. Extract all modules left-to-right, all connections with correct colors, all sub-components and I/O labels. Return JSON only.'}
           ]}]
         })
       });
-      if(!resp.ok){const t=await resp.text();throw new Error(`API ${resp.status}: ${t.slice(0,120)}`);}
-      showLov('Step 2/3  →  Parsing structure…');
+      if(!resp.ok){const t=await resp.text();throw new Error('API '+resp.status+': '+t.slice(0,120));}
+      showLov('Step 2/3 — Parsing structure…');
       const data=await resp.json();
       const raw=data.content.filter(b=>b.type==='text').map(b=>b.text).join('').replace(/```json\s*/g,'').replace(/```/g,'').trim();
       let diag;
-      try{diag=JSON.parse(raw);}catch(pe){throw new Error('JSON parse failed: '+pe.message+'\n'+raw.slice(0,200));}
-      showLov('Step 3/3  →  Building canvas…');
-      await new Promise(r=>setTimeout(r,120));
+      try{diag=JSON.parse(raw);}catch(pe){throw new Error('JSON parse failed: '+pe.message);}
+      showLov('Step 3/3 — Building canvas…');
+      await new Promise(r=>setTimeout(r,100));
       populateFromAI(diag);
       btn.classList.remove('loading');hideLov();
-      toast(`✓ Detected ${(diag.modules||[]).length} modules · ${(diag.connections||[]).length} connections`);
+      toast('✓ '+((diag.modules||[]).length)+' modules · '+((diag.connections||[]).length)+' connections detected');
     }catch(err){
       btn.classList.remove('loading');hideLov();
       toast('✗ '+err.message.slice(0,90),1);console.error(err);
@@ -836,193 +1076,162 @@ CRITICAL RULES:
 function populateFromAI(diag){
   saveH();elems=[];selId=null;
   if(diag.title&&diag.title.trim())
-    elems.push({id:uid(),type:'txt',x:40,y:15,w:700,h:36,text:diag.title,fontSize:20,bold:true,italic:false,color:'#000000',bgColor:'none',align:'left'});
+    elems.push({id:uid(),type:'txt',x:40,y:14,w:750,h:38,text:diag.title,fontSize:22,bold:true,italic:false,color:'#000000',bgColor:'none',align:'left'});
 
+  // Fixed module size — all same
+  const MOD_W=115,MOD_H=330;
   const mods=diag.modules||[];
   const n=mods.length||1;
-  // Fixed module size — same as palette presets
-  const MOD_W=115, MOD_H=330;
-  const totalW=n*MOD_W+(n-1)*15;
-  const startX=Math.max(40,Math.round((SVW-totalW)/2));
-
+  const totalW=n*MOD_W+(n-1)*14;
+  const startX=Math.max(50,Math.round((SVW-totalW)/2));
   mods.forEach((m,i)=>{
-    // Use AI x_frac if given, otherwise auto-space evenly
-    let x;
-    if(m.x_frac!=null) x=Math.round(m.x_frac*SVW);
-    else x=startX+i*(MOD_W+15);
+    const x=m.x_frac!=null?Math.round(m.x_frac*SVW):startX+i*(MOD_W+14);
     const y=Math.round((m.y_frac||0.07)*SVH);
-    // All modules same fixed size
-    elems.push({id:uid(),type:'mod',x,y,w:MOD_W,h:MOD_H,
-      label:m.label||'Module',colorType:m.color_type||'blue',
-      subComponents:m.sub_components||[],slot:m.slot||(i+1),ioLabels:m.io_labels||[]});
+    elems.push({id:uid(),type:'mod',x,y,w:MOD_W,h:MOD_H,label:m.label||'Module',
+      colorType:m.color_type||'blue',subComponents:m.sub_components||[],
+      slot:m.slot||(i+1),ioLabels:m.io_labels||[]});
   });
 
   (diag.connections||[]).forEach(conn=>{
     const x=Math.round((conn.x_frac||0.03)*SVW),y=Math.round((conn.y_frac||0.65)*SVH);
     const w=Math.max(100,Math.round((conn.w_frac||0.94)*SVW));
-    const lbl=conn.label||'';
-    const isBackplane=lbl.toUpperCase().includes('BACKPLANE');
-    elems.push({id:uid(),type:'bus',x,y,w,label:lbl,
+    elems.push({id:uid(),type:'bus',x,y,w,label:conn.label||'',
       color:'#'+(conn.color||'595959'),lw:conn.lw||2,
-      arrowStart:isBackplane,   // backplane: left-pointing arrow at start
-      arrowEnd:false,
-      isBackplane,
-      showDrops:!!conn.show_drops});
+      isBackplane:!!conn.is_backplane,showDrops:!!conn.show_drops});
   });
-
-  (diag.free_lines||[]).forEach(ln=>{
-    elems.push({id:uid(),type:'ln',
-      x1:Math.round((ln.x1_frac||0.1)*SVW),y1:Math.round((ln.y1_frac||0.5)*SVH),
-      x2:Math.round((ln.x2_frac||0.2)*SVW),y2:Math.round((ln.y2_frac||0.5)*SVH),
-      label:ln.label||'',color:'#'+(ln.color||'000000'),lw:ln.lw||1,
-      dashed:false,arrowEnd:!!ln.arrow_end,arrowStart:false});
-  });
-
   ra();up();
 }
 
-// ── PPT EXPORT ────────────────────────────────────────────────────────────
+// ═══════════════════════════════════════════════════════
+// PPT EXPORT
+// ═══════════════════════════════════════════════════════
 function getPX(){return typeof PptxGenJS!=='undefined'?PptxGenJS:(typeof pptxgen!=='undefined'?pptxgen:null);}
-
 async function dlPPT(){
   let PX=getPX();
   if(!PX){
     showLov('Loading PPT library…');
-    try{
-      await new Promise((res,rej)=>{const s=document.createElement('script');s.src='https://cdn.jsdelivr.net/npm/pptxgenjs@3.12.0/dist/pptxgen.bundle.js';s.onload=()=>{PX=getPX();res();};s.onerror=rej;document.head.appendChild(s);});
-    }catch(er){hideLov();toast('✗ Cannot load PPT library',1);return;}
+    try{await new Promise((res,rej)=>{const s=document.createElement('script');s.src='https://cdn.jsdelivr.net/npm/pptxgenjs@3.12.0/dist/pptxgen.bundle.js';s.onload=()=>{PX=getPX();res();};s.onerror=rej;document.head.appendChild(s);});}
+    catch(er){hideLov();toast('✗ Cannot load PPT library',1);return;}
   }
   if(!PX){hideLov();toast('✗ PptxGenJS not found',1);return;}
-  showLov('Building PowerPoint file…');
+  showLov('Building PowerPoint…');
   try{
     const pptx=new PX();pptx.layout='LAYOUT_WIDE';
     const slide=pptx.addSlide();slide.background={color:'FFFFFF'};
     const sx=v=>+(v*PPW/SVW).toFixed(4);
     const sy=v=>+(v*PPH/SVH).toFixed(4);
     const ST=pptx.ShapeType||pptx.shapes||{};
-    const gsc=(...ks)=>{for(const k of ks){if(ST[k])return ST[k];}return ks[0];};
+    const gsc=(...ks)=>{for(const k of ks)if(ST[k])return ST[k];return ks[0];};
     const R=gsc('RECTANGLE','rect'),L=gsc('LINE','line');
 
     elems.forEach(el=>{
       if(el.type==='mod'){
-        const{x,y,w,h,label,colorType,subComponents,slot}=el,c=CM[colorType]||CM.gray;
-        // black outer border (2px offset on each side)
+        const{x,y,w,h,label,colorType,subComponents,slot,ioLabels}=el,c=CM[colorType]||CM.gray;
         slide.addShape(R,{x:sx(x-2),y:sy(y-2),w:sx(w+4),h:sy(h+4),fill:{color:'000000'},line:{color:'000000',width:0}});
         slide.addShape(R,{x:sx(x),y:sy(y),w:sx(w),h:sy(h),fill:{color:c.fill},line:{color:c.bdr,width:1.5}});
         slide.addShape(R,{x:sx(x),y:sy(y),w:sx(w),h:sy(35),fill:{color:c.sub},line:{color:c.bdr,width:1}});
         const fs=Math.max(7,Math.min(13,Math.floor(10.5*w/115)));
         slide.addText(label,{x:sx(x),y:sy(y),w:sx(w),h:sy(35),fontSize:fs,bold:true,color:'FFFFFF',align:'center',valign:'middle',fontFace:'Arial Black',margin:0});
-        const maxS=Math.floor((h-44-32)/54);
+        const maxS=Math.floor((h-44-30)/54);
         (subComponents||[]).slice(0,maxS).forEach((s,i)=>{
           const sY=y+44+i*54,sw=w-14,sh=48;
           slide.addShape(R,{x:sx(x+7),y:sy(sY),w:sx(sw),h:sy(sh),fill:{color:c.sub},line:{color:c.bdr,width:1}});
-          slide.addText(s,{x:sx(x+7),y:sy(sY),w:sx(sw),h:sy(sh),fontSize:Math.max(6,9),bold:true,color:'FFFFFF',align:'center',valign:'middle',fontFace:'Calibri',margin:0});
+          slide.addText(s,{x:sx(x+7),y:sy(sY),w:sx(sw),h:sy(sh),fontSize:8,bold:true,color:'FFFFFF',align:'center',valign:'middle',fontFace:'Calibri',margin:0});
         });
         if(slot!=null&&String(slot).trim()){
           const slY=y+h-27;
           slide.addShape(R,{x:sx(x+7),y:sy(slY),w:sx(w-14),h:sy(22),fill:{color:c.sub},line:{color:c.bdr,width:1}});
           slide.addText('Slot '+slot,{x:sx(x+7),y:sy(slY),w:sx(w-14),h:sy(22),fontSize:9,bold:true,color:'FFFFFF',align:'center',valign:'middle',fontFace:'Calibri',margin:0});
         }
-        // I/O labels: line exits left of module → arrowhead → label text
-        const lineLen=1.4; // inches
-        (el.ioLabels||[]).slice(0,9).forEach((io,i)=>{
-          const ioY=sy(y+45+i*24);
-          if(ioY>sy(y+h-35))return;
-          // Line from module left edge going left
-          slide.addShape(L,{x:sx(x)-lineLen,y:ioY,w:lineLen,h:0,line:{color:'000000',width:1,endArrowType:'open'}});
-          slide.addText(io,{x:sx(x)-lineLen-1.5,y:ioY-0.08,w:1.45,h:sy(22),fontSize:8,bold:true,color:'000000',align:'right',valign:'middle',fontFace:'Calibri',margin:0});
+        // I/O labels with lines
+        const STUB_IN=1.3;
+        (ioLabels||[]).slice(0,9).forEach((io,ii)=>{
+          const ioY=sy(y+48+ii*22);
+          if(ioY>sy(y+h-32))return;
+          slide.addShape(L,{x:sx(x)-STUB_IN,y:ioY,w:STUB_IN,h:0,line:{color:'000000',width:1,endArrowType:'open'}});
+          slide.addText(io,{x:sx(x)-STUB_IN-1.6,y:ioY-0.08,w:1.55,h:sy(22),fontSize:8,bold:true,color:'000000',align:'right',valign:'middle',fontFace:'Calibri',margin:0});
         });
       }
       else if(el.type==='txt'){
-        const opts={x:sx(el.x),y:sy(el.y),w:sx(el.w),h:sy(el.h),fontSize:el.fontSize||13,bold:el.bold||false,italic:el.italic||false,color:hx(el.color),align:el.align||'left',valign:'middle',fontFace:'Arial Black'};
+        const opts={x:sx(el.x),y:sy(el.y),w:sx(el.w),h:sy(el.h),fontSize:el.fontSize||13,bold:el.bold||false,italic:el.italic||false,color:hx(el.color),align:el.align||'left',valign:'middle',fontFace:'Arial'};
         if(el.bgColor&&el.bgColor!=='none')opts.fill={color:hx(el.bgColor)};
         slide.addText(el.text||'',opts);
       }
       else if(el.type==='bus'){
         const col=hx(el.color);
-        const isBP=!!(el.isBackplane||(el.label||'').toUpperCase().includes('BACKPLANE'));
-        // Backplane: left-pointing arrow at start. Other buses: no horizontal arrowhead.
-        const lineOpts={color:col,width:el.lw||2.5};
-        if(isBP) lineOpts.beginArrowType='open';
-        slide.addShape(L,{x:sx(el.x),y:sy(el.y),w:sx(el.w),h:0,line:lineOpts});
-        if(el.label) slide.addText(el.label,{x:sx(el.x),y:sy(el.y-20),w:sx(Math.min(el.w,800)),h:sy(20),fontSize:10,bold:true,color:col,align:'left',fontFace:'Arial Black',margin:0});
+        const lo={color:col,width:el.lw||2.5};
+        if(el.isBackplane)lo.beginArrowType='open';
+        slide.addShape(L,{x:sx(el.x),y:sy(el.y),w:sx(el.w),h:0,line:lo});
+        if(el.label)slide.addText(el.label,{x:sx(el.x),y:sy(el.y-20),w:sx(Math.min(el.w,900)),h:sy(20),fontSize:10,bold:true,color:col,align:'left',fontFace:'Arial Black',margin:0});
         if(el.showDrops){
-          const isPower=(el.label||'').toLowerCase().includes('power')||col.toUpperCase()==='FF0000';
+          const isPow=(el.label||'').toLowerCase().includes('power')||col.toUpperCase()==='FF0000';
           elems.filter(m=>m.type==='mod').forEach(mod=>{
             const cx=mod.x+mod.w/2;
-            if(!isPower&&(cx<el.x-5||cx>el.x+el.w+5)) return;
-            if(mod.y+mod.h>=el.y) return;
-            // Upward line: starts at bus, ends at module bottom with arrow pointing UP into module
-            slide.addShape(L,{x:sx(cx),y:sy(el.y),w:0,h:sy(mod.y+mod.h-el.y),
-              line:{color:col,width:el.lw||1.5,endArrowType:'open'}});
+            if(!isPow&&(cx<el.x-5||cx>el.x+el.w+5))return;
+            if(mod.y+mod.h>=el.y)return;
+            slide.addShape(L,{x:sx(cx),y:sy(el.y),w:0,h:sy(mod.y+mod.h-el.y),line:{color:col,width:el.lw||1.5,endArrowType:'open'}});
           });
         }
       }
       else if(el.type==='ln'||el.type==='arr'){
         const col=hx(el.color);
         slide.addShape(L,{x:sx(el.x1),y:sy(el.y1),w:sx(el.x2-el.x1),h:sy(el.y2-el.y1),
-          line:{color:col,width:el.lw||1.5,dashType:el.dashed?'dash':'solid',endArrowType:el.arrowEnd?'open':'none',beginArrowType:el.arrowStart?'open':'none'}});
+          line:{color:col,width:el.lw||1.5,dashType:el.dashed?'dash':'solid',
+            endArrowType:el.arrowEnd?'open':'none',beginArrowType:el.arrowStart?'open':'none'}});
         if(el.label){const mx=(el.x1+el.x2)/2,my=(el.y1+el.y2)/2;slide.addText(el.label,{x:sx(mx-80),y:sy(my-18),w:sx(160),h:sy(18),fontSize:9,bold:true,color:col,align:'center',fontFace:'Calibri',margin:0});}
       }
       else if(el.type==='shp'){
-        const fc=hx(el.fillColor||'#CCE4F7'),bc=hx(el.borderColor||'#000000');
         const sm={rect:R,oval:gsc('OVAL','oval'),diamond:gsc('DIAMOND','diamond'),arrowR:gsc('RIGHT_ARROW','rightArrow'),arrowL:gsc('LEFT_ARROW','leftArrow'),arrowD:gsc('DOWN_ARROW','downArrow'),hex:gsc('HEXAGON','hexagon'),para:gsc('PARALLELOGRAM','parallelogram')};
         const S=sm[el.shapeType]||R;
-        slide.addShape(S,{x:sx(el.x),y:sy(el.y),w:sx(el.w),h:sy(el.h),fill:{color:fc},line:{color:bc,width:el.borderW||1.5}});
+        slide.addShape(S,{x:sx(el.x),y:sy(el.y),w:sx(el.w),h:sy(el.h),fill:{color:hx(el.fillColor||'#CCE4F7')},line:{color:hx(el.borderColor||'#000000'),width:el.borderW||1.5}});
         if(el.label)slide.addText(el.label,{x:sx(el.x),y:sy(el.y),w:sx(el.w),h:sy(el.h),fontSize:11,bold:true,color:'000000',align:'center',valign:'middle',fontFace:'Calibri',margin:0});
       }
     });
-
     await pptx.writeFile({fileName:'block_diagram.pptx'});
     hideLov();toast('✓ PPT downloaded!');
-  }catch(err){hideLov();toast('✗ '+err.message.slice(0,90),1);console.error(err);}
+  }catch(err){hideLov();toast('✗ PPT: '+err.message.slice(0,90),1);console.error(err);}
 }
 
-// ── PNG EXPORT ────────────────────────────────────────────────────────────
+// ═══════════════════════════════════════════════════════
+// PNG EXPORT — data URI avoids iframe blob taint error
+// ═══════════════════════════════════════════════════════
 async function dlPNG(){
-  showLov('Exporting PNG…');
+  showLov('Rendering PNG at 2× resolution…');
   try{
-    // Clone SVG, strip selection/draw layers
     const c2=svgEl.cloneNode(true);
     c2.querySelector('#sl').innerHTML='';
     c2.querySelector('#gl').innerHTML='';
-    c2.setAttribute('width',SVW);
-    c2.setAttribute('height',SVH);
-    // Ensure xmlns so browsers treat it as a valid SVG document
+    c2.setAttribute('width',SVW);c2.setAttribute('height',SVH);
     c2.setAttribute('xmlns','http://www.w3.org/2000/svg');
     c2.setAttribute('xmlns:xlink','http://www.w3.org/1999/xlink');
     const svgStr=new XMLSerializer().serializeToString(c2);
-    // Use data URI instead of blob URL — avoids cross-origin taint in some browsers
     const dataUrl='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(svgStr);
     await new Promise((res,rej)=>{
       const img=new Image();
       img.onload=()=>{
         try{
-          const cv=document.createElement('canvas');
-          cv.width=SVW*2;cv.height=SVH*2;
+          const cv=document.createElement('canvas');cv.width=SVW*2;cv.height=SVH*2;
           const ctx=cv.getContext('2d');
-          ctx.scale(2,2);
-          ctx.fillStyle='#FFFFFF';ctx.fillRect(0,0,SVW,SVH);
+          ctx.scale(2,2);ctx.fillStyle='#FFFFFF';ctx.fillRect(0,0,SVW,SVH);
           ctx.drawImage(img,0,0,SVW,SVH);
           cv.toBlob(b=>{
-            if(!b){rej(new Error('Canvas toBlob returned null'));return;}
-            const a=document.createElement('a');
-            a.download='block_diagram.png';
-            a.href=URL.createObjectURL(b);
+            if(!b){rej(new Error('Canvas toBlob failed'));return;}
+            const a=document.createElement('a');a.download='block_diagram.png';a.href=URL.createObjectURL(b);
             document.body.appendChild(a);a.click();document.body.removeChild(a);
-            setTimeout(()=>URL.revokeObjectURL(a.href),3000);
-            res();
+            setTimeout(()=>URL.revokeObjectURL(a.href),3000);res();
           },'image/png');
         }catch(e){rej(e);}
       };
-      img.onerror=()=>rej(new Error('Failed to render SVG into image. Try fewer elements.'));
+      img.onerror=()=>rej(new Error('SVG render failed — try reducing element count'));
       img.src=dataUrl;
     });
     hideLov();toast('✓ PNG downloaded (2× resolution)!');
   }catch(err){hideLov();toast('✗ PNG: '+err.message.slice(0,80),1);console.error(err);}
 }
 
-// ── UI HELPERS ────────────────────────────────────────────────────────────
+// ═══════════════════════════════════════════════════════
+// UI UTILITIES
+// ═══════════════════════════════════════════════════════
 function showLov(m){document.getElementById('lmsg').textContent=m;document.getElementById('lov').classList.add('show');}
 function hideLov(){document.getElementById('lov').classList.remove('show');}
 let _tt;
