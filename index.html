@@ -88,6 +88,49 @@ input[type=checkbox]{accent-color:var(--acc);width:13px;height:13px;cursor:point
 .keystat{display:flex;align-items:center;gap:6px;font-size:10px;font-family:var(--m);cursor:pointer;padding:3px 8px;border-radius:5px;border:1px solid var(--bd);background:var(--sf2);white-space:nowrap;margin-left:auto}
 .keystat.ok{border-color:rgba(63,185,80,.4);color:var(--grn)}.keystat.bad{border-color:rgba(248,113,113,.4);color:var(--red)}
 .key-dot{width:7px;height:7px;border-radius:50%;background:currentColor;flex-shrink:0}
+/* ═══ WIZARD ═══ */
+#wiz{position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:990;display:none;align-items:center;justify-content:center;overflow-y:auto;padding:20px}
+#wiz.show{display:flex}
+.wbox{background:var(--sf2);border:1px solid var(--bd);border-radius:14px;width:680px;max-width:96vw;max-height:90vh;display:flex;flex-direction:column;overflow:hidden}
+.whdr{padding:18px 22px 14px;border-bottom:1px solid var(--bd);flex-shrink:0}
+.whdr h2{font-size:16px;font-weight:700;margin-bottom:4px}
+.wprog{display:flex;gap:4px;margin-top:12px}
+.wpstep{flex:1;height:4px;border-radius:2px;background:var(--bd);transition:.3s}
+.wpstep.done{background:var(--grn)}.wpstep.active{background:var(--acc)}
+.wbody{padding:20px 22px;overflow-y:auto;flex:1}
+.wbody::-webkit-scrollbar{width:4px}.wbody::-webkit-scrollbar-thumb{background:var(--bd)}
+.wftr{padding:14px 22px;border-top:1px solid var(--bd);display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.wlbl{font-size:10px;color:var(--mut);font-family:var(--m);text-transform:uppercase;letter-spacing:.08em;margin-bottom:5px;font-weight:700}
+.winp{width:100%;padding:8px 10px;background:var(--bg);border:1px solid var(--bd);border-radius:6px;color:var(--txt);font-size:13px;font-family:var(--f);outline:none;transition:.15s}
+.winp:focus{border-color:var(--acc)}
+.wsel{width:100%;padding:8px 10px;background:var(--bg);border:1px solid var(--bd);border-radius:6px;color:var(--txt);font-size:13px;font-family:var(--f);outline:none;cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%237d8590'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center}
+.wsel:focus{border-color:var(--acc)}
+.wsel option{background:var(--sf2)}
+.wcard{background:var(--bg);border:1px solid var(--bd);border-radius:8px;padding:14px 16px;margin-bottom:12px}
+.wcard-hdr{display:flex;align-items:center;gap:8px;margin-bottom:12px}
+.wslot-num{width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;background:var(--acc);color:#000}
+.wcard-hdr h4{font-size:13px;font-weight:700}
+.wrow{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
+.wrow3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:10px}
+.wpr{margin-bottom:10px}
+.wtag{display:inline-flex;align-items:center;gap:4px;padding:3px 8px;background:var(--sf2);border:1px solid var(--bd);border-radius:4px;font-size:11px;margin:2px;cursor:pointer;transition:.15s;user-select:none}
+.wtag:hover{border-color:var(--acc)}.wtag.on{background:rgba(56,189,248,.15);border-color:var(--blu);color:var(--blu)}
+.wtag-x{font-size:10px;color:var(--mut)}
+.wdivider{border:none;border-top:1px solid var(--bd);margin:16px 0}
+.wconn-row{display:grid;grid-template-columns:1fr auto 1fr auto;gap:8px;align-items:center;margin-bottom:10px}
+.wconn-row label{font-size:11px;color:var(--mut);text-align:center}
+.wadd{padding:5px 12px;background:rgba(56,189,248,.1);border:1px solid rgba(56,189,248,.3);color:var(--blu);border-radius:5px;font-size:11px;font-weight:700;cursor:pointer;white-space:nowrap}
+.wadd:hover{background:rgba(56,189,248,.2)}
+.wdel{padding:3px 8px;background:rgba(248,113,113,.1);border:1px solid rgba(248,113,113,.3);color:var(--red);border-radius:4px;font-size:11px;cursor:pointer}
+.wdel:hover{background:rgba(248,113,113,.2)}
+.wbtn{padding:8px 20px;border-radius:7px;font-size:12px;font-weight:700;cursor:pointer;border:1px solid var(--bd);background:var(--sf2);color:var(--txt);transition:.2s}
+.wbtn:hover{background:var(--bd)}.wbtn.next{background:var(--acc);color:#000;border-color:var(--acc)}.wbtn.next:hover{background:#d97706}
+.wbtn.gen{background:var(--grn);color:#000;border-color:var(--grn);font-size:14px;padding:10px 28px}
+.wbtn.gen:hover{background:#2ea043}
+.wslot-color{width:16px;height:16px;border-radius:3px;flex-shrink:0}
+.wsec{font-size:11px;font-weight:700;color:var(--acc);text-transform:uppercase;letter-spacing:.1em;margin-bottom:10px;margin-top:4px}
+.wchip-group{display:flex;flex-wrap:wrap;gap:4px;margin-top:4px}
+.wcbr{display:flex;align-items:center;gap:6px;font-size:12px;padding:3px 0}
 
 </style>
 </head>
@@ -104,6 +147,7 @@ input[type=checkbox]{accent-color:var(--acc);width:13px;height:13px;cursor:point
 <!-- ═══ PALETTE ═══ -->
 <div id="pal">
   <input type="file" id="fileInput" accept="image/*" style="display:none">
+  <button class="bai" style="background:linear-gradient(135deg,rgba(240,165,0,.2),rgba(240,165,0,.05));border-color:rgba(240,165,0,.5);color:var(--acc);margin-bottom:5px" onclick="openWizard()">🧙 Guided Diagram Wizard</button>
   <button class="bai" id="aibtn" onclick="document.getElementById('fileInput').click()">🔍 Upload &amp; Analyze</button>
 
   <div class="ps">Tools</div>
@@ -219,6 +263,35 @@ input[type=checkbox]{accent-color:var(--acc);width:13px;height:13px;cursor:point
     <div class="keybts">
       <button onclick="skipKey()" style="color:var(--mut)">Skip (manual drawing only)</button>
       <button class="save" onclick="saveKey()">💾 Save Key &amp; Continue</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     GUIDED DIAGRAM WIZARD
+═══════════════════════════════════════════════════════ -->
+<div id="wiz">
+  <div class="wbox">
+    <!-- Header with progress -->
+    <div class="whdr">
+      <h2 id="wiz-title">🧙 Guided Diagram Wizard</h2>
+      <div style="font-size:11px;color:var(--mut)" id="wiz-subtitle">Step 1 of 4</div>
+      <div class="wprog" id="wprog">
+        <div class="wpstep active" id="wp1"></div>
+        <div class="wpstep" id="wp2"></div>
+        <div class="wpstep" id="wp3"></div>
+        <div class="wpstep" id="wp4"></div>
+      </div>
+    </div>
+    <!-- Body (content swapped per step) -->
+    <div class="wbody" id="wiz-body"></div>
+    <!-- Footer nav -->
+    <div class="wftr">
+      <button class="wbtn" onclick="wizCancel()">✕ Cancel</button>
+      <div style="display:flex;gap:8px">
+        <button class="wbtn" id="wiz-back" onclick="wizBack()" style="display:none">← Back</button>
+        <button class="wbtn next" id="wiz-next" onclick="wizNext()">Next →</button>
+      </div>
     </div>
   </div>
 </div>
@@ -1004,7 +1077,7 @@ document.getElementById('fileInput').addEventListener('change',async e=>{
       const resp=await fetch('https://api.anthropic.com/v1/messages',{
         method:'POST',headers,
         body:JSON.stringify({
-          model:'claude-sonnet-4-20250514',max_tokens:4000,
+          model:'claude-sonnet-4-6',max_tokens:4000,
           system:`You are an expert hardware systems engineer reading VPX/VME embedded block diagrams (including hand-drawn sketches).
 
 Carefully analyse the image and extract ALL visible elements. Return ONLY valid JSON — no markdown, no code fences.
@@ -1241,7 +1314,468 @@ function toast(msg,err){
   t.className='show';clearTimeout(_tt);_tt=setTimeout(()=>t.className='',3500);
 }
 
+// ═══════════════════════════════════════════════════════
+// GUIDED DIAGRAM WIZARD
+// ═══════════════════════════════════════════════════════
+
+// Module type → { color, defaultIO, defaultSubs, colorHex }
+const MOD_DEFS = {
+  'SBC':         {color:'blue',   hex:'#9DC3E6', subs:['XMC Slot','M.2 NVMe 1TB'],           io:['1x Display Port','1x USB2.0 & 1x USB3.0','2x RS232','4x GPIO','2x 1G Ethernet']},
+  'SBC (Dual)':  {color:'blue',   hex:'#9DC3E6', subs:['XMC Slot','MIL-1553B XMC Card','M.2 NVMe 1TB'], io:['1x Display Port','1x USB2.0 & 1x USB3.0','2x RS232','4x GPIO','2x 1G Ethernet','2x Dual MIL-STD-1553B']},
+  'GPU':         {color:'green',  hex:'#70AD47', subs:['3U VPX GPGPU (RTX 2000)'],            io:['2x HD-SDI Video Output','1x Display Port','1x 1G Ethernet']},
+  'FPGA':        {color:'purple', hex:'#7030A0', subs:['FPGA Module','I/O Interface'],         io:['8x Aurora 8b/10b','2x ARINC 818','1x Display Port','1x 1G Ethernet']},
+  'ARINC':       {color:'lime',   hex:'#92D050', subs:['3U VPX ARINC 818'],                   io:['2x ARINC 818 Video Rx/Tx','2x 1G Ethernet']},
+  'Switch':      {color:'purple', hex:'#7030A0', subs:['Cometh 4000a','Cometh 4070e'],         io:['12x 1G Ethernet','1x Console','Ethernet via Backplane']},
+  'PSU':         {color:'red',    hex:'#FF0000', subs:['DC-DC Power Supply Module'],           io:['48V DC Input','ON/OFF Control']},
+  'AC-DC PSU':   {color:'red',    hex:'#FF0000', subs:['AC-DC Power Supply Module'],           io:['AC Input','48V DC Output','ON/OFF Control']},
+  'Carrier Card':{color:'green',  hex:'#70AD47', subs:['3U VPX SATA Carrier','2.5" 2TB SSD Drive Module'], io:['SATA Over Backplane']},
+  'I/O Board':   {color:'orange', hex:'#FF6600', subs:['FPGA I/O Board'],                     io:['12x RS422','10x RS485','4x Avionic Discrete','1x Display','1x 1G Ethernet']},
+  'Video Board': {color:'cyan',   hex:'#00B0F0', subs:['FPGA Video Board'],                   io:['2x HD-SDI Video Output','8x Video Input','2x ARINC 818','1x 1G Ethernet']},
+  'Storage':     {color:'green',  hex:'#70AD47', subs:['32TB Storage','NVMe Array'],           io:[]},
+  'Spare':       {color:'gray',   hex:'#A6A6A6', subs:[],                                     io:[]},
+  'Custom':      {color:'orange', hex:'#FF6600', subs:[],                                     io:[]},
+};
+
+// All available I/O options (for the chip selector)
+const IO_OPTIONS = [
+  '1x Display Port','2x Display Port',
+  '1x USB2.0 & 1x USB3.0','2x USB 3.2',
+  '1x RS232','2x RS232','4x RS232',
+  '2x RS422','4x RS422','8x RS422','12x RS422',
+  '4x RS485','8x RS485','10x RS485',
+  '1x 1G Ethernet','2x 1G Ethernet','3x 1G Ethernet','4x 1G Ethernet','12x 1G Ethernet',
+  '1x MIL-STD-1553B','2x Dual MIL-STD-1553B',
+  '2x ARINC 818 Video Rx/Tx','4x ARINC 818',
+  '8x Aurora 8b/10b',
+  '4x GPIO','8x GPIO','16x GPIO',
+  '4x Avionic Discrete Single',
+  '48V DC Input','ON/OFF Control',
+  '2x HD-SDI Video Output','8x Video Input',
+  'SATA Over Backplane','PCIe Over Backplane',
+  '1x Console','Ethernet via Backplane',
+  'AC Input','48V DC Output',
+];
+
+// Wizard state
+let wState = {step:1, numSlots:4, slots:[], connections:[], backplane:{type:'VPX',size:'3U'}};
+
+function openWizard(){
+  wState = {step:1, numSlots:4, slots:[], connections:[], backplane:{type:'VPX',size:'3U'}};
+  document.getElementById('wiz').classList.add('show');
+  wizRender();
+}
+function wizCancel(){document.getElementById('wiz').classList.remove('show');}
+
+function wizBack(){
+  if(wState.step>1){wState.step--;wizRender();}
+}
+function wizNext(){
+  if(!wizValidate())return;
+  if(wState.step===4){wizGenerate();return;}
+  wState.step++;
+  wizRender();
+}
+
+function wizValidate(){
+  if(wState.step===1){
+    const v=parseInt(document.getElementById('w-slots').value);
+    if(isNaN(v)||v<1||v>12){toast('Enter a number of slots between 1 and 12',1);return false;}
+    wState.numSlots=v;
+    // Initialize slots array
+    while(wState.slots.length<v) wState.slots.push({label:'',colorType:'blue',subs:[],io:[],customLabel:''});
+    wState.slots=wState.slots.slice(0,v);
+    return true;
+  }
+  if(wState.step===2){
+    for(let i=0;i<wState.numSlots;i++){
+      const sel=document.getElementById('wmod-'+i);
+      if(sel){
+        const val=sel.value;
+        const def=MOD_DEFS[val]||MOD_DEFS['Custom'];
+        wState.slots[i].label=val;
+        wState.slots[i].colorType=def.color;
+        // Read custom label if set
+        const cust=document.getElementById('wcust-'+i);
+        if(cust&&cust.value.trim()) wState.slots[i].label=cust.value.trim();
+        // Read IO chips
+        wState.slots[i].io=wizReadIO(i);
+        // Read sub-components
+        const subInp=document.getElementById('wsub-'+i);
+        wState.slots[i].subs=subInp?subInp.value.split('\n').filter(s=>s.trim()):def.subs;
+      }
+    }
+    return true;
+  }
+  if(wState.step===3){
+    wState.connections=wizReadConnections();
+    return true;
+  }
+  if(wState.step===4){
+    const bt=document.getElementById('w-bptype');
+    const bs=document.getElementById('w-bpsize');
+    if(bt)wState.backplane.type=bt.value;
+    if(bs)wState.backplane.size=bs.value;
+    return true;
+  }
+  return true;
+}
+
+function wizReadIO(idx){
+  const tags=document.querySelectorAll(`#wio-tags-${idx} .wtag.on`);
+  const result=[];
+  tags.forEach(t=>result.push(t.getAttribute('data-val')));
+  return result;
+}
+
+function wizReadConnections(){
+  const rows=document.querySelectorAll('.wconn-entry');
+  const result=[];
+  rows.forEach(row=>{
+    const typeEl=row.querySelector('.wconn-type');
+    const fromEl=row.querySelector('.wconn-from');
+    const toEl  =row.querySelector('.wconn-to');   // may be hidden but always exists now
+    const dirEl =row.querySelector('.wconn-dir');
+    if(!typeEl||!fromEl||!dirEl)return;
+    const type=typeEl.value;
+    const from=parseInt(fromEl.value)||0;
+    const to  =toEl?parseInt(toEl.value)||0:0;
+    const dir =dirEl.value;
+    result.push({type,from,to,dir});
+  });
+  return result;
+}
+
+function wizRender(){
+  // Update progress
+  const titles=['How Many Slots?','Configure Each Slot','Connections','Backplane Type'];
+  document.getElementById('wiz-title').textContent='🧙 '+titles[wState.step-1];
+  document.getElementById('wiz-subtitle').textContent='Step '+wState.step+' of 4';
+  ['wp1','wp2','wp3','wp4'].forEach((id,i)=>{
+    const el=document.getElementById(id);
+    el.className='wpstep'+(i+1<wState.step?' done':i+1===wState.step?' active':'');
+  });
+  document.getElementById('wiz-back').style.display=wState.step>1?'':'none';
+  const nxt=document.getElementById('wiz-next');
+  nxt.textContent=wState.step===4?'✨ Generate Diagram':'Next →';
+  nxt.className='wbtn'+(wState.step===4?' gen':' next');
+
+  const body=document.getElementById('wiz-body');
+  if(wState.step===1) body.innerHTML=wizStep1();
+  else if(wState.step===2) body.innerHTML=wizStep2();
+  else if(wState.step===3) body.innerHTML=wizStep3();
+  else if(wState.step===4) body.innerHTML=wizStep4();
+}
+
+// ── STEP 1: Number of slots ──────────────────────────────
+function wizStep1(){
+  return `
+<div class="wsec">How many slots does your backplane have?</div>
+<div style="font-size:12px;color:var(--mut);margin-bottom:18px">Typical VPX/VME backplanes have 4–8 slots. Enter the total number of card slots.</div>
+<div style="display:flex;align-items:center;gap:16px;margin-bottom:24px">
+  <div style="flex:0 0 120px">
+    <div class="wlbl">Number of Slots</div>
+    <input class="winp" id="w-slots" type="number" min="1" max="12" value="${wState.numSlots}" style="font-size:20px;text-align:center;font-weight:700;padding:12px">
+  </div>
+  <div style="font-size:12px;color:var(--mut);line-height:1.8">
+    Common configurations:<br>
+    <span style="color:var(--acc);cursor:pointer;font-weight:700" onclick="document.getElementById('w-slots').value=4">4-slot</span> &nbsp;
+    <span style="color:var(--acc);cursor:pointer;font-weight:700" onclick="document.getElementById('w-slots').value=6">6-slot</span> &nbsp;
+    <span style="color:var(--acc);cursor:pointer;font-weight:700" onclick="document.getElementById('w-slots').value=8">8-slot</span> &nbsp;
+    <span style="color:var(--acc);cursor:pointer;font-weight:700" onclick="document.getElementById('w-slots').value=10">10-slot</span>
+  </div>
+</div>`;
+}
+
+// ── STEP 2: Configure each slot ──────────────────────────
+function wizStep2(){
+  let html='<div class="wsec">Configure each slot — module type, I/O labels, sub-components</div>';
+  for(let i=0;i<wState.numSlots;i++){
+    const saved=wState.slots[i]||{};
+    const curLabel=saved.label||'';
+    const def=MOD_DEFS[curLabel]||MOD_DEFS['SBC'];
+    const curIO=saved.io&&saved.io.length?saved.io:def.io;
+    const curSubs=saved.subs&&saved.subs.length?saved.subs:def.subs;
+    const swColor=def.hex;
+
+    html+=`<div class="wcard">
+<div class="wcard-hdr">
+  <div class="wslot-num">${i+1}</div>
+  <div class="wslot-color" style="background:${swColor};border:1px solid rgba(0,0,0,.2)" id="wslot-color-${i}"></div>
+  <h4>Slot ${i+1}</h4>
+</div>
+<div class="wrow">
+  <div>
+    <div class="wlbl">Module Type</div>
+    <select class="wsel" id="wmod-${i}" onchange="wizModChange(${i},this.value)">
+      ${Object.keys(MOD_DEFS).map(k=>`<option value="${k}"${curLabel===k?' selected':''}>${k}</option>`).join('')}
+    </select>
+  </div>
+  <div>
+    <div class="wlbl">Custom Label (optional)</div>
+    <input class="winp" id="wcust-${i}" placeholder="Override module name…" value="${curLabel&&!MOD_DEFS[curLabel]?curLabel:''}">
+  </div>
+</div>
+<div class="wpr">
+  <div class="wlbl">I/O Labels — click to toggle (blue = included)</div>
+  <div class="wchip-group" id="wio-tags-${i}">
+    ${IO_OPTIONS.map(opt=>`<span class="wtag${curIO.includes(opt)?' on':''}" data-val="${opt}" onclick="this.classList.toggle('on')">${opt}</span>`).join('')}
+  </div>
+</div>
+<div class="wpr">
+  <div class="wlbl">Sub-components inside block (one per line)</div>
+  <textarea class="winp" id="wsub-${i}" rows="3" style="resize:vertical;font-size:11px;line-height:1.5">${curSubs.join('\n')}</textarea>
+</div>
+</div>`;
+  }
+  return html;
+}
+
+function wizModChange(idx, val){
+  const def=MOD_DEFS[val]||MOD_DEFS['Custom'];
+  // Update color swatch
+  const sw=document.getElementById('wslot-color-'+idx);
+  if(sw) sw.style.background=def.hex;
+  // Update IO chips
+  const tagContainer=document.getElementById('wio-tags-'+idx);
+  if(tagContainer){
+    tagContainer.querySelectorAll('.wtag').forEach(tag=>{
+      const v=tag.getAttribute('data-val');
+      tag.classList.toggle('on',def.io.includes(v));
+    });
+  }
+  // Update sub-components
+  const subInp=document.getElementById('wsub-'+idx);
+  if(subInp) subInp.value=def.subs.join('\n');
+}
+
+// ── STEP 3: Connections ──────────────────────────────────
+const CONN_TYPES=[
+  {key:'pcie4',label:'PCIe Gen 4',color:'7030A0'},
+  {key:'pcie3',label:'PCIe Gen 3',color:'7030A0'},
+  {key:'sata', label:'SATA 300',  color:'FFC000'},
+  {key:'eth',  label:'1G Ethernet',color:'FF8C00'},
+  {key:'power',label:'Power',     color:'FF0000'},
+  {key:'arinc',label:'ARINC 818', color:'92D050'},
+];
+
+function wizStep3(){
+  // Auto-add power if PSU exists
+  if(wState.connections.length===0){
+    const psuIdx=wState.slots.findIndex(s=>s.colorType==='red'||s.label==='PSU'||s.label==='AC-DC PSU');
+    if(psuIdx>=0){
+      wState.connections.push({type:'power',from:psuIdx+1,to:0,dir:'power'});
+    }
+  }
+
+  const slotOpts=wState.slots.map((s,i)=>`<option value="${i+1}">Slot ${i+1} — ${s.label||'Module'}</option>`).join('');
+  let html=`
+<div class="wsec">Define connections between slots</div>
+<div style="font-size:11px;color:var(--mut);margin-bottom:14px;line-height:1.7">
+  Add bus connections. Power line auto-connects PSU → all slots.<br>
+  For PCIe/SATA/Ethernet: choose which slot connects to which, and direction.
+</div>
+<div id="wconn-list">`;
+
+  wState.connections.forEach((c,i)=>{ html+=wizConnRow(i,c,slotOpts); });
+  html+=`</div>
+<div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:12px">`;
+  CONN_TYPES.forEach(ct=>{
+    html+=`<button class="wadd" onclick="wizAddConn('${ct.key}')">＋ ${ct.label}</button>`;
+  });
+  html+=`</div>`;
+  return html;
+}
+
+function wizConnRow(i, c, slotOpts){
+  if(!slotOpts){
+    slotOpts=wState.slots.map((s,si)=>`<option value="${si+1}">Slot ${si+1} — ${s.label||'Module'}</option>`).join('');
+  }
+  const ct=CONN_TYPES.find(x=>x.key===c.type)||CONN_TYPES[0];
+  const isPow=c.type==='power';
+  const uid2='wc'+i+'_'+Date.now();
+  return `<div class="wcard wconn-entry" style="padding:10px 14px;margin-bottom:8px" id="wcrow_${uid2}">
+<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+  <div class="wconn-dot" style="width:12px;height:12px;border-radius:2px;background:#${ct.color};flex-shrink:0;transition:.2s"></div>
+  <select class="wsel wconn-type" style="width:130px" onchange="wizConnTypeChange(this)">
+    ${CONN_TYPES.map(x=>`<option value="${x.key}"${c.type===x.key?' selected':''}>${x.label}</option>`).join('')}
+  </select>
+  <span class="wconn-fromlbl" style="font-size:11px;color:var(--mut)">${isPow?'From PSU:':'From:'}</span>
+  <select class="wsel wconn-from" style="width:145px">
+    <option value="0"${c.from===0?' selected':''}>Auto / All</option>
+    ${slotOpts.replace(`value="${c.from}"`,`value="${c.from}" selected`)}
+  </select>
+  <span class="wconn-tolbl" style="font-size:11px;color:var(--mut);${isPow?'display:none':''}">&nbsp;→&nbsp;To:</span>
+  <select class="wsel wconn-to" style="width:145px;${isPow?'display:none':''}">
+    <option value="0"${c.to===0?' selected':''}>All Slots</option>
+    ${slotOpts.replace(`value="${c.to}"`,`value="${c.to}" selected`)}
+  </select>
+  <select class="wsel wconn-dir" style="width:155px">
+    <option value="power"${c.dir==='power'?' selected':''}${!isPow?'style="display:none"':''}>⬇ PSU → All Modules</option>
+    <option value="bidir"${c.dir==='bidir'?' selected':''}>↔ Bidirectional</option>
+    <option value="fwd"${c.dir==='fwd'?' selected':''}>→ From → To</option>
+    <option value="rev"${c.dir==='rev'?' selected':''}>← To → From</option>
+  </select>
+  <button class="wdel" onclick="this.closest('.wconn-entry').remove()">✕</button>
+</div></div>`;
+}
+
+// Called when connection type dropdown changes — updates colors, shows/hides to-slot selector
+function wizConnTypeChange(sel){
+  const row=sel.closest('.wconn-entry');
+  const type=sel.value;
+  const isPow=type==='power';
+  const ct=CONN_TYPES.find(x=>x.key===type)||CONN_TYPES[0];
+  // Update color dot
+  const dot=row.querySelector('.wconn-dot');
+  if(dot)dot.style.background='#'+ct.color;
+  // Show/hide "to" slot selector
+  const toLbl=row.querySelector('.wconn-tolbl');
+  const toSel=row.querySelector('.wconn-to');
+  const dirSel=row.querySelector('.wconn-dir');
+  const fromLbl=row.querySelector('.wconn-fromlbl');
+  if(toLbl)toLbl.style.display=isPow?'none':'';
+  if(toSel)toSel.style.display=isPow?'none':'';
+  if(fromLbl)fromLbl.textContent=isPow?'From PSU:':'From:';
+  // Update direction dropdown selection
+  if(dirSel){
+    if(isPow) dirSel.value='power';
+    else if(dirSel.value==='power') dirSel.value='bidir';
+  }
+}
+
+let _wconnIdx=0;
+function wizAddConn(type){
+  const psuIdx=wState.slots.findIndex(s=>s.colorType==='red'||s.label==='PSU'||s.label==='AC-DC PSU');
+  const newConn={type,from:type==='power'?(psuIdx>=0?psuIdx+1:0):0,to:0,dir:type==='power'?'power':'bidir'};
+  const list=document.getElementById('wconn-list');
+  if(!list)return;
+  const div=document.createElement('div');
+  div.innerHTML=wizConnRow(_wconnIdx++,newConn,null);
+  const entry=div.firstElementChild;
+  if(entry) list.appendChild(entry);
+}
+
+// ── STEP 4: Backplane ────────────────────────────────────
+function wizStep4(){
+  return `
+<div class="wsec">Choose Your Backplane</div>
+<div style="font-size:12px;color:var(--mut);margin-bottom:18px">Select the backplane standard and form factor. This adds the labeled bus line across all modules.</div>
+<div class="wrow" style="max-width:400px">
+  <div>
+    <div class="wlbl">Backplane Standard</div>
+    <select class="wsel" id="w-bptype">
+      <option value="VPX"${wState.backplane.type==='VPX'?' selected':''}>VPX (VITA 65)</option>
+      <option value="VME"${wState.backplane.type==='VME'?' selected':''}>VME (IEEE 1014)</option>
+      <option value="CPCI"${wState.backplane.type==='CPCI'?' selected':''}>CompactPCI</option>
+      <option value="None">No Backplane Line</option>
+    </select>
+  </div>
+  <div>
+    <div class="wlbl">Form Factor</div>
+    <select class="wsel" id="w-bpsize">
+      <option value="3U"${wState.backplane.size==='3U'?' selected':''}>3U (100mm height)</option>
+      <option value="6U"${wState.backplane.size==='6U'?' selected':''}>6U (233mm height)</option>
+    </select>
+  </div>
+</div>
+<hr class="wdivider">
+<div class="wsec">Summary — Ready to Generate</div>
+<div style="background:var(--bg);border:1px solid var(--bd);border-radius:8px;padding:14px 16px;font-size:11px;font-family:var(--m);color:var(--mut);line-height:2">
+  <div>📦 <strong style="color:var(--txt)">${wState.numSlots} Slots</strong> configured</div>
+  ${wState.slots.map((s,i)=>`<div style="padding-left:18px">Slot ${i+1}: <span style="color:var(--acc)">${s.label||'Module'}</span>${s.io.length?' · '+s.io.length+' I/O':''}</div>`).join('')}
+  <div style="margin-top:6px">🔌 <strong style="color:var(--txt)">${wState.connections.length} connection${wState.connections.length!==1?'s':''}</strong></div>
+  <div style="margin-top:4px">🔧 Backplane: <strong style="color:var(--txt)">${wState.backplane.size} ${wState.backplane.type}</strong></div>
+</div>`;
+}
+
+// ── GENERATE DIAGRAM FROM WIZARD STATE ──────────────────
+function wizGenerate(){
+  if(!wizValidate())return;
+  document.getElementById('wiz').classList.remove('show');
+  saveH();elems=[];selId=null;
+
+  const MOD_W=115,MOD_H=330;
+  const n=wState.numSlots;
+  const GAP=16;
+  const totalW=n*MOD_W+(n-1)*GAP;
+  const startX=Math.max(50,Math.round((SVW-totalW)/2));
+  const modY=55;
+
+  // Add title
+  elems.push({id:uid(),type:'txt',x:40,y:14,w:800,h:36,text:wState.backplane.size+' '+wState.backplane.type+' Block Diagram',fontSize:22,bold:true,italic:false,color:'#000000',bgColor:'none',align:'left'});
+
+  // Add modules
+  wState.slots.forEach((slot,i)=>{
+    const x=startX+i*(MOD_W+GAP);
+    elems.push({id:uid(),type:'mod',x,y:modY,w:MOD_W,h:MOD_H,
+      label:slot.label||'Module',colorType:slot.colorType||'blue',
+      subComponents:slot.subs||[],slot:i+1,ioLabels:slot.io||[]});
+  });
+
+  // Calculate bus Y positions (below modules with spacing)
+  const busStartY=modY+MOD_H+45;
+  const busSpacing=50;
+
+  // Add backplane
+  if(wState.backplane.type!=='None'){
+    const bpLabel=wState.backplane.size+' '+wState.backplane.type+' BACKPLANE';
+    elems.push({id:uid(),type:'bus',x:startX-20,y:busStartY,w:totalW+40,label:bpLabel,color:'#1F7C00',lw:3,isBackplane:true,showDrops:false});
+  }
+
+  // Add connections
+  const connColors={pcie4:'#7030A0',pcie3:'#7030A0',sata:'#FFC000',eth:'#FF8C00',power:'#FF0000',arinc:'#92D050'};
+  const connLabels={pcie4:'PCIe Gen 4',pcie3:'PCIe Gen 3',sata:'SATA 300 Over Backplane',eth:'1G Ethernet Over Backplane',power:'Power',arinc:'ARINC 818'};
+  let busY=busStartY+busSpacing;
+
+  const addedTypes=new Set();
+  wState.connections.forEach(conn=>{
+    const col=connColors[conn.type]||'#595959';
+    const lbl=connLabels[conn.type]||conn.type;
+    const isPower=conn.type==='power';
+
+    // For power: single wide bus spanning all modules
+    if(isPower){
+      if(addedTypes.has('power'))return;
+      addedTypes.add('power');
+      elems.push({id:uid(),type:'bus',x:startX-20,y:busY,w:totalW+40,label:lbl,color:col,lw:2,isBackplane:false,showDrops:true});
+      busY+=busSpacing;
+      return;
+    }
+
+    // For point-to-point connections
+    const fromIdx=(conn.from||1)-1;
+    const toIdx=(conn.to||n)-1;
+    const x1=startX+Math.max(0,Math.min(fromIdx,n-1))*(MOD_W+GAP)+MOD_W/2;
+    const x2=startX+Math.max(0,Math.min(toIdx,n-1))*(MOD_W+GAP)+MOD_W/2;
+    const lineX=Math.min(x1,x2)-10;
+    const lineW=Math.abs(x1-x2)+20;
+    const hasArrowStart=conn.dir==='rev'||conn.dir==='bidir';
+    const hasArrowEnd=conn.dir==='fwd'||conn.dir==='bidir';
+
+    // All connections: drop down from module then horizontal bus
+    if(conn.to===0||conn.from===0){
+      // Spans all — use full width bus
+      elems.push({id:uid(),type:'bus',x:startX-20,y:busY,w:totalW+40,label:lbl,color:col,lw:2,isBackplane:false,showDrops:true});
+    }else{
+      // Partial bus between two slots
+      elems.push({id:uid(),type:'bus',x:lineX,y:busY,w:lineW,label:lbl,color:col,lw:2,isBackplane:false,showDrops:false});
+      // Drop lines
+      [fromIdx,toIdx].forEach(si=>{
+        const cx=startX+si*(MOD_W+GAP)+MOD_W/2;
+        elems.push({id:uid(),type:'ln',x1:cx,y1:busY,x2:cx,y2:modY+MOD_H+5,label:'',color:col,lw:1.5,dashed:false,arrowEnd:true,arrowStart:false});
+      });
+    }
+    busY+=busSpacing;
+  });
+
+  ra();up();
+  toast('✓ Diagram generated! '+n+' slots · '+wState.connections.length+' connections');
+}
+
+
+// ═══════════════════════════════════════════════════════
 // INIT
+// ═══════════════════════════════════════════════════════
 saveH();ra();
 </script>
 </body>
