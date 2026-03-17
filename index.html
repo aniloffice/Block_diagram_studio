@@ -444,6 +444,14 @@ function rMod(el){
   const{id,x,y,w,h,label,colorType,subComponents,slot,ioLabels}=el;
   const c=CM[colorType]||CM.gray;
   const g=mk('g',{id:'e_'+id,'data-id':id,class:'elem',cursor:'move',transform:`translate(${x},${y})`});
+
+  // LARGE TRANSPARENT HIT AREA — covers module body + I/O label zone above.
+  // Without this, clicks in the gaps between I/O label text elements fall through
+  // to the background and the module can't be selected/edited.
+  const ioCount=(ioLabels||[]).length;
+  const hitAbove=ioCount>0?ioCount*18+20:0;
+  g.appendChild(mk('rect',{x:0,y:-hitAbove,width:w,height:h+hitAbove,fill:'transparent','pointer-events':'all'}));
+
   // Black outer border
   g.appendChild(mk('rect',{x:-2,y:-2,width:w+4,height:h+4,rx:5,fill:'#000000',stroke:'none'}));
   // Colored fill
@@ -477,16 +485,30 @@ function rMod(el){
     g.appendChild(mk('rect',{x:7,y:sy2,width:w-14,height:22,rx:3,fill:'#'+c.sub,stroke:'#'+c.bdr,'stroke-width':1}));
     g.appendChild(mkt('Slot '+slot,{x:w/2,y:sy2+15,'text-anchor':'middle',fill:'#'+c.txt,'font-size':9,'font-weight':'bold','font-family':'Calibri'}));
   }
-  // I/O labels: stub exits left wall → arrowhead → label text
+  // I/O Labels: vertical spine ABOVE module top, one label row per entry
+  //   1x Display Port ──┐
+  //   1x USB 3.0      ──┤  (spine centred on module x)
+  //   2x RS232        ──┤
+  //                     │
+  //                     ↓ (arrowhead touches module top)
+  //           [══ MODULE ══]
   const ios=ioLabels||[];
-  const STUB=55,IGAP=22;
-  const ioMk=mkE('io_'+id,'#000000');
-  ios.slice(0,9).forEach((io,ii)=>{
-    const ly=48+ii*IGAP;
-    if(ly>h-32)return;
-    g.appendChild(mk('line',{x1:0,y1:ly,x2:-STUB,y2:ly,stroke:'#000000','stroke-width':1,'marker-end':ioMk}));
-    g.appendChild(mkt(io,{x:-STUB-6,y:ly+4,'text-anchor':'end',fill:'#000000','font-size':9,'font-family':'Calibri','font-weight':'bold'}));
-  });
+  if(ios.length>0){
+    const IGAP=16;
+    const spineX=w/2;
+    const spineBottom=-6;
+    const spineTop=spineBottom-ios.length*IGAP-4;
+    const ioMk=mkE('ioD_'+id,'#000000');
+    // Vertical spine with downward arrowhead touching module top
+    g.appendChild(mk('line',{x1:spineX,y1:spineTop,x2:spineX,y2:spineBottom,stroke:'#000000','stroke-width':1,'marker-end':ioMk}));
+    ios.slice(0,12).forEach((io,ii)=>{
+      const ly=spineTop+4+ii*IGAP;
+      // Short horizontal tick
+      g.appendChild(mk('line',{x1:spineX,y1:ly,x2:spineX-5,y2:ly,stroke:'#000000','stroke-width':1}));
+      // Label text right-aligned just left of tick
+      g.appendChild(mkt(io,{x:spineX-7,y:ly+4,'text-anchor':'end',fill:'#000000','font-size':8,'font-family':'Calibri','font-weight':'bold'}));
+    });
+  }
   return g;
 }
 
@@ -606,7 +628,11 @@ function rSel(){
   const el=elems.find(e=>e.id===selId);if(!el)return;
   if(el.type==='mod'||el.type==='txt'||el.type==='shp'){
     const{x,y,w,h}=el;
-    slL.appendChild(mk('rect',{x:x-3,y:y-3,width:w+6,height:h+6,fill:'none',stroke:'#38bdf8','stroke-width':1.5,'stroke-dasharray':'5,3',rx:4,'pointer-events':'none'}));
+    // For modules with IO labels, extend selection box upward to cover them
+    const ioAbove=(el.type==='mod'&&(el.ioLabels||[]).length>0)?(el.ioLabels.length*16+14):0;
+    const selY=y-3-ioAbove;
+    const selH=h+6+ioAbove;
+    slL.appendChild(mk('rect',{x:x-3,y:selY,width:w+6,height:selH,fill:'none',stroke:'#38bdf8','stroke-width':1.5,'stroke-dasharray':'5,3',rx:4,'pointer-events':'none'}));
     [['nw',x-3,y-3],['n',x+w/2,y-3],['ne',x+w+3,y-3],['e',x+w+3,y+h/2],
      ['se',x+w+3,y+h+3],['s',x+w/2,y+h+3],['sw',x-3,y+h+3],['w',x-3,y+h/2]].forEach(([d,hx2,hy])=>{
       const r=mk('rect',{x:hx2-5,y:hy-5,width:10,height:10,fill:'#38bdf8',stroke:'white','stroke-width':1.5,rx:2,cursor:d+'-resize','data-h':d,'data-eid':selId});
@@ -1200,64 +1226,103 @@ async function dlPPT(){
     elems.forEach(el=>{
       if(el.type==='mod'){
         const{x,y,w,h,label,colorType,subComponents,slot,ioLabels}=el,c=CM[colorType]||CM.gray;
-        slide.addShape(R,{x:sx(x-2),y:sy(y-2),w:sx(w+4),h:sy(h+4),fill:{color:'000000'},line:{color:'000000',width:0}});
-        slide.addShape(R,{x:sx(x),y:sy(y),w:sx(w),h:sy(h),fill:{color:c.fill},line:{color:c.bdr,width:1.5}});
-        slide.addShape(R,{x:sx(x),y:sy(y),w:sx(w),h:sy(35),fill:{color:c.sub},line:{color:c.bdr,width:1}});
         const fs=Math.max(7,Math.min(13,Math.floor(10.5*w/115)));
-        slide.addText(label,{x:sx(x),y:sy(y),w:sx(w),h:sy(35),fontSize:fs,bold:true,color:'FFFFFF',align:'center',valign:'middle',fontFace:'Arial Black',margin:0});
+        // Black outer border (shape only, no text)
+        slide.addShape(R,{x:sx(x-2),y:sy(y-2),w:sx(w+4),h:sy(h+4),fill:{color:'000000'},line:{color:'000000',width:0}});
+        // Main colored body (shape only, no text — background layer)
+        slide.addShape(R,{x:sx(x),y:sy(y),w:sx(w),h:sy(h),fill:{color:c.fill},line:{color:c.bdr,width:1.5}});
+        // Header — SINGLE combined object (colored text box, no separate shape needed)
+        slide.addText(label,{x:sx(x),y:sy(y),w:sx(w),h:sy(35),
+          fill:{color:c.sub},line:{color:c.bdr,width:1},
+          fontSize:fs,bold:true,color:'FFFFFF',align:'center',valign:'middle',fontFace:'Arial Black',margin:0});
+        // Sub-components — each one SINGLE combined object
         const maxS=Math.floor((h-44-30)/54);
         (subComponents||[]).slice(0,maxS).forEach((s,i)=>{
           const sY=y+44+i*54,sw=w-14,sh=48;
-          slide.addShape(R,{x:sx(x+7),y:sy(sY),w:sx(sw),h:sy(sh),fill:{color:c.sub},line:{color:c.bdr,width:1}});
-          slide.addText(s,{x:sx(x+7),y:sy(sY),w:sx(sw),h:sy(sh),fontSize:8,bold:true,color:'FFFFFF',align:'center',valign:'middle',fontFace:'Calibri',margin:0});
+          slide.addText(s,{x:sx(x+7),y:sy(sY),w:sx(sw),h:sy(sh),
+            fill:{color:c.sub},line:{color:c.bdr,width:1},
+            fontSize:8,bold:true,color:'FFFFFF',align:'center',valign:'middle',fontFace:'Calibri',margin:0});
         });
+        // Slot badge — SINGLE combined object
         if(slot!=null&&String(slot).trim()){
           const slY=y+h-27;
-          slide.addShape(R,{x:sx(x+7),y:sy(slY),w:sx(w-14),h:sy(22),fill:{color:c.sub},line:{color:c.bdr,width:1}});
-          slide.addText('Slot '+slot,{x:sx(x+7),y:sy(slY),w:sx(w-14),h:sy(22),fontSize:9,bold:true,color:'FFFFFF',align:'center',valign:'middle',fontFace:'Calibri',margin:0});
+          slide.addText('Slot '+slot,{x:sx(x+7),y:sy(slY),w:sx(w-14),h:sy(22),
+            fill:{color:c.sub},line:{color:c.bdr,width:1},
+            fontSize:9,bold:true,color:'FFFFFF',align:'center',valign:'middle',fontFace:'Calibri',margin:0});
         }
-        // I/O labels with lines
-        const STUB_IN=1.3;
-        (ioLabels||[]).slice(0,9).forEach((io,ii)=>{
-          const ioY=sy(y+48+ii*22);
-          if(ioY>sy(y+h-32))return;
-          slide.addShape(L,{x:sx(x)-STUB_IN,y:ioY,w:STUB_IN,h:0,line:{color:'000000',width:1,endArrowType:'open'}});
-          slide.addText(io,{x:sx(x)-STUB_IN-1.6,y:ioY-0.08,w:1.55,h:sy(22),fontSize:8,bold:true,color:'000000',align:'right',valign:'middle',fontFace:'Calibri',margin:0});
-        });
+        // I/O labels ABOVE module — spine + ticks + text labels
+        const ios=ioLabels||[];
+        if(ios.length>0){
+          const IGAP_IN=0.21;
+          const spineX=sx(x+w/2);
+          const spineBottom=sy(y)-0.05;
+          const spineTop=spineBottom-ios.length*IGAP_IN-0.04;
+          // Spine with visible filled arrowhead pointing down into module top
+          slide.addShape(L,{x:spineX,y:spineTop,w:0,h:spineBottom-spineTop,
+            line:{color:'000000',width:1.5,endArrowType:'arrow'}});
+          ios.slice(0,12).forEach((io,ii)=>{
+            const rowY=spineTop+0.02+ii*IGAP_IN;
+            slide.addShape(L,{x:spineX-0.08,y:rowY,w:0.08,h:0,line:{color:'000000',width:0.75}});
+            slide.addText(io,{x:spineX-1.75,y:rowY-0.08,w:1.65,h:IGAP_IN,
+              fontSize:7.5,bold:true,color:'000000',align:'right',valign:'middle',fontFace:'Calibri',margin:0});
+          });
+        }
       }
       else if(el.type==='txt'){
-        const opts={x:sx(el.x),y:sy(el.y),w:sx(el.w),h:sy(el.h),fontSize:el.fontSize||13,bold:el.bold||false,italic:el.italic||false,color:hx(el.color),align:el.align||'left',valign:'middle',fontFace:'Arial'};
+        const opts={x:sx(el.x),y:sy(el.y),w:sx(el.w),h:sy(el.h),
+          fontSize:el.fontSize||13,bold:el.bold||false,italic:el.italic||false,
+          color:hx(el.color),align:el.align||'left',valign:'middle',fontFace:'Arial'};
         if(el.bgColor&&el.bgColor!=='none')opts.fill={color:hx(el.bgColor)};
         slide.addText(el.text||'',opts);
       }
       else if(el.type==='bus'){
         const col=hx(el.color);
-        const lo={color:col,width:el.lw||2.5};
-        if(el.isBackplane)lo.beginArrowType='open';
+        const lw2=Math.max(2,el.lw||2.5);
+        const lo={color:col,width:lw2};
+        if(el.isBackplane)lo.beginArrowType='arrow';
         slide.addShape(L,{x:sx(el.x),y:sy(el.y),w:sx(el.w),h:0,line:lo});
-        if(el.label)slide.addText(el.label,{x:sx(el.x),y:sy(el.y-20),w:sx(Math.min(el.w,900)),h:sy(20),fontSize:10,bold:true,color:col,align:'left',fontFace:'Arial Black',margin:0});
+        if(el.label)slide.addText(el.label,{x:sx(el.x),y:sy(el.y-20),
+          w:sx(Math.min(el.w,900)),h:sy(20),
+          fontSize:10,bold:true,color:col,align:'left',fontFace:'Arial Black',margin:0});
         if(el.showDrops){
           const isPow=(el.label||'').toLowerCase().includes('power')||col.toUpperCase()==='FF0000';
           elems.filter(m=>m.type==='mod').forEach(mod=>{
             const cx=mod.x+mod.w/2;
             if(!isPow&&(cx<el.x-5||cx>el.x+el.w+5))return;
             if(mod.y+mod.h>=el.y)return;
-            slide.addShape(L,{x:sx(cx),y:sy(el.y),w:0,h:sy(mod.y+mod.h-el.y),line:{color:col,width:el.lw||1.5,endArrowType:'open'}});
+            // Positive height, beginArrowType at top = arrow pointing UP into module
+            slide.addShape(L,{x:sx(cx),y:sy(mod.y+mod.h),w:0,h:sy(el.y-(mod.y+mod.h)),
+              line:{color:col,width:Math.max(2,el.lw||2),beginArrowType:'arrow'}});
           });
         }
       }
       else if(el.type==='ln'||el.type==='arr'){
         const col=hx(el.color);
-        slide.addShape(L,{x:sx(el.x1),y:sy(el.y1),w:sx(el.x2-el.x1),h:sy(el.y2-el.y1),
-          line:{color:col,width:el.lw||1.5,dashType:el.dashed?'dash':'solid',
-            endArrowType:el.arrowEnd?'open':'none',beginArrowType:el.arrowStart?'open':'none'}});
-        if(el.label){const mx=(el.x1+el.x2)/2,my=(el.y1+el.y2)/2;slide.addText(el.label,{x:sx(mx-80),y:sy(my-18),w:sx(160),h:sy(18),fontSize:9,bold:true,color:col,align:'center',fontFace:'Calibri',margin:0});}
+        let lx1=el.x1,ly1=el.y1,lx2=el.x2,ly2=el.y2;
+        let aEnd=el.arrowEnd||false,aStart=el.arrowStart||false;
+        // Normalise: PptxGenJS needs non-negative h for arrows to render correctly
+        if(ly1>ly2||(ly1===ly2&&lx1>lx2)){
+          [lx1,lx2]=[lx2,lx1];[ly1,ly2]=[ly2,ly1];[aEnd,aStart]=[aStart,aEnd];
+        }
+        const lo2={color:col,width:Math.max(1.5,el.lw||1.5),dashType:el.dashed?'dash':'solid'};
+        if(aEnd) lo2.endArrowType='arrow';
+        if(aStart)lo2.beginArrowType='arrow';
+        slide.addShape(L,{x:sx(lx1),y:sy(ly1),w:sx(lx2-lx1),h:sy(ly2-ly1),line:lo2});
+        if(el.label){
+          const mx=(el.x1+el.x2)/2,my=(el.y1+el.y2)/2;
+          slide.addText(el.label,{x:sx(mx-80),y:sy(my-18),w:sx(160),h:sy(18),
+            fontSize:9,bold:true,color:col,align:'center',fontFace:'Calibri',margin:0});
+        }
       }
       else if(el.type==='shp'){
-        const sm={rect:R,oval:gsc('OVAL','oval'),diamond:gsc('DIAMOND','diamond'),arrowR:gsc('RIGHT_ARROW','rightArrow'),arrowL:gsc('LEFT_ARROW','leftArrow'),arrowD:gsc('DOWN_ARROW','downArrow'),hex:gsc('HEXAGON','hexagon'),para:gsc('PARALLELOGRAM','parallelogram')};
+        const sm={rect:R,oval:gsc('OVAL','oval'),diamond:gsc('DIAMOND','diamond'),
+          arrowR:gsc('RIGHT_ARROW','rightArrow'),arrowL:gsc('LEFT_ARROW','leftArrow'),
+          arrowD:gsc('DOWN_ARROW','downArrow'),hex:gsc('HEXAGON','hexagon'),para:gsc('PARALLELOGRAM','parallelogram')};
         const S=sm[el.shapeType]||R;
-        slide.addShape(S,{x:sx(el.x),y:sy(el.y),w:sx(el.w),h:sy(el.h),fill:{color:hx(el.fillColor||'#CCE4F7')},line:{color:hx(el.borderColor||'#000000'),width:el.borderW||1.5}});
-        if(el.label)slide.addText(el.label,{x:sx(el.x),y:sy(el.y),w:sx(el.w),h:sy(el.h),fontSize:11,bold:true,color:'000000',align:'center',valign:'middle',fontFace:'Calibri',margin:0});
+        slide.addShape(S,{x:sx(el.x),y:sy(el.y),w:sx(el.w),h:sy(el.h),
+          fill:{color:hx(el.fillColor||'#CCE4F7')},line:{color:hx(el.borderColor||'#000000'),width:el.borderW||1.5}});
+        if(el.label)slide.addText(el.label,{x:sx(el.x),y:sy(el.y),w:sx(el.w),h:sy(el.h),
+          fontSize:11,bold:true,color:'000000',align:'center',valign:'middle',fontFace:'Calibri',margin:0});
       }
     });
     await pptx.writeFile({fileName:'block_diagram.pptx'});
@@ -1380,9 +1445,11 @@ function wizValidate(){
   if(wState.step===1){
     const v=parseInt(document.getElementById('w-slots').value);
     if(isNaN(v)||v<1||v>12){toast('Enter a number of slots between 1 and 12',1);return false;}
+    const g=parseInt(document.getElementById('w-gap')?.value)||20;
     wState.numSlots=v;
+    wState.slotGap=Math.max(8,Math.min(120,g));
     // Initialize slots array
-    while(wState.slots.length<v) wState.slots.push({label:'',colorType:'blue',subs:[],io:[],customLabel:''});
+    while(wState.slots.length<v) wState.slots.push({label:'SBC',colorType:'blue',subs:[],io:[],customLabel:''});
     wState.slots=wState.slots.slice(0,v);
     return true;
   }
@@ -1413,8 +1480,12 @@ function wizValidate(){
   if(wState.step===4){
     const bt=document.getElementById('w-bptype');
     const bs=document.getElementById('w-bpsize');
+    const ton=document.getElementById('w-title-on');
+    const ttxt=document.getElementById('w-titletext');
     if(bt)wState.backplane.type=bt.value;
     if(bs)wState.backplane.size=bs.value;
+    wState.title=ton?ton.checked:true;
+    wState.titleText=ttxt&&ttxt.value.trim()?ttxt.value.trim():(wState.backplane.size+' '+wState.backplane.type+' Block Diagram');
     return true;
   }
   return true;
@@ -1466,24 +1537,51 @@ function wizRender(){
   else if(wState.step===4) body.innerHTML=wizStep4();
 }
 
-// ── STEP 1: Number of slots ──────────────────────────────
+// ── STEP 1: Number of slots & spacing ──────────────────────────────
 function wizStep1(){
   return `
-<div class="wsec">How many slots does your backplane have?</div>
-<div style="font-size:12px;color:var(--mut);margin-bottom:18px">Typical VPX/VME backplanes have 4–8 slots. Enter the total number of card slots.</div>
-<div style="display:flex;align-items:center;gap:16px;margin-bottom:24px">
-  <div style="flex:0 0 120px">
+<div class="wsec">Backplane Configuration</div>
+<div style="font-size:12px;color:var(--mut);margin-bottom:20px">Set the number of slots and the gap between them. These control the layout of your diagram.</div>
+
+<div style="display:flex;align-items:flex-start;gap:24px;flex-wrap:wrap;margin-bottom:20px">
+  <div>
     <div class="wlbl">Number of Slots</div>
-    <input class="winp" id="w-slots" type="number" min="1" max="12" value="${wState.numSlots}" style="font-size:20px;text-align:center;font-weight:700;padding:12px">
+    <input class="winp" id="w-slots" type="number" min="1" max="12" value="${wState.numSlots}"
+      style="font-size:24px;text-align:center;font-weight:700;padding:12px;width:110px">
+    <div style="display:flex;gap:6px;margin-top:8px">
+      ${[4,6,8,10].map(n=>`<button class="wadd" onclick="document.getElementById('w-slots').value=${n}">${n}</button>`).join('')}
+    </div>
   </div>
-  <div style="font-size:12px;color:var(--mut);line-height:1.8">
-    Common configurations:<br>
-    <span style="color:var(--acc);cursor:pointer;font-weight:700" onclick="document.getElementById('w-slots').value=4">4-slot</span> &nbsp;
-    <span style="color:var(--acc);cursor:pointer;font-weight:700" onclick="document.getElementById('w-slots').value=6">6-slot</span> &nbsp;
-    <span style="color:var(--acc);cursor:pointer;font-weight:700" onclick="document.getElementById('w-slots').value=8">8-slot</span> &nbsp;
-    <span style="color:var(--acc);cursor:pointer;font-weight:700" onclick="document.getElementById('w-slots').value=10">10-slot</span>
+
+  <div>
+    <div class="wlbl">Space Between Slots (px)</div>
+    <input class="winp" id="w-gap" type="number" min="8" max="120" value="${wState.slotGap||20}"
+      style="font-size:20px;text-align:center;font-weight:700;padding:12px;width:110px">
+    <div style="display:flex;gap:6px;margin-top:8px">
+      ${[12,20,30,50].map(g=>`<button class="wadd" onclick="document.getElementById('w-gap').value=${g}">${g}px</button>`).join('')}
+    </div>
+    <div style="font-size:10px;color:var(--mut);margin-top:6px">Typical: 15–30 px between cards</div>
   </div>
-</div>`;
+</div>
+
+<div style="background:var(--bg);border:1px solid var(--bd);border-radius:8px;padding:12px 14px;font-size:11px;color:var(--mut)">
+  💡 Each module will be <strong style="color:var(--txt)">115 × 330 px</strong> — same size as manually placed modules in the editor.
+  <br>Total canvas width needed: ~<span id="w-preview">${wState.numSlots*115+(wState.numSlots-1)*(wState.slotGap||20)}</span> px
+</div>
+<script>
+(function(){
+  function upPreview(){
+    var n=parseInt(document.getElementById('w-slots').value)||4;
+    var g=parseInt(document.getElementById('w-gap').value)||20;
+    var el=document.getElementById('w-preview');
+    if(el)el.textContent=n*115+(n-1)*g;
+  }
+  var si=document.getElementById('w-slots');
+  var gi=document.getElementById('w-gap');
+  if(si)si.addEventListener('input',upPreview);
+  if(gi)gi.addEventListener('input',upPreview);
+})();
+<\/script>`;
 }
 
 // ── STEP 2: Configure each slot ──────────────────────────
@@ -1657,10 +1755,12 @@ function wizAddConn(type){
 
 // ── STEP 4: Backplane ────────────────────────────────────
 function wizStep4(){
+  const hasTitle=wState.title!=null?wState.title!==false:true;
+  const titleText=wState.titleText||(wState.backplane.size+' '+wState.backplane.type+' Block Diagram');
   return `
-<div class="wsec">Choose Your Backplane</div>
-<div style="font-size:12px;color:var(--mut);margin-bottom:18px">Select the backplane standard and form factor. This adds the labeled bus line across all modules.</div>
-<div class="wrow" style="max-width:400px">
+<div class="wsec">Backplane &amp; Final Options</div>
+<div style="font-size:12px;color:var(--mut);margin-bottom:18px">Choose backplane type and whether to include a diagram title.</div>
+<div class="wrow" style="max-width:440px">
   <div>
     <div class="wlbl">Backplane Standard</div>
     <select class="wsel" id="w-bptype">
@@ -1673,16 +1773,26 @@ function wizStep4(){
   <div>
     <div class="wlbl">Form Factor</div>
     <select class="wsel" id="w-bpsize">
-      <option value="3U"${wState.backplane.size==='3U'?' selected':''}>3U (100mm height)</option>
-      <option value="6U"${wState.backplane.size==='6U'?' selected':''}>6U (233mm height)</option>
+      <option value="3U"${wState.backplane.size==='3U'?' selected':''}>3U (100mm)</option>
+      <option value="6U"${wState.backplane.size==='6U'?' selected':''}>6U (233mm)</option>
     </select>
   </div>
 </div>
+<div style="background:var(--bg);border:1px solid var(--bd);border-radius:8px;padding:14px 16px;margin-bottom:16px">
+  <div class="wcbr" style="margin-bottom:10px">
+    <input type="checkbox" id="w-title-on" ${hasTitle?'checked':''} onchange="document.getElementById('w-title-box').style.display=this.checked?'':'none'">
+    <label for="w-title-on" style="font-weight:700;font-size:12px">Include slide title</label>
+  </div>
+  <div id="w-title-box" style="display:${hasTitle?'':'none'}">
+    <div class="wlbl">Title text</div>
+    <input class="winp" id="w-titletext" value="${titleText}" placeholder="e.g. 3U VPX System Block Diagram">
+  </div>
+</div>
 <hr class="wdivider">
-<div class="wsec">Summary — Ready to Generate</div>
+<div class="wsec">Summary</div>
 <div style="background:var(--bg);border:1px solid var(--bd);border-radius:8px;padding:14px 16px;font-size:11px;font-family:var(--m);color:var(--mut);line-height:2">
-  <div>📦 <strong style="color:var(--txt)">${wState.numSlots} Slots</strong> configured</div>
-  ${wState.slots.map((s,i)=>`<div style="padding-left:18px">Slot ${i+1}: <span style="color:var(--acc)">${s.label||'Module'}</span>${s.io.length?' · '+s.io.length+' I/O':''}</div>`).join('')}
+  <div>📦 <strong style="color:var(--txt)">${wState.numSlots} Slots</strong> · Gap: ${wState.slotGap||20}px</div>
+  ${wState.slots.map((s,i)=>`<div style="padding-left:18px">Slot ${i+1}: <span style="color:var(--acc)">${s.label||'Module'}</span>${s.io&&s.io.length?' · '+s.io.length+' I/O labels':''}</div>`).join('')}
   <div style="margin-top:6px">🔌 <strong style="color:var(--txt)">${wState.connections.length} connection${wState.connections.length!==1?'s':''}</strong></div>
   <div style="margin-top:4px">🔧 Backplane: <strong style="color:var(--txt)">${wState.backplane.size} ${wState.backplane.type}</strong></div>
 </div>`;
@@ -1694,82 +1804,119 @@ function wizGenerate(){
   document.getElementById('wiz').classList.remove('show');
   saveH();elems=[];selId=null;
 
-  const MOD_W=115,MOD_H=330;
+  const MOD_W=115, MOD_H=330;
   const n=wState.numSlots;
-  const GAP=16;
+  const GAP=wState.slotGap||20;
   const totalW=n*MOD_W+(n-1)*GAP;
-  const startX=Math.max(50,Math.round((SVW-totalW)/2));
-  const modY=55;
 
-  // Add title
-  elems.push({id:uid(),type:'txt',x:40,y:14,w:800,h:36,text:wState.backplane.size+' '+wState.backplane.type+' Block Diagram',fontSize:22,bold:true,italic:false,color:'#000000',bgColor:'none',align:'left'});
+  // Calculate how much top-margin the I/O labels need
+  // Each slot may have different count; find maximum
+  const maxIOs=Math.max(...wState.slots.map(s=>(s.io||[]).length),0);
+  const IO_ABOVE=maxIOs>0?Math.min(maxIOs*18+30,200):30; // px reserved above modules
 
-  // Add modules
-  wState.slots.forEach((slot,i)=>{
-    const x=startX+i*(MOD_W+GAP);
-    elems.push({id:uid(),type:'mod',x,y:modY,w:MOD_W,h:MOD_H,
-      label:slot.label||'Module',colorType:slot.colorType||'blue',
-      subComponents:slot.subs||[],slot:i+1,ioLabels:slot.io||[]});
-  });
+  // Centre group horizontally; minimum 40px left margin
+  const startX=Math.max(40,Math.round((SVW-totalW)/2));
+  // Push modules down enough to fit I/O labels and title
+  const titleH=wState.title?44:0;
+  const modY=titleH+IO_ABOVE+10;   // title + IO label space + small margin
 
-  // Calculate bus Y positions (below modules with spacing)
-  const busStartY=modY+MOD_H+45;
-  const busSpacing=50;
-
-  // Add backplane
-  if(wState.backplane.type!=='None'){
-    const bpLabel=wState.backplane.size+' '+wState.backplane.type+' BACKPLANE';
-    elems.push({id:uid(),type:'bus',x:startX-20,y:busStartY,w:totalW+40,label:bpLabel,color:'#1F7C00',lw:3,isBackplane:true,showDrops:false});
+  // Title (optional)
+  if(wState.title){
+    elems.push({id:uid(),type:'txt',x:40,y:8,w:800,h:36,
+      text:wState.titleText||(wState.backplane.size+' '+wState.backplane.type+' Block Diagram'),
+      fontSize:20,bold:true,italic:false,color:'#000000',bgColor:'none',align:'left'});
   }
 
-  // Add connections
+  // Modules — identical data shape to addMod()
+  wState.slots.forEach((slot,i)=>{
+    elems.push({id:uid(),type:'mod',
+      x:startX+i*(MOD_W+GAP), y:modY,
+      w:MOD_W, h:MOD_H,
+      label:slot.label||'Module',
+      colorType:slot.colorType||'blue',
+      subComponents:slot.subs||[],
+      slot:i+1,
+      ioLabels:slot.io||[]});
+  });
+
+  // Bus Y positioning — start well below module bottom, give each bus 55px breathing room
+  const modBottom=modY+MOD_H;
+  const BUS_FIRST_GAP=42;   // gap from module bottom to first bus line
+  const BUS_SPACING=48;     // vertical gap between consecutive bus lines (label + line)
+
+  let busY=modBottom+BUS_FIRST_GAP;
+
+  // Backplane first (green horizontal line)
+  if(wState.backplane.type!=='None'){
+    const bpLabel=wState.backplane.size+' '+wState.backplane.type+' BACKPLANE';
+    elems.push({id:uid(),type:'bus',
+      x:startX-20, y:busY, w:totalW+40,
+      label:bpLabel, color:'#1F7C00', lw:3,
+      isBackplane:true, showDrops:false});
+    busY+=BUS_SPACING;
+  }
+
+  // Connection buses
   const connColors={pcie4:'#7030A0',pcie3:'#7030A0',sata:'#FFC000',eth:'#FF8C00',power:'#FF0000',arinc:'#92D050'};
   const connLabels={pcie4:'PCIe Gen 4',pcie3:'PCIe Gen 3',sata:'SATA 300 Over Backplane',eth:'1G Ethernet Over Backplane',power:'Power',arinc:'ARINC 818'};
-  let busY=busStartY+busSpacing;
 
-  const addedTypes=new Set();
   wState.connections.forEach(conn=>{
     const col=connColors[conn.type]||'#595959';
     const lbl=connLabels[conn.type]||conn.type;
-    const isPower=conn.type==='power';
+    const isPower=conn.dir==='power'||conn.type==='power';
 
-    // For power: single wide bus spanning all modules
     if(isPower){
-      if(addedTypes.has('power'))return;
-      addedTypes.add('power');
-      elems.push({id:uid(),type:'bus',x:startX-20,y:busY,w:totalW+40,label:lbl,color:col,lw:2,isBackplane:false,showDrops:true});
-      busY+=busSpacing;
+      // Full-width power bus, connects all modules with upward arrows
+      elems.push({id:uid(),type:'bus',
+        x:startX-20, y:busY, w:totalW+40,
+        label:lbl, color:col, lw:2,
+        isBackplane:false, showDrops:true});
+      busY+=BUS_SPACING;
       return;
     }
 
-    // For point-to-point connections
-    const fromIdx=(conn.from||1)-1;
-    const toIdx=(conn.to||n)-1;
-    const x1=startX+Math.max(0,Math.min(fromIdx,n-1))*(MOD_W+GAP)+MOD_W/2;
-    const x2=startX+Math.max(0,Math.min(toIdx,n-1))*(MOD_W+GAP)+MOD_W/2;
-    const lineX=Math.min(x1,x2)-10;
-    const lineW=Math.abs(x1-x2)+20;
-    const hasArrowStart=conn.dir==='rev'||conn.dir==='bidir';
-    const hasArrowEnd=conn.dir==='fwd'||conn.dir==='bidir';
+    // Determine x-span
+    const fromIdx=conn.from>0?conn.from-1:0;
+    const toIdx  =conn.to  >0?conn.to-1  :n-1;
+    const fi=Math.max(0,Math.min(fromIdx,n-1));
+    const ti=Math.max(0,Math.min(toIdx,n-1));
+    const left =Math.min(fi,ti);
+    const right=Math.max(fi,ti);
+    const spanAll=conn.from===0||conn.to===0;
 
-    // All connections: drop down from module then horizontal bus
-    if(conn.to===0||conn.from===0){
-      // Spans all — use full width bus
-      elems.push({id:uid(),type:'bus',x:startX-20,y:busY,w:totalW+40,label:lbl,color:col,lw:2,isBackplane:false,showDrops:true});
-    }else{
-      // Partial bus between two slots
-      elems.push({id:uid(),type:'bus',x:lineX,y:busY,w:lineW,label:lbl,color:col,lw:2,isBackplane:false,showDrops:false});
-      // Drop lines
-      [fromIdx,toIdx].forEach(si=>{
+    const busX=spanAll?startX-20:startX+left*(MOD_W+GAP);
+    const busW=spanAll?totalW+40:(right-left)*(MOD_W+GAP)+MOD_W;
+
+    // Arrow direction on the bus line itself
+    const arrowStart=conn.dir==='rev'||conn.dir==='bidir';
+    const arrowEnd  =conn.dir==='fwd'||conn.dir==='bidir';
+
+    elems.push({id:uid(),type:'bus',
+      x:busX, y:busY, w:busW,
+      label:lbl, color:col, lw:2,
+      isBackplane:false,
+      arrowStart, arrowEnd,
+      showDrops:spanAll  // only auto-drop if spanning all
+    });
+
+    // Explicit vertical drop lines for partial connections
+    if(!spanAll){
+      [fi,ti].forEach(si=>{
         const cx=startX+si*(MOD_W+GAP)+MOD_W/2;
-        elems.push({id:uid(),type:'ln',x1:cx,y1:busY,x2:cx,y2:modY+MOD_H+5,label:'',color:col,lw:1.5,dashed:false,arrowEnd:true,arrowStart:false});
+        const me=mkE('wdrop_'+si+'_'+busY,col);
+        // vertical line from bus upward to module bottom
+        elems.push({id:uid(),type:'ln',
+          x1:cx,y1:busY,x2:cx,y2:modBottom+3,
+          label:'',color:col,lw:1.5,dashed:false,
+          arrowEnd:true,arrowStart:false});
       });
     }
-    busY+=busSpacing;
+
+    busY+=BUS_SPACING;
   });
 
   ra();up();
-  toast('✓ Diagram generated! '+n+' slots · '+wState.connections.length+' connections');
+  toast('✓ Diagram generated — '+n+' slots · '+wState.connections.length+' connections');
 }
 
 
