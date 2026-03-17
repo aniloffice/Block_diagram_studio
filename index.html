@@ -319,8 +319,22 @@ input[type=checkbox]{accent-color:var(--acc);width:13px;height:13px;cursor:point
 // ═══════════════════════════════════════════════════════
 // CONSTANTS
 // ═══════════════════════════════════════════════════════
-const SVW=1280,SVH=720,PPW=13.33,PPH=7.5,NS='http://www.w3.org/2000/svg';
+const NS='http://www.w3.org/2000/svg';
 const hx=c=>(c||'000000').replace('#','');
+const PPW=13.33,PPH=7.5; // PPT slide always LAYOUT_WIDE
+// SVW/SVH are dynamic — updated by setCanvasSize() for large slot counts
+let SVW=1280,SVH=720;
+
+// Resize SVG canvas to given pixel dimensions and update all size-dependent refs
+function setCanvasSize(w,h){
+  SVW=Math.round(w);SVH=Math.round(h);
+  const bg=document.getElementById('cv-bg');
+  if(bg){bg.setAttribute('width',SVW);bg.setAttribute('height',SVH);}
+  const sv=document.getElementById('cv');
+  if(sv){sv.setAttribute('viewBox',`0 0 ${SVW} ${SVH}`);}
+  sz(); // re-fit canvas in viewport
+}
+
 const CM={
   blue:  {fill:'9DC3E6',bdr:'2E74B5',sub:'4472C4',txt:'FFFFFF'},
   cyan:  {fill:'00B0F0',bdr:'0070C0',sub:'0099CC',txt:'FFFFFF'},
@@ -1215,10 +1229,24 @@ async function dlPPT(){
   if(!PX){hideLov();toast('✗ PptxGenJS not found',1);return;}
   showLov('Building PowerPoint…');
   try{
-    const pptx=new PX();pptx.layout='LAYOUT_WIDE';
+    const pptx=new PX();
+    // Use LAYOUT_WIDE (13.33" × 7.5") as base; scale UP for wider canvases
+    // This ensures all slots fit on a single slide
+    const aspectRatio=SVW/SVH;
+    const PPH_DYN=PPH;                        // keep height at 7.5"
+    const PPW_DYN=Math.max(PPW,PPH_DYN*aspectRatio); // widen if canvas is wider
+
+    if(Math.abs(PPW_DYN-PPW)<0.01){
+      pptx.layout='LAYOUT_WIDE'; // standard 13.33" × 7.5"
+    }else{
+      // Custom wider layout for many slots
+      pptx.defineLayout({name:'CUSTOM',width:PPW_DYN,height:PPH_DYN});
+      pptx.layout='CUSTOM';
+    }
+
     const slide=pptx.addSlide();slide.background={color:'FFFFFF'};
-    const sx=v=>+(v*PPW/SVW).toFixed(4);
-    const sy=v=>+(v*PPH/SVH).toFixed(4);
+    const sx=v=>+(v*PPW_DYN/SVW).toFixed(4);
+    const sy=v=>+(v*PPH_DYN/SVH).toFixed(4);
     const ST=pptx.ShapeType||pptx.shapes||{};
     const gsc=(...ks)=>{for(const k of ks)if(ST[k])return ST[k];return ks[0];};
     const R=gsc('RECTANGLE','rect'),L=gsc('LINE','line');
@@ -1348,9 +1376,12 @@ async function dlPNG(){
       const img=new Image();
       img.onload=()=>{
         try{
-          const cv=document.createElement('canvas');cv.width=SVW*2;cv.height=SVH*2;
+          // 2× for retina — cap at 4096px wide to avoid memory issues
+          const scale=Math.min(2,4096/SVW);
+          const cv=document.createElement('canvas');
+          cv.width=Math.round(SVW*scale);cv.height=Math.round(SVH*scale);
           const ctx=cv.getContext('2d');
-          ctx.scale(2,2);ctx.fillStyle='#FFFFFF';ctx.fillRect(0,0,SVW,SVH);
+          ctx.scale(scale,scale);ctx.fillStyle='#FFFFFF';ctx.fillRect(0,0,SVW,SVH);
           ctx.drawImage(img,0,0,SVW,SVH);
           cv.toBlob(b=>{
             if(!b){rej(new Error('Canvas toBlob failed'));return;}
@@ -1444,7 +1475,7 @@ function wizNext(){
 function wizValidate(){
   if(wState.step===1){
     const v=parseInt(document.getElementById('w-slots').value);
-    if(isNaN(v)||v<1||v>12){toast('Enter a number of slots between 1 and 12',1);return false;}
+    if(isNaN(v)||v<1||v>20){toast('Enter a number of slots between 1 and 20',1);return false;}
     const g=parseInt(document.getElementById('w-gap')?.value)||20;
     wState.numSlots=v;
     wState.slotGap=Math.max(8,Math.min(120,g));
@@ -1535,6 +1566,8 @@ function wizRender(){
   else if(wState.step===2) body.innerHTML=wizStep2();
   else if(wState.step===3) body.innerHTML=wizStep3();
   else if(wState.step===4) body.innerHTML=wizStep4();
+  // Run preview update after DOM is ready (step 1 only)
+  if(wState.step===1) setTimeout(updateSlotPreview,0);
 }
 
 // ── STEP 1: Number of slots & spacing ──────────────────────────────
@@ -1546,16 +1579,18 @@ function wizStep1(){
 <div style="display:flex;align-items:flex-start;gap:24px;flex-wrap:wrap;margin-bottom:20px">
   <div>
     <div class="wlbl">Number of Slots</div>
-    <input class="winp" id="w-slots" type="number" min="1" max="12" value="${wState.numSlots}"
+    <input class="winp" id="w-slots" type="number" min="1" max="20" value="${wState.numSlots}"
+      oninput="updateSlotPreview()"
       style="font-size:24px;text-align:center;font-weight:700;padding:12px;width:110px">
     <div style="display:flex;gap:6px;margin-top:8px">
-      ${[4,6,8,10].map(n=>`<button class="wadd" onclick="document.getElementById('w-slots').value=${n}">${n}</button>`).join('')}
+      ${[4,6,8,10,12,16,20].map(n=>`<button class="wadd" onclick="document.getElementById('w-slots').value=${n};updateSlotPreview()">${n}</button>`).join('')}
     </div>
   </div>
 
   <div>
     <div class="wlbl">Space Between Slots (px)</div>
     <input class="winp" id="w-gap" type="number" min="8" max="120" value="${wState.slotGap||20}"
+      oninput="updateSlotPreview()"
       style="font-size:20px;text-align:center;font-weight:700;padding:12px;width:110px">
     <div style="display:flex;gap:6px;margin-top:8px">
       ${[12,20,30,50].map(g=>`<button class="wadd" onclick="document.getElementById('w-gap').value=${g}">${g}px</button>`).join('')}
@@ -1565,23 +1600,23 @@ function wizStep1(){
 </div>
 
 <div style="background:var(--bg);border:1px solid var(--bd);border-radius:8px;padding:12px 14px;font-size:11px;color:var(--mut)">
-  💡 Each module will be <strong style="color:var(--txt)">115 × 330 px</strong> — same size as manually placed modules in the editor.
-  <br>Total canvas width needed: ~<span id="w-preview">${wState.numSlots*115+(wState.numSlots-1)*(wState.slotGap||20)}</span> px
-</div>
-<script>
-(function(){
-  function upPreview(){
-    var n=parseInt(document.getElementById('w-slots').value)||4;
-    var g=parseInt(document.getElementById('w-gap').value)||20;
-    var el=document.getElementById('w-preview');
-    if(el)el.textContent=n*115+(n-1)*g;
-  }
-  var si=document.getElementById('w-slots');
-  var gi=document.getElementById('w-gap');
-  if(si)si.addEventListener('input',upPreview);
-  if(gi)gi.addEventListener('input',upPreview);
-})();
-<\/script>`;
+  💡 Module width and canvas size auto-adjust to fit all slots on screen.<br>
+  <span id="w-preview-detail" style="font-family:var(--m);color:var(--acc)">…</span>
+</div>`;
+}
+
+// ── SLOT PREVIEW — global function so onclick inline handlers can call it ──
+function updateSlotPreview(){
+  const n=parseInt((document.getElementById('w-slots')||{}).value)||4;
+  const g=parseInt((document.getElementById('w-gap')||{}).value)||20;
+  let modW;
+  if(n<=8) modW=115;
+  else if(n<=12) modW=100;
+  else if(n<=16) modW=85;
+  else modW=72;
+  const canW=Math.max(1280,n*modW+(n-1)*g+240);
+  const el=document.getElementById('w-preview-detail');
+  if(el) el.textContent=n+' slots × '+modW+'px wide + '+g+'px gap → '+canW+'px canvas';
 }
 
 // ── STEP 2: Configure each slot ──────────────────────────
@@ -1804,21 +1839,39 @@ function wizGenerate(){
   document.getElementById('wiz').classList.remove('show');
   saveH();elems=[];selId=null;
 
-  const MOD_W=115, MOD_H=330;
   const n=wState.numSlots;
   const GAP=wState.slotGap||20;
+
+  // ── Scale module width down so all slots fit comfortably ──
+  // Matches the calcModW logic shown in the wizard preview
+  let MOD_W;
+  if(n<=8)  MOD_W=115;
+  else if(n<=12) MOD_W=100;
+  else if(n<=16) MOD_W=85;
+  else           MOD_W=72;
+
+  // Module height stays fixed
+  const MOD_H=330;
+
   const totalW=n*MOD_W+(n-1)*GAP;
 
-  // Calculate how much top-margin the I/O labels need
-  // Each slot may have different count; find maximum
+  // ── Dynamic canvas width ──
+  // At least 1280px wide; grow for large slot counts (add 240px margin)
   const maxIOs=Math.max(...wState.slots.map(s=>(s.io||[]).length),0);
-  const IO_ABOVE=maxIOs>0?Math.min(maxIOs*18+30,200):30; // px reserved above modules
-
-  // Centre group horizontally; minimum 40px left margin
-  const startX=Math.max(40,Math.round((SVW-totalW)/2));
-  // Push modules down enough to fit I/O labels and title
+  const IO_ABOVE=maxIOs>0?Math.min(maxIOs*16+24,180):20;
   const titleH=wState.title?44:0;
-  const modY=titleH+IO_ABOVE+10;   // title + IO label space + small margin
+  const modY=titleH+IO_ABOVE+10;
+  const numBuses=(wState.backplane.type!=='None'?1:0)+wState.connections.length;
+  const BUS_FIRST_GAP=42, BUS_SPACING=48;
+  const totalH=modY+MOD_H+BUS_FIRST_GAP+numBuses*BUS_SPACING+40;
+
+  const canW=Math.max(1280,totalW+240);
+  const canH=Math.max(720,totalH);
+
+  // ── Resize the SVG canvas ──
+  setCanvasSize(canW,canH);
+
+  const startX=Math.max(40,Math.round((canW-totalW)/2));
 
   // Title (optional)
   if(wState.title){
@@ -1841,9 +1894,6 @@ function wizGenerate(){
 
   // Bus Y positioning — start well below module bottom, give each bus 55px breathing room
   const modBottom=modY+MOD_H;
-  const BUS_FIRST_GAP=42;   // gap from module bottom to first bus line
-  const BUS_SPACING=48;     // vertical gap between consecutive bus lines (label + line)
-
   let busY=modBottom+BUS_FIRST_GAP;
 
   // Backplane first (green horizontal line)
