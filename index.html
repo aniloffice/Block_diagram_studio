@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta charset="UTF-8"><meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>BlockDiagram Studio</title>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -459,92 +459,99 @@ function rMod(el){
   const c=CM[colorType]||CM.gray;
   const g=mk('g',{id:'e_'+id,'data-id':id,class:'elem',cursor:'move',transform:`translate(${x},${y})`});
 
-  // Corner radius based on modShape
+  // Corner radius
   const rxMain=modShape==='square'?0:modShape==='pill'?Math.min(w,h)/2:modShape==='hex'?12:4;
-  const rxBorder=rxMain>0?rxMain+1:0;
 
-  // Drop shadow via SVG filter
+  // Drop shadow
   if(shadow){
     const fid='shf_'+id;
     const defs=document.getElementById('cvd');
     if(!document.getElementById(fid)){
-      const filt=mk('filter',{id:fid,x:'-10%',y:'-10%',width:'120%',height:'130%'});
-      const fe1=mk('feDropShadow',{dx:'4',dy:'5',stdDeviation:'4','flood-color':'rgba(0,0,0,0.35)'});
-      filt.appendChild(fe1);defs.appendChild(filt);
+      const filt=mk('filter',{id:fid,x:'-15%',y:'-15%',width:'130%',height:'140%'});
+      filt.appendChild(mk('feDropShadow',{dx:'4',dy:'5',stdDeviation:'4','flood-color':'rgba(0,0,0,0.35)'}));
+      defs.appendChild(filt);
     }
     g.setAttribute('filter',`url(#${fid})`);
   }
 
-  // Hit area (transparent, covers module + I/O zone above)
+  // Hit area
   const ioCount=(ioLabels||[]).length;
   const hitAbove=ioCount>0?ioCount*18+20:0;
   g.appendChild(mk('rect',{x:0,y:-hitAbove,width:w,height:h+hitAbove,fill:'transparent','pointer-events':'all'}));
 
-  // Black outer border
-  g.appendChild(mk('rect',{x:-2,y:-2,width:w+4,height:h+4,rx:rxBorder,fill:'#000000',stroke:'none'}));
-  // Colored fill
-  g.appendChild(mk('rect',{width:w,height:h,rx:rxMain,fill:'#'+c.fill,stroke:'#'+c.bdr,'stroke-width':1.5}));
-  // Header clip
+  // Body — colored fill + BLACK stroke outline (no separate black background rect)
+  g.appendChild(mk('rect',{width:w,height:h,rx:rxMain,fill:'#'+c.fill,stroke:'#000000','stroke-width':2}));
+
+  // Header clip — dark colored top strip
   const cid='cl_'+id;
   const cp=mk('clipPath',{id:cid});cp.appendChild(mk('rect',{width:w,height:35}));g.appendChild(cp);
   g.appendChild(mk('rect',{width:w,height:h,rx:rxMain,fill:'#'+c.sub,'clip-path':`url(#${cid})`}));
-  // Title label
+
+  // Title text — BLACK color
   const fs=Math.max(8,Math.min(13,Math.floor(10.5*w/115)));
-  g.appendChild(mkt(label||'Module',{x:w/2,y:22,'text-anchor':'middle',fill:'#'+c.txt,'font-size':fs,'font-weight':'bold','font-family':'Cambria'}));
-  // Sub-components
+  g.appendChild(mkt(label||'Module',{x:w/2,y:22,'text-anchor':'middle',fill:'#000000','font-size':fs,'font-weight':'bold','font-family':'Cambria'}));
+
+  // Sub-components — dark fill boxes, BLACK text
   const subs=subComponents||[];
   const maxS=Math.floor((h-44-30)/54);
   subs.slice(0,maxS).forEach((s,i)=>{
     const sy=44+i*54,sw=w-14,sh=48;
-    g.appendChild(mk('rect',{x:7,y:sy,width:sw,height:sh,rx:3,fill:'#'+c.sub,stroke:'#'+c.bdr,'stroke-width':1}));
+    g.appendChild(mk('rect',{x:7,y:sy,width:sw,height:sh,rx:3,fill:'#'+c.sub,stroke:'#000000','stroke-width':1}));
     const sfs=Math.max(7,Math.min(10,Math.floor(9*w/115)));
     const ws=s.split(' ');
     if(ws.length<=3||sw>90){
-      g.appendChild(mkt(s,{x:w/2,y:sy+sh/2+4,'text-anchor':'middle',fill:'#'+c.txt,'font-size':sfs,'font-weight':'bold','font-family':'Cambria'}));
+      g.appendChild(mkt(s,{x:w/2,y:sy+sh/2+4,'text-anchor':'middle',fill:'#000000','font-size':sfs,'font-weight':'bold','font-family':'Cambria'}));
     }else{
       const m2=Math.ceil(ws.length/2);
-      g.appendChild(mkt(ws.slice(0,m2).join(' '),{x:w/2,y:sy+sh/2-2,'text-anchor':'middle',fill:'#'+c.txt,'font-size':sfs,'font-weight':'bold','font-family':'Cambria'}));
-      g.appendChild(mkt(ws.slice(m2).join(' '),{x:w/2,y:sy+sh/2+11,'text-anchor':'middle',fill:'#'+c.txt,'font-size':sfs,'font-weight':'bold','font-family':'Cambria'}));
+      g.appendChild(mkt(ws.slice(0,m2).join(' '),{x:w/2,y:sy+sh/2-2,'text-anchor':'middle',fill:'#000000','font-size':sfs,'font-weight':'bold','font-family':'Cambria'}));
+      g.appendChild(mkt(ws.slice(m2).join(' '),{x:w/2,y:sy+sh/2+11,'text-anchor':'middle',fill:'#000000','font-size':sfs,'font-weight':'bold','font-family':'Cambria'}));
     }
   });
-  // Slot badge at bottom
+
+  // Slot badge — dark fill, BLACK text
   if(slot!=null&&String(slot).trim()!==''){
     const sy2=h-27;
-    g.appendChild(mk('rect',{x:7,y:sy2,width:w-14,height:22,rx:3,fill:'#'+c.sub,stroke:'#'+c.bdr,'stroke-width':1}));
-    g.appendChild(mkt('Slot '+slot,{x:w/2,y:sy2+15,'text-anchor':'middle',fill:'#'+c.txt,'font-size':9,'font-weight':'bold','font-family':'Cambria'}));
+    g.appendChild(mk('rect',{x:7,y:sy2,width:w-14,height:22,rx:3,fill:'#'+c.sub,stroke:'#000000','stroke-width':1}));
+    g.appendChild(mkt('Slot '+slot,{x:w/2,y:sy2+15,'text-anchor':'middle',fill:'#000000','font-size':9,'font-weight':'bold','font-family':'Cambria'}));
   }
-  // I/O Labels — plain vertical spine, directional tick per label
-  // Each IO entry can be a string (default: 'out') or {text, dir:'out'|'in'|'bi'}
+  // I/O Labels — plain vertical spine (no arrowhead), solid tick arrows per label
   const ios=ioLabels||[];
   if(ios.length>0){
-    const IGAP=16;
+    const IGAP=17;
     const spineX=w/2;
     const spineBottom=-6;
     const spineTop=spineBottom-ios.length*IGAP-4;
-    // Plain vertical spine — NO arrowhead
-    g.appendChild(mk('line',{x1:spineX,y1:spineTop,x2:spineX,y2:spineBottom,stroke:'#000000','stroke-width':1}));
+    // ── Spine: plain line, NO arrowhead
+    g.appendChild(mk('line',{x1:spineX,y1:spineTop,x2:spineX,y2:spineBottom,
+      stroke:'#000000','stroke-width':1.2,'pointer-events':'none'}));
     ios.slice(0,12).forEach((io,ii)=>{
       const lbl=typeof io==='object'?io.text:io;
-      const dir=typeof io==='object'?io.dir:'out'; // default: output
+      const dir=typeof io==='object'?io.dir:'out';
       const ly=spineTop+4+ii*IGAP;
-      const tickLen=22; // longer ticks so arrowheads are visible
-      // Tick from spine leftward; arrowheads based on direction
-      const tickLine=mk('line',{x1:spineX,y1:ly,x2:spineX-tickLen,y2:ly,stroke:'#000000','stroke-width':1});
-      // For 'out': arrow at left tip (away from module)  → marker-end at x2
-      // For 'in' : arrow pointing right toward spine → marker-start at x2 pointing right = marker-end needs orient flip
-      // Simplest approach: use marker-end for out tip, marker-start for in tip
-      if(dir==='out'||dir==='bi'){
-        tickLine.setAttribute('marker-end', mkE('ioT_out_'+id+'_'+ii,'#000000'));
-      }
-      if(dir==='in'||dir==='bi'){
-        // For inward arrow: draw reversed tick so marker-end points toward spine
-        const inLine=mk('line',{x1:spineX-tickLen,y1:ly,x2:spineX-2,y2:ly,stroke:'#000000','stroke-width':1,'marker-end':mkE('ioT_in_'+id+'_'+ii,'#000000')});
-        g.appendChild(inLine);
+      const TICK=28; // longer tick = visible arrowhead
+      // Outward tick (from spine leftward) = arrowhead at left end
+      const outMk=mkE('ioOut_'+id+'_'+ii,'#000000');
+      // Inward tick = arrowhead at right end (toward spine) → draw line rightward, arrow at end
+      const inMk =mkE('ioIn_'+id+'_'+ii,'#000000');
+
+      if(dir==='bi'){
+        // Both ends: left arrow + right arrow → one line with both markers
+        const bl=mk('line',{x1:spineX-TICK,y1:ly,x2:spineX-2,y2:ly,
+          stroke:'#000000','stroke-width':1.2,'marker-start':mkS('ioBiS_'+id+'_'+ii,'#000000'),'marker-end':inMk});
+        g.appendChild(bl);
+      }else if(dir==='in'){
+        // Arrow pointing right (toward module/spine): draw left→right, arrow at end
+        const il=mk('line',{x1:spineX-TICK,y1:ly,x2:spineX-2,y2:ly,
+          stroke:'#000000','stroke-width':1.2,'marker-end':inMk});
+        g.appendChild(il);
       }else{
-        g.appendChild(tickLine);
+        // 'out' default: arrow pointing left (away from module): draw right→left, arrow at end
+        const ol=mk('line',{x1:spineX,y1:ly,x2:spineX-TICK,y2:ly,
+          stroke:'#000000','stroke-width':1.2,'marker-end':outMk});
+        g.appendChild(ol);
       }
-      // Label text
-      g.appendChild(mkt(lbl,{x:spineX-tickLen-4,y:ly+4,'text-anchor':'end',fill:'#000000','font-size':8,'font-family':'Cambria','font-weight':'bold'}));
+      g.appendChild(mkt(lbl,{x:spineX-TICK-5,y:ly+4,
+        'text-anchor':'end',fill:'#000000','font-size':8.5,'font-family':'Cambria','font-weight':'bold','pointer-events':'none'}));
     });
   }
   return g;
@@ -614,11 +621,11 @@ function rBus(el){
   const{id,x,y,w,label,color,lw,isBackplane}=el;
   const col=color||'#1F7C00';
   const g=mk('g',{id:'e_'+id,'data-id':id,class:'elem',cursor:'move',transform:`translate(${x},${y})`});
-  g.appendChild(mk('line',{x1:0,y1:0,x2:w,y2:0,stroke:'transparent','stroke-width':18}));
-  // Backplane: left-pointing arrow via auto-start-reverse. Connections: no horizontal arrow.
+  // Wide transparent hit zone — 24px tall centred on the line
+  g.appendChild(mk('rect',{x:0,y:-12,width:w,height:24,fill:'transparent','pointer-events':'all',cursor:'move'}));
   const ms=isBackplane?mkS('bp_'+id,col):'none';
-  g.appendChild(mk('line',{x1:0,y1:0,x2:w,y2:0,stroke:col,'stroke-width':lw||2.5,'marker-start':ms}));
-  if(label) g.appendChild(mkt(label,{x:0,y:-9,fill:col,'font-size':10,'font-weight':'bold','font-family':'Cambria'}));
+  g.appendChild(mk('line',{x1:0,y1:0,x2:w,y2:0,stroke:col,'stroke-width':lw||2.5,'marker-start':ms,'pointer-events':'none'}));
+  if(label) g.appendChild(mkt(label,{x:0,y:-13,fill:col,'font-size':10,'font-weight':'bold','font-family':'Cambria','pointer-events':'none'}));
   return g;
 }
 
@@ -1354,68 +1361,77 @@ async function dlPPT(){
         const{x,y,w,h,label,colorType,subComponents,slot,ioLabels,modShape,shadow}=el;
         const c=CM[colorType]||CM.gray;
         const fs=Math.max(7,Math.min(13,Math.floor(10.5*w/115)));
-
-        // ── Corner radius in PPT (rectRadius only works with ROUNDED_RECTANGLE)
         const RR=gsc('ROUNDED_RECTANGLE','roundedRect');
-        const useRR=modShape&&modShape!=='square';
-        const rxPx=modShape==='pill'?Math.min(w,h)/2:modShape==='hex'?12:modShape==='square'?0:4;
-        // PptxGenJS rectRadius is 0–1 (fraction of shortest side)
-        const rrRad=useRR?Math.min(0.5,rxPx/Math.min(sx(w)*96,sy(h)*96)):0;
-        const SHAPE=useRR?RR:R;
 
-        // ── Shadow: pptx shadow object
-        const shadowOpts=shadow?{type:'outer',color:'000000',blur:8,offset:5,angle:135,opacity:0.35}:undefined;
+        // rectRadius: 0–1 ratio. 0.08 = clearly visible rounding on 115px module.
+        const isSquare = modShape==='square';
+        const RR_BODY  = isSquare?0 : modShape==='pill'?0.5 : modShape==='hex'?0.12 : 0.08;
+        const SHP      = isSquare ? R : RR;
 
-        // Black outer border
-        slide.addShape(R,{x:sx(x-2),y:sy(y-2),w:sx(w+4),h:sy(h+4),fill:{color:'000000'},line:{color:'000000',width:0}});
-        // Main colored body
-        const bodyOpts={x:sx(x),y:sy(y),w:sx(w),h:sy(h),fill:{color:c.fill},line:{color:c.bdr,width:1.5}};
-        if(useRR)bodyOpts.rectRadius=Math.min(0.3,rxPx/Math.min(w,h));
-        if(shadow)bodyOpts.shadow=Object.assign({},shadowOpts);
-        slide.addShape(SHAPE,bodyOpts);
-        // Header text box (fill + text in one)
-        slide.addText(label,{x:sx(x),y:sy(y),w:sx(w),h:sy(35),
-          fill:{color:c.sub},line:{color:c.bdr,width:1},
-          fontSize:fs,bold:true,color:'FFFFFF',align:'center',valign:'middle',fontFace:'Cambria',margin:0});
-        // Sub-components
+        // Shadow — fresh object per call
+        const mkSh=()=>({type:'outer',color:'000000',blur:6,offset:4,angle:135,opacity:0.30});
+
+        // ── 1. Body — colored fill + BLACK outline stroke (no separate black border rect) ──
+        // This is ONE clean shape in PPT, fully selectable, no background clutter.
+        const bodyOpts={x:sx(x),y:sy(y),w:sx(w),h:sy(h),
+          fill:{color:c.fill},line:{color:'000000',width:2}};
+        if(!isSquare) bodyOpts.rectRadius=RR_BODY;
+        if(shadow)    bodyOpts.shadow=mkSh();
+        slide.addShape(SHP,bodyOpts);
+
+        // ── 2. Header text box — dark fill, BLACK text, standalone editable object ──
+        // Width = full module width so it sits cleanly at the top.
+        // No separate background shape — the fill is baked into addText itself.
+        slide.addText(label,{
+          x:sx(x), y:sy(y), w:sx(w), h:sy(35),
+          fill:{color:c.sub}, line:{color:'000000',width:1},
+          fontSize:fs, bold:true, color:'000000',
+          align:'center', valign:'middle', fontFace:'Cambria', margin:0
+        });
+
+        // ── 3. Sub-components — each a standalone addText, dark fill, BLACK text ──
         const maxS=Math.floor((h-44-30)/54);
         (subComponents||[]).slice(0,maxS).forEach((s,i)=>{
-          const sY=y+44+i*54,sw=w-14,sh=48;
-          slide.addText(s,{x:sx(x+7),y:sy(sY),w:sx(sw),h:sy(sh),
-            fill:{color:c.sub},line:{color:c.bdr,width:1},
-            fontSize:8,bold:true,color:'FFFFFF',align:'center',valign:'middle',fontFace:'Cambria',margin:0});
+          const sY=y+44+i*54, sw2=w-14, sh2=48;
+          slide.addText(s,{
+            x:sx(x+7), y:sy(sY), w:sx(sw2), h:sy(sh2),
+            fill:{color:c.sub}, line:{color:'000000',width:1},
+            fontSize:8, bold:true, color:'000000',
+            align:'center', valign:'middle', fontFace:'Cambria', margin:0
+          });
         });
-        // Slot badge
+
+        // ── 4. Slot badge — standalone addText, dark fill, BLACK text ──
         if(slot!=null&&String(slot).trim()){
           const slY=y+h-27;
-          slide.addText('Slot '+slot,{x:sx(x+7),y:sy(slY),w:sx(w-14),h:sy(22),
-            fill:{color:c.sub},line:{color:c.bdr,width:1},
-            fontSize:9,bold:true,color:'FFFFFF',align:'center',valign:'middle',fontFace:'Cambria',margin:0});
+          slide.addText('Slot '+slot,{
+            x:sx(x+7), y:sy(slY), w:sx(w-14), h:sy(22),
+            fill:{color:c.sub}, line:{color:'000000',width:1},
+            fontSize:9, bold:true, color:'000000',
+            align:'center', valign:'middle', fontFace:'Cambria', margin:0
+          });
         }
-        // ── I/O labels: plain vertical spine (NO arrow), directional ticks
+
+        // ── 5. I/O labels ──────────────────────────────────────────────────────
         const ios=ioLabels||[];
         if(ios.length>0){
-          const IGAP_IN=0.21;
+          const IGAP_IN=0.22;
           const spineX=sx(x+w/2);
           const spineBottom=sy(y)-0.05;
           const spineTop=spineBottom-ios.length*IGAP_IN-0.04;
-          // Plain spine — NO arrowhead
           slide.addShape(L,{x:spineX,y:spineTop,w:0,h:spineBottom-spineTop,
             line:{color:'000000',width:1.5}});
           ios.slice(0,12).forEach((io,ii)=>{
-            const rowY=spineTop+0.02+ii*IGAP_IN;
+            const rowY=spineTop+0.03+ii*IGAP_IN;
             const lbl=typeof io==='object'?io.text:io;
-            const dir=typeof io==='object'?io.dir:'out'; // 'out','in','bi'
-            // Tick line with directional arrows:
-            // 'out' → arrowhead at left end (pointing away from module)
-            // 'in'  → arrowhead at right end (pointing toward module / spine)
-            // 'bi'  → arrowheads at both ends
-            const tickOpts={color:'000000',width:1};
-            if(dir==='out'||dir==='bi') tickOpts.beginArrowType='open';
-            if(dir==='in' ||dir==='bi') tickOpts.endArrowType='open';
-            slide.addShape(L,{x:spineX-0.18,y:rowY,w:0.18,h:0,line:tickOpts});
-            slide.addText(lbl,{x:spineX-1.82,y:rowY-0.09,w:1.62,h:IGAP_IN,
-              fontSize:7.5,bold:true,color:'000000',align:'right',valign:'middle',fontFace:'Cambria',margin:0});
+            const dir=typeof io==='object'?io.dir:'out';
+            const TICK_W=0.45;
+            const tickOpts={color:'000000',width:1.5};
+            if(dir==='out'||dir==='bi') tickOpts.beginArrowType='triangle';
+            if(dir==='in' ||dir==='bi') tickOpts.endArrowType  ='triangle';
+            slide.addShape(L,{x:spineX-TICK_W,y:rowY,w:TICK_W,h:0,line:tickOpts});
+            slide.addText(lbl,{x:spineX-TICK_W-1.55,y:rowY-0.09,w:1.5,h:IGAP_IN,
+              fontSize:8,bold:true,color:'000000',align:'right',valign:'middle',fontFace:'Cambria',margin:0});
           });
         }
       }
@@ -1430,7 +1446,7 @@ async function dlPPT(){
         const col=hx(el.color);
         const lw2=Math.max(2,el.lw||2.5);
         const lo={color:col,width:lw2};
-        if(el.isBackplane)lo.beginArrowType='arrow';
+        if(el.isBackplane)lo.beginArrowType='triangle';
         slide.addShape(L,{x:sx(el.x),y:sy(el.y),w:sx(el.w),h:0,line:lo});
         if(el.label)slide.addText(el.label,{x:sx(el.x),y:sy(el.y-20),
           w:sx(Math.min(el.w,900)),h:sy(20),
@@ -1453,15 +1469,15 @@ async function dlPPT(){
               const cx=mod.x+Math.round((biP+1)*mod.w/(NbP+1));
               if(!isPow&&(cx<el.x-10||cx>el.x+el.w+10))return;
               const isPSU=mod.colorType==='red'||(mod.label||'').toUpperCase().includes('PSU');
-              const lw3=Math.max(2,el.lw||2);
+              const lw3=Math.max(2.5,el.lw||2.5);
               if(isPow&&isPSU){
                 // PSU→bus DOWN arrow ↓ (endArrow at bus end)
                 slide.addShape(L,{x:sx(cx),y:sy(mod.y+mod.h),w:0,h:sy(el.y-(mod.y+mod.h)),
-                  line:{color:col,width:lw3+0.5,endArrowType:'arrow'}});
+                  line:{color:col,width:lw3+0.5,endArrowType:'triangle'}});
               }else{
-                // bus→module UP arrow ↑ (beginArrow at module end, which is the start of the drawn line)
+                // bus→module UP arrow ↑ (beginArrow at top = module bottom end)
                 slide.addShape(L,{x:sx(cx),y:sy(mod.y+mod.h),w:0,h:sy(el.y-(mod.y+mod.h)),
-                  line:{color:col,width:lw3,beginArrowType:'arrow'}});
+                  line:{color:col,width:lw3,beginArrowType:'triangle'}});
               }
             });
           }
@@ -1475,9 +1491,9 @@ async function dlPPT(){
         if(ly1>ly2||(ly1===ly2&&lx1>lx2)){
           [lx1,lx2]=[lx2,lx1];[ly1,ly2]=[ly2,ly1];[aEnd,aStart]=[aStart,aEnd];
         }
-        const lo2={color:col,width:Math.max(1.5,el.lw||1.5),dashType:el.dashed?'dash':'solid'};
-        if(aEnd) lo2.endArrowType='arrow';
-        if(aStart)lo2.beginArrowType='arrow';
+        const lo2={color:col,width:Math.max(2,el.lw||1.5),dashType:el.dashed?'dash':'solid'};
+        if(aEnd) lo2.endArrowType='triangle';
+        if(aStart)lo2.beginArrowType='triangle';
         slide.addShape(L,{x:sx(lx1),y:sy(ly1),w:sx(lx2-lx1),h:sy(ly2-ly1),line:lo2});
         if(el.label){
           const mx=(el.x1+el.x2)/2,my=(el.y1+el.y2)/2;
