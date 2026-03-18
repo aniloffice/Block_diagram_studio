@@ -8,7 +8,7 @@
 :root{
   --bg:#0d1117;--sf:#161b22;--sf2:#21262d;--bd:#30363d;
   --acc:#f0a500;--blu:#38bdf8;--grn:#3fb950;--red:#f87171;--pur:#a78bfa;
-  --txt:#e6edf3;--mut:#7d8590;--f:-apple-system,'Segoe UI',sans-serif;--m:'Consolas','Courier New',monospace
+  --txt:#e6edf3;--mut:#7d8590;--f:'Cambria',Georgia,serif;--m:'Consolas','Courier New',monospace
 }
 body{background:var(--bg);color:var(--txt);font-family:var(--f);height:100vh;overflow:hidden;display:flex;flex-direction:column}
 #hdr{display:flex;align-items:center;gap:10px;padding:6px 14px;background:var(--sf);border-bottom:1px solid var(--bd);flex-shrink:0;height:44px}
@@ -455,28 +455,42 @@ const mkS=(id,c)=>mkr(id,c,'auto-start-reverse');     // tip points opposite (�
 // RENDER: MODULE
 // ═══════════════════════════════════════════════════════
 function rMod(el){
-  const{id,x,y,w,h,label,colorType,subComponents,slot,ioLabels}=el;
+  const{id,x,y,w,h,label,colorType,subComponents,slot,ioLabels,modShape,shadow}=el;
   const c=CM[colorType]||CM.gray;
   const g=mk('g',{id:'e_'+id,'data-id':id,class:'elem',cursor:'move',transform:`translate(${x},${y})`});
 
-  // LARGE TRANSPARENT HIT AREA — covers module body + I/O label zone above.
-  // Without this, clicks in the gaps between I/O label text elements fall through
-  // to the background and the module can't be selected/edited.
+  // Corner radius based on modShape
+  const rxMain=modShape==='square'?0:modShape==='pill'?Math.min(w,h)/2:modShape==='hex'?12:4;
+  const rxBorder=rxMain>0?rxMain+1:0;
+
+  // Drop shadow via SVG filter
+  if(shadow){
+    const fid='shf_'+id;
+    const defs=document.getElementById('cvd');
+    if(!document.getElementById(fid)){
+      const filt=mk('filter',{id:fid,x:'-10%',y:'-10%',width:'120%',height:'130%'});
+      const fe1=mk('feDropShadow',{dx:'4',dy:'5',stdDeviation:'4','flood-color':'rgba(0,0,0,0.35)'});
+      filt.appendChild(fe1);defs.appendChild(filt);
+    }
+    g.setAttribute('filter',`url(#${fid})`);
+  }
+
+  // Hit area (transparent, covers module + I/O zone above)
   const ioCount=(ioLabels||[]).length;
   const hitAbove=ioCount>0?ioCount*18+20:0;
   g.appendChild(mk('rect',{x:0,y:-hitAbove,width:w,height:h+hitAbove,fill:'transparent','pointer-events':'all'}));
 
   // Black outer border
-  g.appendChild(mk('rect',{x:-2,y:-2,width:w+4,height:h+4,rx:5,fill:'#000000',stroke:'none'}));
+  g.appendChild(mk('rect',{x:-2,y:-2,width:w+4,height:h+4,rx:rxBorder,fill:'#000000',stroke:'none'}));
   // Colored fill
-  g.appendChild(mk('rect',{width:w,height:h,rx:4,fill:'#'+c.fill,stroke:'#'+c.bdr,'stroke-width':1.5}));
+  g.appendChild(mk('rect',{width:w,height:h,rx:rxMain,fill:'#'+c.fill,stroke:'#'+c.bdr,'stroke-width':1.5}));
   // Header clip
   const cid='cl_'+id;
   const cp=mk('clipPath',{id:cid});cp.appendChild(mk('rect',{width:w,height:35}));g.appendChild(cp);
-  g.appendChild(mk('rect',{width:w,height:h,rx:4,fill:'#'+c.sub,'clip-path':`url(#${cid})`}));
+  g.appendChild(mk('rect',{width:w,height:h,rx:rxMain,fill:'#'+c.sub,'clip-path':`url(#${cid})`}));
   // Title label
   const fs=Math.max(8,Math.min(13,Math.floor(10.5*w/115)));
-  g.appendChild(mkt(label||'Module',{x:w/2,y:22,'text-anchor':'middle',fill:'#'+c.txt,'font-size':fs,'font-weight':'bold','font-family':'Arial Black'}));
+  g.appendChild(mkt(label||'Module',{x:w/2,y:22,'text-anchor':'middle',fill:'#'+c.txt,'font-size':fs,'font-weight':'bold','font-family':'Cambria'}));
   // Sub-components
   const subs=subComponents||[];
   const maxS=Math.floor((h-44-30)/54);
@@ -486,41 +500,51 @@ function rMod(el){
     const sfs=Math.max(7,Math.min(10,Math.floor(9*w/115)));
     const ws=s.split(' ');
     if(ws.length<=3||sw>90){
-      g.appendChild(mkt(s,{x:w/2,y:sy+sh/2+4,'text-anchor':'middle',fill:'#'+c.txt,'font-size':sfs,'font-weight':'bold','font-family':'Calibri'}));
+      g.appendChild(mkt(s,{x:w/2,y:sy+sh/2+4,'text-anchor':'middle',fill:'#'+c.txt,'font-size':sfs,'font-weight':'bold','font-family':'Cambria'}));
     }else{
       const m2=Math.ceil(ws.length/2);
-      g.appendChild(mkt(ws.slice(0,m2).join(' '),{x:w/2,y:sy+sh/2-2,'text-anchor':'middle',fill:'#'+c.txt,'font-size':sfs,'font-weight':'bold','font-family':'Calibri'}));
-      g.appendChild(mkt(ws.slice(m2).join(' '),{x:w/2,y:sy+sh/2+11,'text-anchor':'middle',fill:'#'+c.txt,'font-size':sfs,'font-weight':'bold','font-family':'Calibri'}));
+      g.appendChild(mkt(ws.slice(0,m2).join(' '),{x:w/2,y:sy+sh/2-2,'text-anchor':'middle',fill:'#'+c.txt,'font-size':sfs,'font-weight':'bold','font-family':'Cambria'}));
+      g.appendChild(mkt(ws.slice(m2).join(' '),{x:w/2,y:sy+sh/2+11,'text-anchor':'middle',fill:'#'+c.txt,'font-size':sfs,'font-weight':'bold','font-family':'Cambria'}));
     }
   });
   // Slot badge at bottom
   if(slot!=null&&String(slot).trim()!==''){
     const sy2=h-27;
     g.appendChild(mk('rect',{x:7,y:sy2,width:w-14,height:22,rx:3,fill:'#'+c.sub,stroke:'#'+c.bdr,'stroke-width':1}));
-    g.appendChild(mkt('Slot '+slot,{x:w/2,y:sy2+15,'text-anchor':'middle',fill:'#'+c.txt,'font-size':9,'font-weight':'bold','font-family':'Calibri'}));
+    g.appendChild(mkt('Slot '+slot,{x:w/2,y:sy2+15,'text-anchor':'middle',fill:'#'+c.txt,'font-size':9,'font-weight':'bold','font-family':'Cambria'}));
   }
-  // I/O Labels: vertical spine ABOVE module top, one label row per entry
-  //   1x Display Port ──┐
-  //   1x USB 3.0      ──┤  (spine centred on module x)
-  //   2x RS232        ──┤
-  //                     │
-  //                     ↓ (arrowhead touches module top)
-  //           [══ MODULE ══]
+  // I/O Labels — plain vertical spine, directional tick per label
+  // Each IO entry can be a string (default: 'out') or {text, dir:'out'|'in'|'bi'}
   const ios=ioLabels||[];
   if(ios.length>0){
     const IGAP=16;
     const spineX=w/2;
     const spineBottom=-6;
     const spineTop=spineBottom-ios.length*IGAP-4;
-    const ioMk=mkE('ioD_'+id,'#000000');
-    // Vertical spine with downward arrowhead touching module top
-    g.appendChild(mk('line',{x1:spineX,y1:spineTop,x2:spineX,y2:spineBottom,stroke:'#000000','stroke-width':1,'marker-end':ioMk}));
+    // Plain vertical spine — NO arrowhead
+    g.appendChild(mk('line',{x1:spineX,y1:spineTop,x2:spineX,y2:spineBottom,stroke:'#000000','stroke-width':1}));
     ios.slice(0,12).forEach((io,ii)=>{
+      const lbl=typeof io==='object'?io.text:io;
+      const dir=typeof io==='object'?io.dir:'out'; // default: output
       const ly=spineTop+4+ii*IGAP;
-      // Short horizontal tick
-      g.appendChild(mk('line',{x1:spineX,y1:ly,x2:spineX-5,y2:ly,stroke:'#000000','stroke-width':1}));
-      // Label text right-aligned just left of tick
-      g.appendChild(mkt(io,{x:spineX-7,y:ly+4,'text-anchor':'end',fill:'#000000','font-size':8,'font-family':'Calibri','font-weight':'bold'}));
+      const tickLen=22; // longer ticks so arrowheads are visible
+      // Tick from spine leftward; arrowheads based on direction
+      const tickLine=mk('line',{x1:spineX,y1:ly,x2:spineX-tickLen,y2:ly,stroke:'#000000','stroke-width':1});
+      // For 'out': arrow at left tip (away from module)  → marker-end at x2
+      // For 'in' : arrow pointing right toward spine → marker-start at x2 pointing right = marker-end needs orient flip
+      // Simplest approach: use marker-end for out tip, marker-start for in tip
+      if(dir==='out'||dir==='bi'){
+        tickLine.setAttribute('marker-end', mkE('ioT_out_'+id+'_'+ii,'#000000'));
+      }
+      if(dir==='in'||dir==='bi'){
+        // For inward arrow: draw reversed tick so marker-end points toward spine
+        const inLine=mk('line',{x1:spineX-tickLen,y1:ly,x2:spineX-2,y2:ly,stroke:'#000000','stroke-width':1,'marker-end':mkE('ioT_in_'+id+'_'+ii,'#000000')});
+        g.appendChild(inLine);
+      }else{
+        g.appendChild(tickLine);
+      }
+      // Label text
+      g.appendChild(mkt(lbl,{x:spineX-tickLen-4,y:ly+4,'text-anchor':'end',fill:'#000000','font-size':8,'font-family':'Cambria','font-weight':'bold'}));
     });
   }
   return g;
@@ -535,7 +559,7 @@ function rTxt(el){
   if(bgColor&&bgColor!=='none') g.appendChild(mk('rect',{width:w,height:h,fill:bgColor,rx:3}));
   g.appendChild(mk('rect',{width:w,height:h,fill:'rgba(0,0,0,0)',stroke:'#aaa','stroke-width':.5,'stroke-dasharray':'4,3'}));
   const fa=align||'left',tx=fa==='center'?w/2:fa==='right'?w-4:4,ta=fa==='center'?'middle':fa==='right'?'end':'start';
-  g.appendChild(mkt(text||'Text',{x:tx,y:h/2+(fontSize||13)/2-2,'text-anchor':ta,'font-size':fontSize||13,'font-weight':bold?'bold':'normal','font-style':italic?'italic':'normal','font-family':'Arial Black',fill:color||'#000000'}));
+  g.appendChild(mkt(text||'Text',{x:tx,y:h/2+(fontSize||18)/2-2,'text-anchor':ta,'font-size':fontSize||18,'font-weight':bold?'bold':'normal','font-style':italic?'italic':'normal','font-family':'Cambria',fill:color||'#000000'}));
   return g;
 }
 
@@ -558,7 +582,7 @@ function rShp(el){
     default:sh=mk('rect',{width:w,height:h,rx:4,fill:fc,stroke:bc,'stroke-width':bw,opacity:op});
   }
   g.appendChild(sh);
-  if(label) g.appendChild(mkt(label,{x:w/2,y:h/2+5,'text-anchor':'middle',fill:'#000000','font-size':11,'font-weight':'bold','font-family':'Calibri'}));
+  if(label) g.appendChild(mkt(label,{x:w/2,y:h/2+5,'text-anchor':'middle',fill:'#000000','font-size':11,'font-weight':'bold','font-family':'Cambria'}));
   return g;
 }
 
@@ -567,12 +591,19 @@ function rShp(el){
 // ═══════════════════════════════════════════════════════
 function rLn(el){
   const{id,x1,y1,x2,y2,label,color,lw,dashed,arrowEnd,arrowStart}=el;
-  const g=mk('g',{id:'e_'+id,'data-id':id,class:'elem'});
+  // Use pointer-events:bounding-box so the entire bounding box is clickable
+  const g=mk('g',{id:'e_'+id,'data-id':id,class:'elem',cursor:'move',style:'pointer-events:bounding-box'});
   const col=color||'#595959';
-  g.appendChild(mk('line',{x1,y1,x2,y2,stroke:'transparent','stroke-width':16,cursor:'pointer'}));
+  // Wide transparent hit line (20px stroke) so thin arrows are easy to click
+  g.appendChild(mk('line',{x1,y1,x2,y2,stroke:'transparent','stroke-width':20,cursor:'move','pointer-events':'stroke'}));
+  // Visible line
   g.appendChild(mk('line',{x1,y1,x2,y2,stroke:col,'stroke-width':lw||1.5,'stroke-dasharray':dashed?'8,4':'none',
-    'marker-end':arrowEnd?mkE('lnE_'+id,col):'none','marker-start':arrowStart?mkS('lnS_'+id,col):'none'}));
-  if(label){const mx=(+x1+ +x2)/2,my=(+y1+ +y2)/2;g.appendChild(mkt(label,{x:mx,y:my-7,'text-anchor':'middle',fill:col,'font-size':10,'font-weight':'bold','font-family':'Calibri'}));}
+    'marker-end':arrowEnd?mkE('lnE_'+id,col):'none',
+    'marker-start':arrowStart?mkS('lnS_'+id,col):'none'}));
+  if(label){
+    const mx=(+x1+ +x2)/2,my=(+y1+ +y2)/2;
+    g.appendChild(mkt(label,{x:mx,y:my-7,'text-anchor':'middle',fill:col,'font-size':10,'font-weight':'bold','font-family':'Cambria'}));
+  }
   return g;
 }
 
@@ -587,30 +618,65 @@ function rBus(el){
   // Backplane: left-pointing arrow via auto-start-reverse. Connections: no horizontal arrow.
   const ms=isBackplane?mkS('bp_'+id,col):'none';
   g.appendChild(mk('line',{x1:0,y1:0,x2:w,y2:0,stroke:col,'stroke-width':lw||2.5,'marker-start':ms}));
-  if(label) g.appendChild(mkt(label,{x:0,y:-9,fill:col,'font-size':10,'font-weight':'bold','font-family':'Arial Black'}));
+  if(label) g.appendChild(mkt(label,{x:0,y:-9,fill:col,'font-size':10,'font-weight':'bold','font-family':'Cambria'}));
   return g;
 }
 
 // ═══════════════════════════════════════════════════════
-// RENDER: DROP LINES (upward arrows from bus to each module)
+// RENDER: DROP LINES — spaced across slot width, power centred
+//  Power bus: PSU → down arrow ↓ to bus; others → up arrow ↑ from bus
+//  Other buses: up arrow ↑ from bus to module
+//  X positions evenly distributed: (busIndex+1)/(totalBuses+1) * slotWidth
 // ═══════════════════════════════════════════════════════
 function rDrops(){
   drL.innerHTML='';
   const buses=elems.filter(e=>e.type==='bus'&&e.showDrops);
-  const mods=elems.filter(e=>e.type==='mod');
+  const mods =elems.filter(e=>e.type==='mod');
   if(!buses.length||!mods.length)return;
-  buses.forEach(bus=>{
-    const by=bus.y,col=bus.color||'#595959';
-    const isPower=(bus.label||'').toLowerCase().includes('power')||(col.replace('#','').toUpperCase()==='FF0000');
-    const lw2=Math.max(1,bus.lw||1.5);
-    mods.forEach(mod=>{
-      const cx=mod.x+mod.w/2;
-      const modBot=mod.y+mod.h;
-      if(modBot>=by)return; // module must be above bus
-      if(!isPower&&(cx<bus.x-5||cx>bus.x+bus.w+5))return;
-      // Line goes from bus Y upward to just below module bottom; arrowhead points UP into module
-      const me=mkE('dp_'+bus.id+'_'+mod.id,col);
-      drL.appendChild(mk('line',{x1:cx,y1:by,x2:cx,y2:modBot+3,stroke:col,'stroke-width':lw2,'marker-end':me}));
+
+  const isPowBus=b=>(b.label||'').toLowerCase().includes('power')
+    ||(b.color||'').replace('#','').toUpperCase()==='FF0000';
+
+  // Sort: power in centre slot, others spread left/right
+  const powBuses  =buses.filter(b=> isPowBus(b));
+  const otherBuses=buses.filter(b=>!isPowBus(b));
+  const half=Math.floor(otherBuses.length/2);
+  const ordered=[...otherBuses.slice(0,half),...powBuses,...otherBuses.slice(half)];
+  const N=ordered.length;
+
+  mods.forEach(mod=>{
+    const modBot=mod.y+mod.h;
+    const isPSU =mod.colorType==='red'
+               ||(mod.label||'').toUpperCase().includes('PSU');
+
+    ordered.forEach((bus,bi)=>{
+      if(modBot>=bus.y)return;                         // module must be above bus
+      const col =bus.color||'#595959';
+      const lw2 =Math.max(1,bus.lw||1.5);
+      const isP =isPowBus(bus);
+
+      // Evenly space drop lines across module width:
+      // bi=0 → 1/(N+1)*w, bi=1 → 2/(N+1)*w … bi=N-1 → N/(N+1)*w
+      const cx=mod.x+Math.round((bi+1)*mod.w/(N+1));
+
+      // Non-power buses: only draw if bus line covers this x
+      if(!isP&&(cx<bus.x-10||cx>bus.x+bus.w+10))return;
+
+      if(isP&&isPSU){
+        // PSU power line: DOWN ↓ (from module bottom to bus)
+        drL.appendChild(mk('line',{
+          x1:cx,y1:modBot,x2:cx,y2:bus.y,
+          stroke:col,'stroke-width':lw2+0.5,
+          'marker-end':mkE('pdn_'+bus.id+'_'+mod.id,col)
+        }));
+      }else{
+        // All other connections: UP ↑ (from bus to module bottom)
+        drL.appendChild(mk('line',{
+          x1:cx,y1:bus.y,x2:cx,y2:modBot+3,
+          stroke:col,'stroke-width':lw2,
+          'marker-end':mkE('pup_'+bus.id+'_'+mod.id+'_'+bi,col)
+        }));
+      }
     });
   });
 }
@@ -717,7 +783,7 @@ svgEl.addEventListener('mousedown',e=>{
   const p=pt(e);
   if(tool==='txt'){
     saveH();
-    elems.push({id:uid(),type:'txt',x:p.x-100,y:p.y-14,w:220,h:34,text:'Text',fontSize:14,bold:false,italic:false,color:'#000000',bgColor:'none',align:'left'});
+    elems.push({id:uid(),type:'txt',x:p.x-100,y:p.y-14,w:220,h:34,text:'Text',fontSize:18,bold:false,italic:false,color:'#000000',bgColor:'none',align:'left'});
     setTool('sel');const nid=elems[elems.length-1].id;ra();sel(nid);return;
   }
   if(tool==='shp'){
@@ -822,14 +888,14 @@ function addShape(shapeType){
 
 // Default text box presets
 const TXT_PRESETS={
-  title: {text:'System Block Diagram',x:40,y:14,w:750,h:38,fontSize:22,bold:true,italic:false,color:'#000000',bgColor:'none',align:'left'},
-  io:    {text:'← 1x Display Port',x:200,y:70,w:220,h:26,fontSize:11,bold:true,italic:false,color:'#000000',bgColor:'none',align:'left'},
-  note:  {text:'Note: insert annotation here',x:300,y:200,w:260,h:26,fontSize:11,bold:false,italic:true,color:'#444444',bgColor:'#FFFACD',align:'left'},
-  voltage:{text:'48V DC Input',x:500,y:55,w:160,h:26,fontSize:13,bold:true,italic:false,color:'#CC0000',bgColor:'none',align:'center'},
-  onoff: {text:'ON/OFF Control (Host)',x:900,y:55,w:220,h:26,fontSize:12,bold:true,italic:false,color:'#000000',bgColor:'none',align:'left'},
-  rev:   {text:'Rev: 1.0   Date: 2025',x:1000,y:690,w:265,h:22,fontSize:10,bold:false,italic:false,color:'#555555',bgColor:'#F5F5F5',align:'right'},
-  sys:   {text:'3U VPX System',x:40,y:55,w:220,h:26,fontSize:13,bold:true,italic:false,color:'#1F3864',bgColor:'none',align:'left'},
-  warn:  {text:'⚠ HIGH VOLTAGE — DO NOT OPEN',x:400,y:690,w:320,h:22,fontSize:11,bold:true,italic:false,color:'#C00000',bgColor:'#FFF0F0',align:'center'},
+  title: {text:'System Block Diagram',x:40,y:14,w:750,h:38,fontSize:18,bold:true,italic:false,color:'#000000',bgColor:'none',align:'left'},
+  io:    {text:'← 1x Display Port',x:200,y:70,w:220,h:30,fontSize:18,bold:true,italic:false,color:'#000000',bgColor:'none',align:'left'},
+  note:  {text:'Note: insert annotation here',x:300,y:200,w:260,h:30,fontSize:18,bold:false,italic:true,color:'#444444',bgColor:'#FFFACD',align:'left'},
+  voltage:{text:'48V DC Input',x:500,y:55,w:200,h:30,fontSize:18,bold:true,italic:false,color:'#CC0000',bgColor:'none',align:'center'},
+  onoff: {text:'ON/OFF Control (Host)',x:900,y:55,w:260,h:30,fontSize:18,bold:true,italic:false,color:'#000000',bgColor:'none',align:'left'},
+  rev:   {text:'Rev: 1.0   Date: 2025',x:1000,y:690,w:265,h:28,fontSize:18,bold:false,italic:false,color:'#555555',bgColor:'#F5F5F5',align:'right'},
+  sys:   {text:'3U VPX System',x:40,y:55,w:260,h:30,fontSize:18,bold:true,italic:false,color:'#1F3864',bgColor:'none',align:'left'},
+  warn:  {text:'⚠ HIGH VOLTAGE — DO NOT OPEN',x:400,y:690,w:360,h:28,fontSize:18,bold:true,italic:false,color:'#C00000',bgColor:'#FFF0F0',align:'center'},
 };
 function addTxt(type){
   saveH();
@@ -852,6 +918,20 @@ function ue(k,v){
   const idx=elems.findIndex(e=>e.id===selId);
   const badge=document.getElementById('ph-badge');
   if(badge) badge.textContent='Layer '+(idx+1)+'/'+elems.length;
+}
+
+// ueIO: parse "label | dir" format into [{text,dir}] array
+function ueIO(raw){
+  const el=elems.find(e=>e.id===selId);
+  if(!el)return;
+  el.ioLabels=raw.split('\n').filter(s=>s.trim()).map(line=>{
+    const parts=line.split('|');
+    const text=(parts[0]||'').trim();
+    const dir=((parts[1]||'out').trim()).toLowerCase();
+    const validDir=['out','in','bi'].includes(dir)?dir:'out';
+    return{text,dir:validDir};
+  });
+  ra();
 }
 
 // uen: same but coerces to number
@@ -895,10 +975,22 @@ function up(){
 <input class="pi2" id="f-slot" value="${esc(el.slot??'')}" placeholder="e.g. 1, 2, 3…"
   oninput="ue('slot',this.value)">
 </div>
+<div class="psh">Appearance</div>
 <div class="pr"><div class="pl">Color Theme</div>
 <select class="pss" onchange="ue('colorType',this.value)">
 ${Object.keys(CM).map(k=>`<option value="${k}"${el.colorType===k?' selected':''}>${k}</option>`).join('')}
 </select></div>
+<div class="pr"><div class="pl">Corner Shape</div>
+<select class="pss" onchange="ue('modShape',this.value)">
+<option value="rounded"${(el.modShape||'rounded')==='rounded'?' selected':''}>Rounded (default)</option>
+<option value="square"${el.modShape==='square'?' selected':''}>Square corners</option>
+<option value="pill"${el.modShape==='pill'?' selected':''}>Pill / Stadium</option>
+<option value="hex"${el.modShape==='hex'?' selected':''}>Hexagonal top</option>
+</select></div>
+<div class="pr cbr">
+<input type="checkbox" id="pm-shadow"${el.shadow?' checked':''} onchange="ue('shadow',this.checked)">
+<label for="pm-shadow">Drop Shadow</label>
+</div>
 <div class="psh">Size</div>
 <div class="r2">
 <div class="pr"><div class="pl">Width</div><input class="pi2" type="number" min="60" max="400" value="${el.w}" oninput="uen('w',this.value)"></div>
@@ -906,8 +998,14 @@ ${Object.keys(CM).map(k=>`<option value="${k}"${el.colorType===k?' selected':''}
 </div>
 <div class="psh">Sub-Components <span style="font-weight:400;color:var(--mut)">(one per line)</span></div>
 <div class="pr"><textarea class="pta" oninput="ue('subComponents',this.value.split('\\n').filter(s=>s.trim()))">${(el.subComponents||[]).join('\n')}</textarea></div>
-<div class="psh">I/O Labels <span style="font-weight:400;color:var(--mut)">(one per line, shown left of module)</span></div>
-<div class="pr"><textarea class="pta" rows="4" oninput="ue('ioLabels',this.value.split('\\n').filter(s=>s.trim()))">${(el.ioLabels||[]).join('\n')}</textarea></div>
+<div class="psh">I/O Labels <span style="font-weight:400;color:var(--mut)">(shown above module with directional arrows)</span></div>
+<div class="pr" style="font-size:9px;color:var(--mut);margin-bottom:6px">Format: <code style="color:var(--acc)">label text | direction</code> — direction is <code>out</code> (default), <code>in</code>, or <code>bi</code><br>
+Examples: <code>1x Display Port | out</code> &nbsp; <code>1x USB 3.0 | bi</code> &nbsp; <code>Audio In | in</code></div>
+<div class="pr"><textarea class="pta" rows="5" id="f-io"
+  oninput="ueIO(this.value)">${(el.ioLabels||[]).map(io=>typeof io==='object'?io.text+' | '+io.dir:io+' | out').join('\n')}</textarea></div>
+<div style="font-size:9px;color:var(--mut);margin-top:-6px;margin-bottom:8px">
+  ← out = output (arrow pointing left away) &nbsp;|&nbsp; → in = input &nbsp;|&nbsp; ↔ bi = bidirectional
+</div>
 <button class="pdel" onclick="delSel()">✕ Delete This Module</button>`;
     // Focus label field after rebuild (useful when just selected)
     setTimeout(()=>{const f=document.getElementById('f-label');if(f&&document.activeElement!==f){}},10);
@@ -921,7 +1019,7 @@ ${Object.keys(CM).map(k=>`<option value="${k}"${el.colorType===k?' selected':''}
 <div class="psh">Text Content</div>
 <div class="pr"><div class="pl">Text</div><input class="pi2" value="${esc(el.text)}" oninput="ue('text',this.value)"></div>
 <div class="r2">
-<div class="pr"><div class="pl">Font Size</div><input class="pi2" type="number" min="7" max="72" value="${el.fontSize||13}" oninput="uen('fontSize',this.value)"></div>
+<div class="pr"><div class="pl">Font Size</div><input class="pi2" type="number" min="7" max="72" value="${el.fontSize||18}" oninput="uen('fontSize',this.value)"></div>
 <div class="pr"><div class="pl">Align</div><select class="pss" onchange="ue('align',this.value)">
 <option value="left"${el.align==='left'?' selected':''}>Left</option>
 <option value="center"${el.align==='center'?' selected':''}>Center</option>
@@ -1189,7 +1287,7 @@ POSITION RULES:
 function populateFromAI(diag){
   saveH();elems=[];selId=null;
   if(diag.title&&diag.title.trim())
-    elems.push({id:uid(),type:'txt',x:40,y:14,w:750,h:38,text:diag.title,fontSize:22,bold:true,italic:false,color:'#000000',bgColor:'none',align:'left'});
+    elems.push({id:uid(),type:'txt',x:40,y:14,w:750,h:38,text:diag.title,fontSize:18,bold:true,italic:false,color:'#000000',bgColor:'none',align:'left'});
 
   // Fixed module size — all same
   const MOD_W=115,MOD_H=330;
@@ -1253,53 +1351,78 @@ async function dlPPT(){
 
     elems.forEach(el=>{
       if(el.type==='mod'){
-        const{x,y,w,h,label,colorType,subComponents,slot,ioLabels}=el,c=CM[colorType]||CM.gray;
+        const{x,y,w,h,label,colorType,subComponents,slot,ioLabels,modShape,shadow}=el;
+        const c=CM[colorType]||CM.gray;
         const fs=Math.max(7,Math.min(13,Math.floor(10.5*w/115)));
-        // Black outer border (shape only, no text)
+
+        // ── Corner radius in PPT (rectRadius only works with ROUNDED_RECTANGLE)
+        const RR=gsc('ROUNDED_RECTANGLE','roundedRect');
+        const useRR=modShape&&modShape!=='square';
+        const rxPx=modShape==='pill'?Math.min(w,h)/2:modShape==='hex'?12:modShape==='square'?0:4;
+        // PptxGenJS rectRadius is 0–1 (fraction of shortest side)
+        const rrRad=useRR?Math.min(0.5,rxPx/Math.min(sx(w)*96,sy(h)*96)):0;
+        const SHAPE=useRR?RR:R;
+
+        // ── Shadow: pptx shadow object
+        const shadowOpts=shadow?{type:'outer',color:'000000',blur:8,offset:5,angle:135,opacity:0.35}:undefined;
+
+        // Black outer border
         slide.addShape(R,{x:sx(x-2),y:sy(y-2),w:sx(w+4),h:sy(h+4),fill:{color:'000000'},line:{color:'000000',width:0}});
-        // Main colored body (shape only, no text — background layer)
-        slide.addShape(R,{x:sx(x),y:sy(y),w:sx(w),h:sy(h),fill:{color:c.fill},line:{color:c.bdr,width:1.5}});
-        // Header — SINGLE combined object (colored text box, no separate shape needed)
+        // Main colored body
+        const bodyOpts={x:sx(x),y:sy(y),w:sx(w),h:sy(h),fill:{color:c.fill},line:{color:c.bdr,width:1.5}};
+        if(useRR)bodyOpts.rectRadius=Math.min(0.3,rxPx/Math.min(w,h));
+        if(shadow)bodyOpts.shadow=Object.assign({},shadowOpts);
+        slide.addShape(SHAPE,bodyOpts);
+        // Header text box (fill + text in one)
         slide.addText(label,{x:sx(x),y:sy(y),w:sx(w),h:sy(35),
           fill:{color:c.sub},line:{color:c.bdr,width:1},
-          fontSize:fs,bold:true,color:'FFFFFF',align:'center',valign:'middle',fontFace:'Arial Black',margin:0});
-        // Sub-components — each one SINGLE combined object
+          fontSize:fs,bold:true,color:'FFFFFF',align:'center',valign:'middle',fontFace:'Cambria',margin:0});
+        // Sub-components
         const maxS=Math.floor((h-44-30)/54);
         (subComponents||[]).slice(0,maxS).forEach((s,i)=>{
           const sY=y+44+i*54,sw=w-14,sh=48;
           slide.addText(s,{x:sx(x+7),y:sy(sY),w:sx(sw),h:sy(sh),
             fill:{color:c.sub},line:{color:c.bdr,width:1},
-            fontSize:8,bold:true,color:'FFFFFF',align:'center',valign:'middle',fontFace:'Calibri',margin:0});
+            fontSize:8,bold:true,color:'FFFFFF',align:'center',valign:'middle',fontFace:'Cambria',margin:0});
         });
-        // Slot badge — SINGLE combined object
+        // Slot badge
         if(slot!=null&&String(slot).trim()){
           const slY=y+h-27;
           slide.addText('Slot '+slot,{x:sx(x+7),y:sy(slY),w:sx(w-14),h:sy(22),
             fill:{color:c.sub},line:{color:c.bdr,width:1},
-            fontSize:9,bold:true,color:'FFFFFF',align:'center',valign:'middle',fontFace:'Calibri',margin:0});
+            fontSize:9,bold:true,color:'FFFFFF',align:'center',valign:'middle',fontFace:'Cambria',margin:0});
         }
-        // I/O labels ABOVE module — spine + ticks + text labels
+        // ── I/O labels: plain vertical spine (NO arrow), directional ticks
         const ios=ioLabels||[];
         if(ios.length>0){
           const IGAP_IN=0.21;
           const spineX=sx(x+w/2);
           const spineBottom=sy(y)-0.05;
           const spineTop=spineBottom-ios.length*IGAP_IN-0.04;
-          // Spine with visible filled arrowhead pointing down into module top
+          // Plain spine — NO arrowhead
           slide.addShape(L,{x:spineX,y:spineTop,w:0,h:spineBottom-spineTop,
-            line:{color:'000000',width:1.5,endArrowType:'arrow'}});
+            line:{color:'000000',width:1.5}});
           ios.slice(0,12).forEach((io,ii)=>{
             const rowY=spineTop+0.02+ii*IGAP_IN;
-            slide.addShape(L,{x:spineX-0.08,y:rowY,w:0.08,h:0,line:{color:'000000',width:0.75}});
-            slide.addText(io,{x:spineX-1.75,y:rowY-0.08,w:1.65,h:IGAP_IN,
-              fontSize:7.5,bold:true,color:'000000',align:'right',valign:'middle',fontFace:'Calibri',margin:0});
+            const lbl=typeof io==='object'?io.text:io;
+            const dir=typeof io==='object'?io.dir:'out'; // 'out','in','bi'
+            // Tick line with directional arrows:
+            // 'out' → arrowhead at left end (pointing away from module)
+            // 'in'  → arrowhead at right end (pointing toward module / spine)
+            // 'bi'  → arrowheads at both ends
+            const tickOpts={color:'000000',width:1};
+            if(dir==='out'||dir==='bi') tickOpts.beginArrowType='open';
+            if(dir==='in' ||dir==='bi') tickOpts.endArrowType='open';
+            slide.addShape(L,{x:spineX-0.18,y:rowY,w:0.18,h:0,line:tickOpts});
+            slide.addText(lbl,{x:spineX-1.82,y:rowY-0.09,w:1.62,h:IGAP_IN,
+              fontSize:7.5,bold:true,color:'000000',align:'right',valign:'middle',fontFace:'Cambria',margin:0});
           });
         }
       }
       else if(el.type==='txt'){
         const opts={x:sx(el.x),y:sy(el.y),w:sx(el.w),h:sy(el.h),
-          fontSize:el.fontSize||13,bold:el.bold||false,italic:el.italic||false,
-          color:hx(el.color),align:el.align||'left',valign:'middle',fontFace:'Arial'};
+          fontSize:el.fontSize||18,bold:el.bold||false,italic:el.italic||false,
+          color:hx(el.color),align:el.align||'left',valign:'middle',fontFace:'Cambria'};
         if(el.bgColor&&el.bgColor!=='none')opts.fill={color:hx(el.bgColor)};
         slide.addText(el.text||'',opts);
       }
@@ -1311,17 +1434,37 @@ async function dlPPT(){
         slide.addShape(L,{x:sx(el.x),y:sy(el.y),w:sx(el.w),h:0,line:lo});
         if(el.label)slide.addText(el.label,{x:sx(el.x),y:sy(el.y-20),
           w:sx(Math.min(el.w,900)),h:sy(20),
-          fontSize:10,bold:true,color:col,align:'left',fontFace:'Arial Black',margin:0});
+          fontSize:10,bold:true,color:col,align:'left',fontFace:'Cambria',margin:0});
         if(el.showDrops){
-          const isPow=(el.label||'').toLowerCase().includes('power')||col.toUpperCase()==='FF0000';
-          elems.filter(m=>m.type==='mod').forEach(mod=>{
-            const cx=mod.x+mod.w/2;
-            if(!isPow&&(cx<el.x-5||cx>el.x+el.w+5))return;
-            if(mod.y+mod.h>=el.y)return;
-            // Positive height, beginArrowType at top = arrow pointing UP into module
-            slide.addShape(L,{x:sx(cx),y:sy(mod.y+mod.h),w:0,h:sy(el.y-(mod.y+mod.h)),
-              line:{color:col,width:Math.max(2,el.lw||2),beginArrowType:'arrow'}});
-          });
+          // Build ordered bus list (same order as rDrops) so x-positions match
+          const isPowBusP=b=>(b.label||'').toLowerCase().includes('power')
+            ||hx(b.color||'').toUpperCase()==='FF0000';
+          const allDB =elems.filter(e=>e.type==='bus'&&e.showDrops);
+          const powBP =allDB.filter(b=> isPowBusP(b));
+          const othBP =allDB.filter(b=>!isPowBusP(b));
+          const halfP =Math.floor(othBP.length/2);
+          const ordBP =[...othBP.slice(0,halfP),...powBP,...othBP.slice(halfP)];
+          const NbP   =ordBP.length;
+          const biP   =ordBP.findIndex(b=>b.id===el.id);
+          if(biP>=0){
+            const isPow=isPowBusP(el);
+            elems.filter(m=>m.type==='mod').forEach(mod=>{
+              if(mod.y+mod.h>=el.y)return;
+              const cx=mod.x+Math.round((biP+1)*mod.w/(NbP+1));
+              if(!isPow&&(cx<el.x-10||cx>el.x+el.w+10))return;
+              const isPSU=mod.colorType==='red'||(mod.label||'').toUpperCase().includes('PSU');
+              const lw3=Math.max(2,el.lw||2);
+              if(isPow&&isPSU){
+                // PSU→bus DOWN arrow ↓ (endArrow at bus end)
+                slide.addShape(L,{x:sx(cx),y:sy(mod.y+mod.h),w:0,h:sy(el.y-(mod.y+mod.h)),
+                  line:{color:col,width:lw3+0.5,endArrowType:'arrow'}});
+              }else{
+                // bus→module UP arrow ↑ (beginArrow at module end, which is the start of the drawn line)
+                slide.addShape(L,{x:sx(cx),y:sy(mod.y+mod.h),w:0,h:sy(el.y-(mod.y+mod.h)),
+                  line:{color:col,width:lw3,beginArrowType:'arrow'}});
+              }
+            });
+          }
         }
       }
       else if(el.type==='ln'||el.type==='arr'){
@@ -1339,7 +1482,7 @@ async function dlPPT(){
         if(el.label){
           const mx=(el.x1+el.x2)/2,my=(el.y1+el.y2)/2;
           slide.addText(el.label,{x:sx(mx-80),y:sy(my-18),w:sx(160),h:sy(18),
-            fontSize:9,bold:true,color:col,align:'center',fontFace:'Calibri',margin:0});
+            fontSize:9,bold:true,color:col,align:'center',fontFace:'Cambria',margin:0});
         }
       }
       else if(el.type==='shp'){
@@ -1350,7 +1493,7 @@ async function dlPPT(){
         slide.addShape(S,{x:sx(el.x),y:sy(el.y),w:sx(el.w),h:sy(el.h),
           fill:{color:hx(el.fillColor||'#CCE4F7')},line:{color:hx(el.borderColor||'#000000'),width:el.borderW||1.5}});
         if(el.label)slide.addText(el.label,{x:sx(el.x),y:sy(el.y),w:sx(el.w),h:sy(el.h),
-          fontSize:11,bold:true,color:'000000',align:'center',valign:'middle',fontFace:'Calibri',margin:0});
+          fontSize:11,bold:true,color:'000000',align:'center',valign:'middle',fontFace:'Cambria',margin:0});
       }
     });
     await pptx.writeFile({fileName:'block_diagram.pptx'});
@@ -1416,9 +1559,12 @@ function toast(msg,err){
 
 // Module type → { color, defaultIO, defaultSubs, colorHex }
 const MOD_DEFS = {
-  'SBC':         {color:'blue',   hex:'#9DC3E6', subs:['XMC Slot','M.2 NVMe 1TB'],           io:['1x Display Port','1x USB2.0 & 1x USB3.0','2x RS232','4x GPIO','2x 1G Ethernet']},
-  'SBC (Dual)':  {color:'blue',   hex:'#9DC3E6', subs:['XMC Slot','MIL-1553B XMC Card','M.2 NVMe 1TB'], io:['1x Display Port','1x USB2.0 & 1x USB3.0','2x RS232','4x GPIO','2x 1G Ethernet','2x Dual MIL-STD-1553B']},
-  'GPU':         {color:'green',  hex:'#70AD47', subs:['3U VPX GPGPU (RTX 2000)'],            io:['2x HD-SDI Video Output','1x Display Port','1x 1G Ethernet']},
+  'SBC':         {color:'blue',   hex:'#9DC3E6', subs:['XMC Slot','M.2 NVMe 1TB'],
+    io:[{text:'1x Display Port',dir:'out'},{text:'1x USB2.0 & 1x USB3.0',dir:'bi'},{text:'2x RS232',dir:'bi'},{text:'4x GPIO',dir:'bi'},{text:'2x 1G Ethernet',dir:'bi'}]},
+  'SBC (Dual)':  {color:'blue',   hex:'#9DC3E6', subs:['XMC Slot','MIL-1553B XMC Card','M.2 NVMe 1TB'],
+    io:[{text:'1x Display Port',dir:'out'},{text:'1x USB2.0 & 1x USB3.0',dir:'bi'},{text:'2x RS232',dir:'bi'},{text:'4x GPIO',dir:'bi'},{text:'2x 1G Ethernet',dir:'bi'},{text:'2x Dual MIL-STD-1553B',dir:'bi'}]},
+  'GPU':         {color:'green',  hex:'#70AD47', subs:['3U VPX GPGPU (RTX 2000)'],
+    io:[{text:'2x HD-SDI Video Output',dir:'out'},{text:'1x Display Port',dir:'out'},{text:'1x 1G Ethernet',dir:'bi'}]},
   'FPGA':        {color:'purple', hex:'#7030A0', subs:['FPGA Module','I/O Interface'],         io:['8x Aurora 8b/10b','2x ARINC 818','1x Display Port','1x 1G Ethernet']},
   'ARINC':       {color:'lime',   hex:'#92D050', subs:['3U VPX ARINC 818'],                   io:['2x ARINC 818 Video Rx/Tx','2x 1G Ethernet']},
   'Switch':      {color:'purple', hex:'#7030A0', subs:['Cometh 4000a','Cometh 4070e'],         io:['12x 1G Ethernet','1x Console','Ethernet via Backplane']},
@@ -1877,7 +2023,7 @@ function wizGenerate(){
   if(wState.title){
     elems.push({id:uid(),type:'txt',x:40,y:8,w:800,h:36,
       text:wState.titleText||(wState.backplane.size+' '+wState.backplane.type+' Block Diagram'),
-      fontSize:20,bold:true,italic:false,color:'#000000',bgColor:'none',align:'left'});
+      fontSize:18,bold:true,italic:false,color:'#000000',bgColor:'none',align:'left'});
   }
 
   // Modules — identical data shape to addMod()
